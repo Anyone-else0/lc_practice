@@ -1,0 +1,10 @@
+{
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "make_task",
+            "command": "make clean; make -j16",
+        }
+    ],
+    "version": "2.0.0"
+}

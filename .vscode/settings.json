@@ -1,0 +1,22 @@
+{
+    "C_Cpp.errorSquiggles": "disabled",
+    "files.associations": {
+        "hash_table_ut.h": "c",
+        "hash_table.h": "c",
+        "1_two_sum.h": "c",
+        "cstddef": "c",
+        "functional": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "typeinfo": "c",
+        "string.h": "c",
+        "stdbool.h": "c",
+        "pea_sort.h": "c",
+        "pea_hash_table_ut.h": "c",
+        "215_find_kth_largest.h": "c",
+        "pea_stack.h": "c",
+        "algorithm": "c",
+        "pea_stack_ut.h": "c"
+    },
+    "makefile.configureOnOpen": true
+}
