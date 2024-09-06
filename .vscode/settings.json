@@ -19,5 +19,12 @@
         "pea_stack_ut.h": "c",
         "pea_queue.h": "c"
     },
-    "makefile.configureOnOpen": true
+    "makefile.configureOnOpen": true,
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/home/peace/practice_data",
+            "binaryPath": "/home/peace/practice_data/practice",
+            "binaryArgs": []
+        }
+    ]
 }
