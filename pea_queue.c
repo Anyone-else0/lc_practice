@@ -14,7 +14,7 @@ PeaQueue_t *peaQueueCreate(int cap, int eleSize)
     pQue->eleSize = eleSize;
     pQue->front = -1;
     pQue->rear = -1;
-    pQue->pBuf = pQue->buf;
+    pQue->pBuf = ((void *)pQue) + sizeof(*pQue);
 
 l_end:
     return pQue;

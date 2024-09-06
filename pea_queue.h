@@ -9,7 +9,6 @@ typedef struct PeaQueue {
     int rear;
     int front;
     void *pBuf;
-    char buf[0];
 } PeaQueue_t;
 
 PeaQueue_t *peaQueueCreate(int cap, int eleSize);
