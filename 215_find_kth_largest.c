@@ -10,59 +10,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <time.h>
-
-#define PEA_STACK_TYPEDEF(__stackTypeName, __cap, __type)                                                           \
-    typedef struct __stackTypeName##_tag {                                                                          \
-        int cap;                                                                                                    \
-        int nr;                                                                                                     \
-        __type buf[(__cap)];                                                                                        \
-    } __stackTypeName;
-
-#define PEA_STACK_DEF(__stackTypeName, __name)                                                                      \
-    __stackTypeName __name = {                                                                                      \
-        .cap = sizeof(__name.buf) / sizeof(__name.buf[0]),                                                          \
-        .nr = 0,                                                                                                    \
-        .buf = {0}};                                                                                                \
-
-#define PEA_STACK_CREATE(__stackTypeName, __cap) ({                                                                 \
-    __stackTypeName *__pStack = (__stackTypeName *)malloc(sizeof(*__pStack) + sizeof(*__pStack->buf) * __cap);      \
-    if (__pStack == NULL) {                                                                                         \
-        printf("Stack malloc failed.");                                                                             \
-    } else {                                                                                                        \
-        __pStack->cap = (__cap);                                                                                    \
-        __pStack->nr = 0;                                                                                           \
-    }                                                                                                               \
-    __pStack;})
-
-#define PEA_STACK_TOP(__pStack) ({                                                                                  \
-    typeof((__pStack)->buf[0]) *__pEle;                                                                             \
-    if ((__pStack)->nr == 0) {                                                                                      \
-        __pEle = NULL;                                                                                              \
-    } else {                                                                                                        \
-        __pEle = &(__pStack)->buf[(__pStack)->nr - 1];                                                              \
-    }                                                                                                               \
-    __pEle;})
-
-#define PEA_STACK_PUSH(__pStack, __ele) ({                                                                          \
-    int __rc;                                                                                                       \
-    if ((__pStack)->nr == (__pStack)->cap) {                                                                        \
-        __rc = -1;                                                                                                  \
-    } else {                                                                                                        \
-        __rc = 0;                                                                                                   \
-        (__pStack)->buf[(__pStack)->nr] = (__ele);                                                                  \
-        (__pStack)->nr++;                                                                                           \
-    }                                                                                                               \
-    __rc;})
-
-#define PEA_STACK_POP(__pStack) ({                                                                                  \
-    int __rc;                                                                                                       \
-    if ((__pStack)->nr == 0) {                                                                                      \
-        __rc = -1;                                                                                                  \
-    } else {                                                                                                        \
-        __rc = 0;                                                                                                   \
-        (__pStack)->nr--;                                                                                           \
-    }                                                                                                               \
-    __rc;})
+#include "pea_stack.h"
 
 int findKthLargestStack(int* nums, int numsSize, int k)
 {
