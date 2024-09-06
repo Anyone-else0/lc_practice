@@ -8,46 +8,27 @@
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
+#include <stdlib.h>
+#include <string.h>
 #include "pea_stack.h"
 
 int *nextGreaterElements(int *nums, int numsSize, int *returnSize)
 {
     int *res = (int *)malloc(sizeof(int) * numsSize);
-    if (res == NULL) {
-        *returnSize = 0;
-        return NULL;
-    }
-    int *stack = (int *)malloc(sizeof(int) * numsSize * 2);
-    if (stack == NULL) {
-        *returnSize = 0;
-        free(res);
-        return NULL;
-    }
-    *returnSize = numsSize;
-    int stackTop = 0;
-    stack[stackTop] = 0;
-    int currentNumsIndex = 1;
-    while (stackTop >= 0) {
-        if (currentNumsIndex >= (2 * numsSize - 1)) {
-            while (stackTop >= 0) {
-                if (stack[stackTop] < numsSize) {
-                    res[stack[stackTop]] = -1;
-                }
-                stackTop--;
-            }
-        } else {
-            while (stackTop >= 0 && nums[currentNumsIndex % numsSize] > nums[stack[stackTop] % numsSize]) {
-                if (stack[stackTop] < numsSize) {
-                    res[stack[stackTop]] = nums[currentNumsIndex % numsSize];
-                }
-                stackTop--;
-            }
-            stackTop++;
-            stack[stackTop] = currentNumsIndex;
+    (void)memset(res, -1, sizeof(int) * numsSize);
+    PeaStack_t *pStack = peaStackCreate(numsSize, sizeof(int));
+    for (int i = 0; i < 2 * numsSize - 1; i++) {
+        int realIdx = i % numsSize;
+        int *pTop = (int *)peaStackTop(pStack);
+        while (pTop != NULL && nums[realIdx] > nums[*pTop]) {
+            res[*pTop] = nums[realIdx];
+            peaStackPop(pStack);
+            pTop = (int *)peaStackTop(pStack);
         }
-        currentNumsIndex++;
+        peaStackPush(pStack, &realIdx);
     }
-    free(stack);
+    peaStackDestroy(pStack);
+    *returnSize = numsSize;
     return res;
 }
 // @lc code=end
