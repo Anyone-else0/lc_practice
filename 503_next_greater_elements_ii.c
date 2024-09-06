@@ -8,7 +8,7 @@
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
-//#include "pea_stack.h"
+#include "pea_stack.h"
 
 int *nextGreaterElements(int *nums, int numsSize, int *returnSize)
 {

@@ -1,8 +1,6 @@
 #ifndef __PEA_HASH_TABLE_H__
 #define __PEA_HASH_TABLE_H__
 
-#include <stdlib.h>
-
 typedef struct PeaHashKv {
     void *pKey;
     int keyLen;
