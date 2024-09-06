@@ -1,18 +1,23 @@
 CC=gcc
-CFLAGS=-I.
+
+CFLAGS=-I. -I./lib -I./test -I./solution
 CFLAGS+=-g
 CFLAGS+=-Wall
 CFLAGS+=-Werror
-OBJ=main.o ut.o 
-OBJ+=pea_lc_practice_ut.o pea_stack_ut.o pea_queue_ut.o pea_hash_table_ut.o pea_sort_ut.o
-OBJ+=pea_hash_table.o pea_stack.o pea_queue.o pea_sort.o
-OBJ+=1_two_sum.o 215_find_kth_largest.o 208_achieve_trie.o 503_next_greater_elements_ii.o
 
-%.o : %.c
-	$(CC) -c -o $@ $< $(CFLAGS)
+SRCDIR=.
+OBJDIR=obj
+TARGET=practice
 
-practice : $(OBJ)
-	$(CC) -o practice $^ $(CFLAGS)
+SOURCES:=$(wildcard $(SRCDIR)/**/*.c)
+OBJECTS:=$(patsubst %.c, $(OBJDIR)/%.o, $(notdir $(SOURCES)))
 
+$(TARGET) : $(OBJECTS)
+	$(CC) $(CFLAGS) $^ -o practice
+
+$(OBJDIR)/%.o : $(SRCDIR)/**/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+.PHONY: clean
 clean:
-	rm -f *.o practice
+	rm -f obj/*.o practice
