@@ -4,6 +4,7 @@
 #include "1_two_sum.h"
 #include "215_find_kth_largest.h"
 #include "208_achieve_trie.h"
+#include "503_next_greater_elements_ii.h"
 
 static void twoSumTest(void)
 {
@@ -136,6 +137,30 @@ static void trieTest(void)
     rc = trieSearch(pTrie, "app");     // 返回 True
     UT_ASSERT(rc == true);
     trieFree(pTrie);
+}
+
+void nextGreaterElementsIITest()
+{
+    {
+        int nums[] = {1, 2, 1};
+        int returnSize;
+        int expect[] = {2, -1, 2};
+        int *res = nextGreaterElements(nums, sizeof(nums) / sizeof(nums[0]), &returnSize);
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(res[i] == expect[i]);
+        }
+        free(res);
+    }
+    {
+        int nums[] = {1, 2, 3, 4, 3};
+        int returnSize;
+        int expect[] = {2, 3, 4, -1, 4};
+        int *res = nextGreaterElements(nums, sizeof(nums) / sizeof(nums[0]), &returnSize);
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(res[i] == expect[i]);
+        }
+        free(res);
+    }
 }
 
 UtCase_t gPeaLcPracticeSuit[] = {
