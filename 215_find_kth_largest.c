@@ -14,28 +14,27 @@
 
 int findKthLargestStack(int* nums, int numsSize, int k)
 {
-    PEA_STACK_TYPEDEF(PeaNumStack_t, 0, int);
-    PeaNumStack_t *pStack = PEA_STACK_CREATE(PeaNumStack_t, k);
-    PeaNumStack_t *pTmpStack = PEA_STACK_CREATE(PeaNumStack_t, k);
+    PeaStack_t *pStack = peaStackCreate(k, sizeof(nums[0]));
+    PeaStack_t *pTmpStack = peaStackCreate(k, sizeof(nums[0]));
 
     for (int i = 0; i < numsSize; i++) {
         int tmpNum = nums[i];
         int *pTop;
-        pTop = PEA_STACK_TOP(pStack);
+        pTop = (int *)peaStackTop(pStack);
         while (pTop != NULL && tmpNum >= *pTop) {
-            (void)PEA_STACK_PUSH(pTmpStack, *pTop);
-            (void)PEA_STACK_POP(pStack);
-            pTop = PEA_STACK_TOP(pStack);
+            (void)peaStackPush(pTmpStack, pTop);
+            (void)peaStackPop(pStack);
+            pTop = (int *)peaStackTop(pStack);
         }
-        (void)PEA_STACK_PUSH(pStack, tmpNum);
-        pTop = PEA_STACK_TOP(pTmpStack);
+        (void)peaStackPush(pStack, &tmpNum);
+        pTop = (int *)peaStackTop(pTmpStack);
         while (pTop != NULL) {
-            (void)PEA_STACK_PUSH(pStack, *pTop);
-            (void)PEA_STACK_POP(pTmpStack);
-            pTop = PEA_STACK_TOP(pTmpStack);
+            (void)peaStackPush(pStack, pTop);
+            (void)peaStackPop(pTmpStack);
+            pTop = (int *)peaStackTop(pTmpStack);
         }
     }
-    int res = *PEA_STACK_TOP(pStack);
+    int res = *((int *)peaStackTop(pStack));
 
     return res;
 } 
