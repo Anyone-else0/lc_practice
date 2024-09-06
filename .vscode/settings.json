@@ -16,7 +16,8 @@
         "215_find_kth_largest.h": "c",
         "pea_stack.h": "c",
         "algorithm": "c",
-        "pea_stack_ut.h": "c"
+        "pea_stack_ut.h": "c",
+        "pea_queue.h": "c"
     },
     "makefile.configureOnOpen": true
 }
