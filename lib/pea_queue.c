@@ -3,30 +3,7 @@
 #include <string.h>
 #include "pea_queue.h"
 
-PeaQueue_t *peaQueueCreate(int cap, int eleSize)
-{
-    PeaQueue_t *pQue = (PeaQueue_t *)malloc(sizeof(*pQue) + cap * eleSize);
-    if (pQue == NULL) {
-        printf("Que malloc failed\n");
-        goto l_end;
-    }
-    pQue->cap = cap;
-    pQue->eleSize = eleSize;
-    pQue->front = -1;
-    pQue->rear = -1;
-    pQue->pBuf = ((void *)pQue) + sizeof(*pQue);
-
-l_end:
-    return pQue;
-}
-
-void peaQueueDestroy(PeaQueue_t *pQue)
-{
-    free(pQue);
-    return;
-}
-
-int peaQueuePop(PeaQueue_t *pQue)
+static int peaQueuePop(PeaQueue_t *pQue)
 {
     int rc = 0;
     if (pQue->front == -1) {
@@ -43,7 +20,7 @@ l_end:
     return rc;
 }
 
-int peaQueuePush(PeaQueue_t *pQue, void *pEle)
+static int peaQueuePush(PeaQueue_t *pQue, void *pEle)
 {
     int rc = 0;
     if (pQue->rear == -1) {
@@ -64,7 +41,7 @@ l_end:
     return rc;
 }
 
-void *peaQueueFront(PeaQueue_t *pQue)
+static void *peaQueueFront(PeaQueue_t *pQue)
 {
     void *pRes = NULL;
     if (pQue->front == -1) {
@@ -77,7 +54,7 @@ l_end:
     return pRes;
 }
 
-void *peaQueueRear(PeaQueue_t *pQue)
+static void *peaQueueRear(PeaQueue_t *pQue)
 {
     void *pRes = NULL;
     if (pQue->rear == -1) {
@@ -90,7 +67,37 @@ l_end:
     return pRes;
 }
 
-bool peaQueueEmpty(PeaQueue_t *pQue)
+static bool peaQueueEmpty(PeaQueue_t *pQue)
 {
     return pQue->front == -1;
+}
+
+static void peaQueueDestroy(PeaQueue_t *pQue)
+{
+    free(pQue);
+    return;
+}
+
+PeaQueue_t *peaQueueCreate(int cap, int eleSize)
+{
+    PeaQueue_t *pQue = (PeaQueue_t *)malloc(sizeof(*pQue) + cap * eleSize);
+    if (pQue == NULL) {
+        printf("Que malloc failed\n");
+        goto l_end;
+    }
+    pQue->cap = cap;
+    pQue->eleSize = eleSize;
+    pQue->front = -1;
+    pQue->rear = -1;
+    pQue->pBuf = ((void *)pQue) + sizeof(*pQue);
+
+    pQue->pfDestroy = peaQueueDestroy;
+    pQue->pfPop = peaQueuePop;
+    pQue->pfPush = peaQueuePush;
+    pQue->pfFront = peaQueueFront;
+    pQue->pfRear = peaQueueRear;
+    pQue->pfEmpty = peaQueueEmpty;
+
+l_end:
+    return pQue;
 }

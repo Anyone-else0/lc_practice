@@ -20,21 +20,23 @@ int findKthLargestStack(int* nums, int numsSize, int k)
     for (int i = 0; i < numsSize; i++) {
         int tmpNum = nums[i];
         int *pTop;
-        pTop = (int *)peaStackTop(pStack);
+        pTop = (int *)pStack->pfTop(pStack);
         while (pTop != NULL && tmpNum >= *pTop) {
-            (void)peaStackPush(pTmpStack, pTop);
-            (void)peaStackPop(pStack);
-            pTop = (int *)peaStackTop(pStack);
+            (void)pTmpStack->pfPush(pTmpStack, pTop);
+            (void)pStack->pfPop(pStack);
+            pTop = (int *)pStack->pfTop(pStack);
         }
-        (void)peaStackPush(pStack, &tmpNum);
-        pTop = (int *)peaStackTop(pTmpStack);
+        (void)pStack->pfPush(pStack, &tmpNum);
+        pTop = (int *)pTmpStack->pfTop(pTmpStack);
         while (pTop != NULL) {
-            (void)peaStackPush(pStack, pTop);
-            (void)peaStackPop(pTmpStack);
-            pTop = (int *)peaStackTop(pTmpStack);
+            (void)pStack->pfPush(pStack, pTop);
+            (void)pTmpStack->pfPop(pTmpStack);
+            pTop = (int *)pTmpStack->pfTop(pTmpStack);
         }
     }
-    int res = *((int *)peaStackTop(pStack));
+    int res = *((int *)pStack->pfTop(pStack));
+    pStack->pfDestroy(pStack);
+    pTmpStack->pfDestroy(pTmpStack);
 
     return res;
 } 

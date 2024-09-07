@@ -19,15 +19,15 @@ int *nextGreaterElements(int *nums, int numsSize, int *returnSize)
     PeaStack_t *pStack = peaStackCreate(numsSize, sizeof(int));
     for (int i = 0; i < 2 * numsSize - 1; i++) {
         int realIdx = i % numsSize;
-        int *pTop = (int *)peaStackTop(pStack);
+        int *pTop = (int *)pStack->pfTop(pStack);
         while (pTop != NULL && nums[realIdx] > nums[*pTop]) {
             res[*pTop] = nums[realIdx];
-            peaStackPop(pStack);
-            pTop = (int *)peaStackTop(pStack);
+            pStack->pfPop(pStack);
+            pTop = (int *)pStack->pfTop(pStack);
         }
-        peaStackPush(pStack, &realIdx);
+        pStack->pfPush(pStack, &realIdx);
     }
-    peaStackDestroy(pStack);
+    pStack->pfDestroy(pStack);
     *returnSize = numsSize;
     return res;
 }

@@ -12,27 +12,27 @@ static void peaStackTest(void)
         UT_ASSERT(pUtStack->nr == 0);
         UT_ASSERT(pUtStack->cap == 5);
         int rc;
-        int *pTop = (int *)peaStackTop(pUtStack);
+        int *pTop = (int *)pUtStack->pfTop(pUtStack);
         UT_ASSERT(pTop == NULL);
         for (int i = 0; i < 5; i++)
         {
-            rc = peaStackPush(pUtStack, &num[i]);
+            rc = pUtStack->pfPush(pUtStack, &num[i]);
             UT_ASSERT(rc == 0);
         }
         UT_ASSERT(pUtStack->nr == pUtStack->cap);
-        pTop = (int *)peaStackTop(pUtStack);
+        pTop = (int *)pUtStack->pfTop(pUtStack);
         UT_ASSERT(*pTop == 5);
         int tmp = 100;
-        rc = peaStackPush(pUtStack, &tmp);
+        rc = pUtStack->pfPush(pUtStack, &tmp);
         UT_ASSERT(rc != 0);
-        pTop = peaStackTop(pUtStack);
+        pTop = pUtStack->pfTop(pUtStack);
         UT_ASSERT(*pTop == 5);
         for (int i = 4; i >= 0; i--)
         {
-            rc = peaStackPop(pUtStack);
+            rc = pUtStack->pfPop(pUtStack);
             UT_ASSERT(rc == 0);
         }
-        rc = peaStackPop(pUtStack);
+        rc = pUtStack->pfPop(pUtStack);
         UT_ASSERT(rc != 0);
     }
 }

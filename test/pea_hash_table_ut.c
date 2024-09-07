@@ -35,20 +35,20 @@ static void peaHashLsitTableTest(void)
         for (int idx = 0; idx < kvNum; idx++) {
             pTmpKey->num = idx;
             pTmpValue->value = pTmpKey->num;
-            int rc = peaHashTableKvPut(pTable, pTmpKv);
+            int rc = pTable->pfKvPut(pTable, pTmpKv);
             UT_ASSERT(rc == 0);
         }
         for (int idx = 0; idx < kvNum; idx++)
         {
             pTmpKey->num = idx;
-            int rc = peaHashTableKvGet(pTable, pTmpKv);
+            int rc = pTable->pfKvGet(pTable, pTmpKv);
             UT_ASSERT(rc == 0);
             UT_ASSERT(pTmpValue->value == pTmpKey->num);
         }
         for (int idx = 0; idx < kvNum; idx++)
         {
             pTmpKey->num = idx;
-            int rc = peaHashTableKvPick(pTable, pTmpKv);
+            int rc = pTable->pfKvPick(pTable, pTmpKv);
             UT_ASSERT(rc == 0);
             UT_ASSERT(pTmpValue->value == pTmpKey->num);
         }
@@ -57,7 +57,7 @@ static void peaHashLsitTableTest(void)
             UT_ASSERT(pTable->ppBucket[idx] == NULL);
         }
     }
-    peaHashTableDestroy(pTable);
+    pTable->pfDestroy(pTable);
     free(pTmpKv);
 }
 

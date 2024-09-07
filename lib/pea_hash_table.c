@@ -3,9 +3,6 @@
 #include <string.h>
 #include "pea_hash_table.h"
 
-/************************************************************
- * BEGIN:链式hash封装
- ***********************************************************/
 typedef struct PeaHashNode {
     struct PeaHashNode *pNext;
     PeaHashKv_t kv;
@@ -33,42 +30,7 @@ static void peaHashTableNodeFree(PeaHashNode_t *pNode)
     free(pNode);
 }
 
-PeaHashTable_t *peaHashTableCreate(int bucketCap)
-{
-    PeaHashTable_t *pHashTable = (PeaHashTable_t *)malloc(sizeof(*pHashTable));
-    if (pHashTable == NULL) {
-        printf("[ERROR]Hash table malloc failed.\n");
-        goto l_end;
-    }
-    pHashTable->bucketCap = bucketCap;
-    pHashTable->ppBucket = malloc(sizeof(*pHashTable->ppBucket) * bucketCap);
-    if (pHashTable->ppBucket == NULL) {
-        free(pHashTable);
-        pHashTable = NULL;
-        printf("[ERROR]Hash bicket malloc failed.\n");
-        goto l_end;
-    }
-    memset(pHashTable->ppBucket, 0, sizeof(*pHashTable->ppBucket) * bucketCap);
-
-l_end:
-    return pHashTable;
-}
-
-void peaHashTableDestroy(PeaHashTable_t *pTable)
-{
-    PeaHashNode_t *pTmpNode;
-    for (int idx = 0; idx < pTable->bucketCap; idx++) {
-        while (pTable->ppBucket[idx] != NULL) {
-            pTmpNode = (PeaHashNode_t *)pTable->ppBucket[idx];
-            pTable->ppBucket[idx] = pTmpNode->pNext;
-            peaHashTableNodeFree(pTmpNode);
-        }
-    }
-    free(pTable->ppBucket);
-    free(pTable);
-}
-
-int peaHashTableGetBucketIdx(PeaHashTable_t *pTable, void *pKey, int keyLen)
+static int peaHashTableGetBucketIdx(PeaHashTable_t *pTable, void *pKey, int keyLen)
 {
     int idx = 0;
     unsigned char *tmpKey = pKey;
@@ -81,7 +43,7 @@ int peaHashTableGetBucketIdx(PeaHashTable_t *pTable, void *pKey, int keyLen)
     return idx;
 }
 
-PeaHashNode_t *peaHashTableKvFind(PeaHashTable_t *pTable, void *pKey, int keyLen, PeaHashNode_t **ppLastNode)
+static PeaHashNode_t *peaHashTableKvFind(PeaHashTable_t *pTable, void *pKey, int keyLen, PeaHashNode_t **ppLastNode)
 {
     int bucketIdx = peaHashTableGetBucketIdx(pTable, pKey, keyLen);
     PeaHashNode_t *pTmpNode = (PeaHashNode_t *)pTable->ppBucket[bucketIdx];
@@ -107,7 +69,7 @@ PeaHashNode_t *peaHashTableKvFind(PeaHashTable_t *pTable, void *pKey, int keyLen
     return pTmpNode;
 }
 
-int peaHashTableKvGet(PeaHashTable_t *pTable, PeaHashKv_t *pKv)
+static int peaHashTableKvGet(PeaHashTable_t *pTable, PeaHashKv_t *pKv)
 {
     int rc = -1;
     PeaHashNode_t *pTmpNode = peaHashTableKvFind(pTable, pKv->pKey, pKv->keyLen, NULL);
@@ -120,7 +82,7 @@ int peaHashTableKvGet(PeaHashTable_t *pTable, PeaHashKv_t *pKv)
     return rc;
 }
 
-int peaHashTableKvPick(PeaHashTable_t *pTable, PeaHashKv_t *pKv)
+static int peaHashTableKvPick(PeaHashTable_t *pTable, PeaHashKv_t *pKv)
 {
     int rc = -1;
     PeaHashNode_t *pLastNode = NULL;
@@ -140,7 +102,7 @@ int peaHashTableKvPick(PeaHashTable_t *pTable, PeaHashKv_t *pKv)
     return rc;
 }
 
-int peaHashTableKvPut(PeaHashTable_t *pTable, PeaHashKv_t *pKv)
+static int peaHashTableKvPut(PeaHashTable_t *pTable, PeaHashKv_t *pKv)
 {
     int rc = 0;
     PeaHashNode_t *pLastNode = NULL;
@@ -170,6 +132,41 @@ l_end:
     return rc;
 }
 
-/************************************************************
- * END:链式hash封装
- ***********************************************************/
+static void peaHashTableDestroy(PeaHashTable_t *pTable)
+{
+    PeaHashNode_t *pTmpNode;
+    for (int idx = 0; idx < pTable->bucketCap; idx++) {
+        while (pTable->ppBucket[idx] != NULL) {
+            pTmpNode = (PeaHashNode_t *)pTable->ppBucket[idx];
+            pTable->ppBucket[idx] = pTmpNode->pNext;
+            peaHashTableNodeFree(pTmpNode);
+        }
+    }
+    free(pTable->ppBucket);
+    free(pTable);
+}
+
+PeaHashTable_t *peaHashTableCreate(int bucketCap)
+{
+    PeaHashTable_t *pHashTable = (PeaHashTable_t *)malloc(sizeof(*pHashTable));
+    if (pHashTable == NULL) {
+        printf("[ERROR]Hash table malloc failed.\n");
+        goto l_end;
+    }
+    pHashTable->bucketCap = bucketCap;
+    pHashTable->ppBucket = malloc(sizeof(*pHashTable->ppBucket) * bucketCap);
+    if (pHashTable->ppBucket == NULL) {
+        free(pHashTable);
+        pHashTable = NULL;
+        printf("[ERROR]Hash bicket malloc failed.\n");
+        goto l_end;
+    }
+    memset(pHashTable->ppBucket, 0, sizeof(*pHashTable->ppBucket) * bucketCap);
+    pHashTable->pfDestroy = peaHashTableDestroy;
+    pHashTable->pfKvGet = peaHashTableKvGet;
+    pHashTable->pfKvPick = peaHashTableKvPick;
+    pHashTable->pfKvPut = peaHashTableKvPut;
+
+l_end:
+    return pHashTable;
+}

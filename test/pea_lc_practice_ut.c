@@ -167,5 +167,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
     {"trieTest", trieTest},
+    {"nextGreaterElementsIITest", nextGreaterElementsIITest},
     {NULL, NULL},
 };

@@ -12,12 +12,12 @@ typedef struct PeaHashKv {
 typedef struct HashListTable {
     int bucketCap;
     void **ppBucket;
+    void (*pfDestroy)(struct HashListTable *pTable);
+    int (*pfKvGet)(struct HashListTable *pTable, PeaHashKv_t *pKv);
+    int (*pfKvPick)(struct HashListTable *pTable, PeaHashKv_t *pKv);
+    int (*pfKvPut)(struct HashListTable *pTable, PeaHashKv_t *pKv);
 } PeaHashTable_t;
 
 PeaHashTable_t *peaHashTableCreate(int bucketCap);
-void peaHashTableDestroy(PeaHashTable_t *pTable);
-int peaHashTableKvGet(PeaHashTable_t *pTable, PeaHashKv_t *pKv);
-int peaHashTableKvPick(PeaHashTable_t *pTable, PeaHashKv_t *pKv);
-int peaHashTableKvPut(PeaHashTable_t *pTable, PeaHashKv_t *pKv);
 
 #endif

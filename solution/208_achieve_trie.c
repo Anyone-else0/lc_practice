@@ -12,15 +12,12 @@
 #include "pea_stack.h"
 #include "pea_queue.h"
 
-#ifndef __208_ACHIEVE_TRIE_H__
-#define __208_ACHIEVE_TRIE_H__
 #define ELE_NUM_MAX (26)
 typedef struct Trie_s {
     struct Trie_s *pNextNode[ELE_NUM_MAX];
     bool isWord;
     char val;
 } Trie;
-#endif
 
 Trie* trieCreate(void)
 {
@@ -120,9 +117,9 @@ void trieFree(Trie* obj)
 {
     PeaStack_t *pStack = peaStackCreate(2000, sizeof(Trie *));
     Trie *pTmpNode = obj;
-    peaStackPush(pStack, &pTmpNode);
-    while (peaStackEmpty(pStack) == false) {
-        pTmpNode = *((Trie **)peaStackTop(pStack));
+    pStack->pfPush(pStack, &pTmpNode);
+    while (pStack->pfEmpty(pStack) == false) {
+        pTmpNode = *((Trie **)pStack->pfTop(pStack));
         Trie *pNextNode = NULL;
         int i;
         for (i = 0; i < sizeof(pTmpNode->pNextNode) / sizeof(pTmpNode->pNextNode[0]); i++) {
@@ -132,14 +129,14 @@ void trieFree(Trie* obj)
             }
         }
         if (pNextNode == NULL) {
-            peaStackPop(pStack);
+            pStack->pfPop(pStack);
             free(pTmpNode);
         } else {
             pTmpNode->pNextNode[i] = NULL;
-            peaStackPush(pStack, &pNextNode);
+            pStack->pfPush(pStack, &pNextNode);
         }
     }
-    peaStackDestroy(pStack);
+    pStack->pfDestroy(pStack);
     return;
 }
 
