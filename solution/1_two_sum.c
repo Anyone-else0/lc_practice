@@ -40,7 +40,7 @@ int *twoSum(int* nums, int numsSize, int target, int* returnSize)
         int num1 = nums[i];
         int idx1 = i;
         pTmpKey->num = target - num1;
-        int rc = peaHashTableKvPick(pTable, pTmpKv);
+        int rc = pTable->pfKvPick(pTable, pTmpKv);
         if (rc == 0) {
             pRes[0] = pTmpValue->idx;
             pRes[1] = idx1;
@@ -49,16 +49,16 @@ int *twoSum(int* nums, int numsSize, int target, int* returnSize)
         }
 
         pTmpKey->num = num1;
-        rc = peaHashTableKvGet(pTable, pTmpKv);
+        rc = pTable->pfKvGet(pTable, pTmpKv);
         if (rc != 0) {
             pTmpValue->idx = i;
-            (void)peaHashTableKvPut(pTable, pTmpKv);
+            (void)pTable->pfKvPut(pTable, pTmpKv);
         }
     }
 
 l_end:
     free(pTmpKv);
-    peaHashTableDestroy(pTable);
+    pTable->pfDestroy(pTable);
     return pRes;
 }
 // @lc code=end

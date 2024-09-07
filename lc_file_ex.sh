@@ -26,9 +26,9 @@ if [[ ${op_code} == "commit" ]] then
         sed -i "${include_line}s/^/\/\/ lc_comment_ori:&/g" ${target_file}
         sed -i "${include_line}a\/\/ lc_comment_target_end:${include_head}" ${target_file}
         sed -i "${include_line}a\ " ${target_file}
-        sed -i "${include_line} r ${include_src}" ${target_file}
+        sed -i "${include_line} r lib/${include_src}" ${target_file}
         sed -i "${include_line}a\ " ${target_file}
-        sed -i "${include_line} r ${include_head}" ${target_file}
+        sed -i "${include_line} r lib/${include_head}" ${target_file}
         sed -i "${include_line}a\/\/ lc_comment_target_begin:${include_head}" ${target_file}
         sed -i "/^${include_code}$/d" ${target_file}
         include_ele=`cat ${target_file} | grep -n "#include \"" | grep -v "//" | head -n1`

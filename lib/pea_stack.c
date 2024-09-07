@@ -3,7 +3,7 @@
 #include <string.h>
 #include "pea_stack.h"
 
-int peaStackPop(PeaStack_t *pStack)
+static int peaStackPop(PeaStack_t *pStack)
 {
     int rc = 0;
     if (pStack->nr == 0) {
@@ -18,7 +18,7 @@ l_end:
     return rc;
 }
 
-int peaStackPush(PeaStack_t *pStack, void *pEle)
+static int peaStackPush(PeaStack_t *pStack, void *pEle)
 {
     int rc = 0;
     if (pStack->nr >= pStack->cap) {
@@ -34,7 +34,7 @@ l_end:
     return rc;
 }
 
-void *peaStackTop(PeaStack_t *pStack)
+static void *peaStackTop(PeaStack_t *pStack)
 {
     void *pRes = NULL;
     if (pStack->nr != 0) {
@@ -44,9 +44,15 @@ void *peaStackTop(PeaStack_t *pStack)
     return pRes;
 }
 
-bool peaStackEmpty(PeaStack_t *pStack)
+static bool peaStackEmpty(PeaStack_t *pStack)
 {
     return pStack->nr == 0;
+}
+
+static void peaStackDestroy(PeaStack_t *pStack)
+{
+    free(pStack);
+    return;
 }
 
 PeaStack_t *peaStackCreate(int cap, int eleSize)
@@ -60,12 +66,12 @@ PeaStack_t *peaStackCreate(int cap, int eleSize)
     pStack->eleSize = eleSize;
     pStack->pBuf = ((void *)pStack) + sizeof(*pStack);
 
+    pStack->pfDestroy = peaStackDestroy;
+    pStack->pfPop = peaStackPop;
+    pStack->pfPush = peaStackPush;
+    pStack->pfTop = peaStackTop;
+    pStack->pfEmpty = peaStackEmpty;
+
 l_end:
     return pStack;
-}
-
-void peaStackDestroy(PeaStack_t *pStack)
-{
-    free(pStack);
-    return;
 }

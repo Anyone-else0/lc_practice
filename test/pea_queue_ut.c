@@ -12,34 +12,35 @@ static void peaQueueTest(void)
         UT_ASSERT(pUtQue->front == pUtQue->rear);
         UT_ASSERT(pUtQue->cap == 5);
         int rc;
-        int *pEle = (int *)peaQueueFront(pUtQue);
+        int *pEle = (int *)pUtQue->pfFront(pUtQue);
         UT_ASSERT(pEle == NULL);
-        pEle = (int *)peaQueueRear(pUtQue);
+        pEle = (int *)pUtQue->pfRear(pUtQue);
         UT_ASSERT(pEle == NULL);
         for (int i = 0; i < 5; i++)
         {
-            rc = peaQueuePush(pUtQue, &num[i]);
+            rc = pUtQue->pfPush(pUtQue, &num[i]);
             UT_ASSERT(rc == 0);
         }
-        pEle = (int *)peaQueueRear(pUtQue);
+        pEle = (int *)pUtQue->pfRear(pUtQue);
         UT_ASSERT(*pEle == 5);
-        pEle = (int *)peaQueueFront(pUtQue);
+        pEle = (int *)pUtQue->pfFront(pUtQue);
         UT_ASSERT(*pEle == 1);
         int tmp = 100;
-        rc = peaQueuePush(pUtQue, &tmp);
+        rc = pUtQue->pfPush(pUtQue, &tmp);
         UT_ASSERT(rc != 0);
-        pEle = peaQueueRear(pUtQue);
+        pEle = pUtQue->pfRear(pUtQue);
         UT_ASSERT(*pEle == 5);
         for (int i = 4; i >= 0; i--)
         {
-            rc = peaQueuePop(pUtQue);
+            rc = pUtQue->pfPop(pUtQue);
             UT_ASSERT(rc == 0);
         }
-        pEle = (int *)peaQueueRear(pUtQue);
+        pEle = (int *)pUtQue->pfRear(pUtQue);
         UT_ASSERT(pEle == NULL);
-        pEle = (int *)peaQueueFront(pUtQue);
+        pEle = (int *)pUtQue->pfFront(pUtQue);
         UT_ASSERT(pEle == NULL);
-        UT_ASSERT(peaQueueEmpty(pUtQue) == true);
+        UT_ASSERT(pUtQue->pfEmpty(pUtQue) == true);
+        pUtQue->pfDestroy(pUtQue);
     }
 }
 

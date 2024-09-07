@@ -9,14 +9,14 @@ typedef struct PeaQueue {
     int rear;
     int front;
     void *pBuf;
+    void (*pfDestroy)(struct PeaQueue *pQue);
+    int (*pfPop)(struct PeaQueue *pQue);
+    int (*pfPush)(struct PeaQueue *pQue, void *pEle);
+    void *(*pfFront)(struct PeaQueue *pQue);
+    void *(*pfRear)(struct PeaQueue *pQue);
+    bool (*pfEmpty)(struct PeaQueue *pQue);
 } PeaQueue_t;
 
 PeaQueue_t *peaQueueCreate(int cap, int eleSize);
-void peaQueueDestroy(PeaQueue_t *pQue);
-int peaQueuePop(PeaQueue_t *pQue);
-int peaQueuePush(PeaQueue_t *pQue, void *pEle);
-void *peaQueueFront(PeaQueue_t *pQue);
-void *peaQueueRear(PeaQueue_t *pQue);
-bool peaQueueEmpty(PeaQueue_t *pQue);
 
 #endif
