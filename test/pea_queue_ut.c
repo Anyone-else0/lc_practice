@@ -9,8 +9,6 @@ static void peaQueueTest(void)
         int num[] = { 1, 2, 3, 4, 5, 6, 7, 8 };
         PeaQueue_t *pUtQue = peaQueueCreate(5, sizeof(int));
         UT_ASSERT(pUtQue != NULL);
-        UT_ASSERT(pUtQue->front == pUtQue->rear);
-        UT_ASSERT(pUtQue->cap == 5);
         int rc;
         int *pEle = (int *)pUtQue->pfFront(pUtQue);
         UT_ASSERT(pEle == NULL);

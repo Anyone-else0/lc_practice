@@ -3,18 +3,16 @@
 
 #include <stdbool.h>
 
+typedef struct PeaQueuePriv PeaQueuePriv_t;
+
 typedef struct PeaQueue {
-    int cap;
-    int eleSize;
-    int rear;
-    int front;
-    void *pBuf;
     void (*pfDestroy)(struct PeaQueue *pQue);
     int (*pfPop)(struct PeaQueue *pQue);
     int (*pfPush)(struct PeaQueue *pQue, void *pEle);
     void *(*pfFront)(struct PeaQueue *pQue);
     void *(*pfRear)(struct PeaQueue *pQue);
     bool (*pfEmpty)(struct PeaQueue *pQue);
+    PeaQueuePriv_t *pPriv;
 } PeaQueue_t;
 
 PeaQueue_t *peaQueueCreate(int cap, int eleSize);

@@ -9,8 +9,6 @@ static void peaStackTest(void)
         int num[] = { 1, 2, 3, 4, 5, 6, 7, 8 };
         PeaStack_t *pUtStack = peaStackCreate(5, sizeof(int));
         UT_ASSERT(pUtStack != NULL);
-        UT_ASSERT(pUtStack->nr == 0);
-        UT_ASSERT(pUtStack->cap == 5);
         int rc;
         int *pTop = (int *)pUtStack->pfTop(pUtStack);
         UT_ASSERT(pTop == NULL);
@@ -19,7 +17,6 @@ static void peaStackTest(void)
             rc = pUtStack->pfPush(pUtStack, &num[i]);
             UT_ASSERT(rc == 0);
         }
-        UT_ASSERT(pUtStack->nr == pUtStack->cap);
         pTop = (int *)pUtStack->pfTop(pUtStack);
         UT_ASSERT(*pTop == 5);
         int tmp = 100;
