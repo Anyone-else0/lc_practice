@@ -5,9 +5,10 @@
  */
 
 // @lc code=start
+#include <stdlib.h>
 #include "pea_hash_table.h"
 #include "pea_list.h"
-/*
+
 typedef struct {
     int cap;
     int nr;
@@ -15,34 +16,32 @@ typedef struct {
     PeaHashTable_t *pTable;
 } LRUCache;
 
-typedef struct LruKey {
+typedef struct LruKv {
     int k;
-} LruKey_t;
-
-typedef struct LruVal {
     int v;
     PeaListHead_t node;
-} LruVal_t;
+} LruKv_t;
 
-typedef struct LruEntry {
-    LruKey_t key;
-    LruVal_t val;
-} LruEntry_t;
-
-static void lRUKvInit(PeaHashKv_t *pKv, LruEntry_t *pEntry)
+static int lruKeyCmp(void *key1, void *key2)
 {
-    pKv->keyLen = sizeof(pEntry->key);
-    pKv->pKey = &pEntry->key;
-    pKv->valueLen = sizeof(pEntry->val);
-    pKv->pValue = &pEntry->val;
-    return;
+    return *(int *)key1 - *(int *)key2;
+}
+
+static int lruGetIdx(void *pKey)
+{
+    return abs(*(int *)pKey);
+}
+
+static void *lurGetKey(void *pKv)
+{
+    return (void *)(&((LruKv_t *)pKv)->k);
 }
 
 LRUCache *lRUCacheCreate(int capacity)
 {
     LRUCache *pLru = (LRUCache *)malloc(sizeof(*pLru));
     peaListNodeInit(&pLru->head);
-    pLru->pTable = peaHashTableCreate(2000);
+    pLru->pTable = peaHashTableCreate(2000, lruKeyCmp, lruGetIdx, lurGetKey);
     pLru->cap = capacity;
     pLru->nr = 0;
     return pLru;
@@ -50,44 +49,57 @@ LRUCache *lRUCacheCreate(int capacity)
 
 int lRUCacheGet(LRUCache* obj, int key)
 {
+    int rc = -1;
     PeaHashTable_t *pTable = obj->pTable;
-    PeaHashKv_t kv;
-    LruEntry_t entry;
-    lRUKvInit(&kv, &entry);
-    entry.key.k = key;
-    if (pTable->pfKvGet(pTable, &kv) != 0) {
-        entry.val.v = -1;
+    LruKv_t *pKv = pTable->pfKvGet(pTable, &key);
+    if (pKv != NULL) {
+        rc = pKv->v;
+        peaListDel(&pKv->node);
+        peaListAddHead(&obj->head, &pKv->node);
     }
 
-    return entry.val.v;
+    return rc;
 }
 
 void lRUCachePut(LRUCache* obj, int key, int value)
 {
     PeaHashTable_t *pTable = obj->pTable;
-    PeaHashKv_t kv;
-    LruEntry_t entry;
-    lRUKvInit(&kv, &entry);
-    entry.key.k = key;
-    if (pTable->pfKvGet(pTable, &kv) != 0 && obj->nr == obj->cap) {
-        PeaListHead_t *pNode = peaListPickTail(&obj->head);
-        LruVal_t *pVal = PEA_LIST_ENTRY(pNode, LruVal_t, node);
-        LruEntry_t *pEntry = PEA_LIST_ENTRY(pVal, LruEntry_t, val);
-        lRUKvInit(&kv, pEntry);
-        (void)pTable->pfKvPick(pTable, &kv);
-    }
 
-    hsVal.val = -1;
-    (void)pTable->pfKvPut(pTable, &kv);
+    LruKv_t *pKv = pTable->pfKvGet(pTable, &key);
+    if (pKv != NULL) {
+        pKv->v = value;
+        peaListDel(&pKv->node);
+        peaListAddHead(&obj->head, &pKv->node);
+    } else if (obj->nr == obj->cap) {
+        PeaListHead_t *pLastNode = peaListPickTail(&obj->head);
+        pKv = PEA_LIST_ENTRY(pLastNode, LruKv_t, node);
+        pKv = pTable->pfKvPick(pTable, &pKv->k);
+        pKv->k = key;
+        pKv->v = value;
+        (void)pTable->pfKvPut(pTable, pKv);
+        peaListAddHead(&obj->head, &pKv->node);
+    } else {
+        pKv = (LruKv_t *)malloc(sizeof(*pKv));
+        pKv->k = key;
+        pKv->v = value;
+        peaListAddHead(&obj->head, &pKv->node);
+        (void)pTable->pfKvPut(pTable, pKv);
+        obj->nr++;
+    }
 
     return;
 }
 
 void lRUCacheFree(LRUCache* obj)
 {
-    
+    if (obj != NULL) {
+        if (obj->pTable != NULL) {
+            obj->pTable->pfDestroy(obj->pTable);
+        }
+        free(obj);
+    }
     return;
-}*/
+}
 
 /**
  * Your LRUCache struct will be instantiated and called as such:

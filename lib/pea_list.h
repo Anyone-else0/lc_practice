@@ -42,6 +42,12 @@ static inline void peaListAddTail(PeaListHead_t *pHead, PeaListHead_t *pNode)
     return;
 }
 
+static inline void peaListAddHead(PeaListHead_t *pHead, PeaListHead_t *pNode)
+{
+    peaListAdd(pNode, pHead->pPrev, pHead);
+    return;
+}
+
 static inline PeaListHead_t *peaListHead(PeaListHead_t *pHead)
 {
     if (peaListEmpty(pHead)) {

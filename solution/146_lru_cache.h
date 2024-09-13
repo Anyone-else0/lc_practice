@@ -1,6 +1,9 @@
 #ifndef __146_LRU_CACHE_H__
 #define __146_LRU_CACHE_H__
 
+#include "pea_hash_table.h"
+#include "pea_list.h"
+
 typedef struct {
     int cap;
     PeaListHead_t head;
