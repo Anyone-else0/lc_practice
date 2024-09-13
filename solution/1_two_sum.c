@@ -14,50 +14,55 @@
 #include "pea_hash_table.h"
 
 #define MAX_IDX (1000)
-typedef struct HashKey {
-    int num;
-} HashKey_t;
 
-typedef struct HashValue {
+typedef struct HashKv {
+    int num;
     int idx;
-} HashValue_t;
+} HashKv_t;
+
+static int hashKeyCmp(void *pKey1, void *pKey2)
+{
+    return *(int *)pKey1 - *(int *)pKey2;
+}
+
+static int hashGetIdx(void *pKey)
+{
+    return abs(*(int *)pKey);
+}
+
+static void *hashGetKey(void *pKv)
+{
+    return (void *)(&(((HashKv_t *)pKv)->num));
+}
 
 int *twoSum(int* nums, int numsSize, int target, int* returnSize)
 {
-    PeaHashTable_t *pTable = peaHashTableCreate(100);
-    PeaHashKv_t *pTmpKv = (PeaHashKv_t *)malloc(sizeof(*pTmpKv) + sizeof(HashKey_t) + sizeof(HashValue_t)
-        + sizeof(int) * 1);
-    pTmpKv->keyLen = sizeof(HashKey_t);
-    pTmpKv->pKey = &pTmpKv->pad[0];
-    pTmpKv->valueLen = sizeof(HashValue_t);
-    pTmpKv->pValue = &pTmpKv->pad[pTmpKv->keyLen];
-    HashKey_t *pTmpKey = pTmpKv->pKey;
-    HashValue_t *pTmpValue = pTmpKv->pValue;
+    PeaHashTable_t *pTable = peaHashTableCreate(100, hashKeyCmp, hashGetIdx, hashGetKey);
     *returnSize = 0;
     int *pRes = (int *)malloc(sizeof(*pRes) * 2);
 
     for (int i = 0; i < numsSize; i++) {
         int num1 = nums[i];
         int idx1 = i;
-        pTmpKey->num = target - num1;
-        int rc = pTable->pfKvPick(pTable, pTmpKv);
-        if (rc == 0) {
-            pRes[0] = pTmpValue->idx;
+        int num2 = target - num1;
+        HashKv_t *pKv = pTable->pfKvPick(pTable, &num2);
+        if (pKv != NULL) {
+            pRes[0] = pKv->idx;
             pRes[1] = idx1;
             *returnSize = 2;
             goto l_end;
         }
 
-        pTmpKey->num = num1;
-        rc = pTable->pfKvGet(pTable, pTmpKv);
-        if (rc != 0) {
-            pTmpValue->idx = i;
-            (void)pTable->pfKvPut(pTable, pTmpKv);
+        pKv = pTable->pfKvGet(pTable, &num1);
+        if (pKv == NULL) {
+            pKv = (HashKv_t *)malloc(sizeof(*pKv));
+            pKv->num = num1;
+            pKv->idx = idx1;
+            (void)pTable->pfKvPut(pTable, pKv);
         }
     }
 
 l_end:
-    free(pTmpKv);
     pTable->pfDestroy(pTable);
     return pRes;
 }

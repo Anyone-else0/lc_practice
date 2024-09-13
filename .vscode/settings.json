@@ -17,7 +17,8 @@
         "pea_stack.h": "c",
         "algorithm": "c",
         "pea_stack_ut.h": "c",
-        "pea_queue.h": "c"
+        "pea_queue.h": "c",
+        "pea_hash_table.h": "c"
     },
     "makefile.configureOnOpen": true,
     "makefile.launchConfigurations": [
