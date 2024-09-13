@@ -3,128 +3,97 @@
 #include <string.h>
 #include "pea_hash_table.h"
 
-typedef struct PeaHashNode {
-    struct PeaHashNode *pNext;
-    PeaHashKv_t kv;
-} PeaHashNode_t;
+typedef struct PeaHashEntry {
+    struct PeaHashEntry *pNext;
+    void *pKv;
+} PeaHashEntry_t;
 
-static PeaHashNode_t *peaHashTableNodeMalloc(int keyLen, int valueLen)
+typedef struct PeaHashPriv {
+    int bucketCap;
+    void **ppBucket;
+    int (*pfKeyCmp)(void *pKey1, void *pKey2);
+    int (*pfGetIdx)(void *pKey);
+    void *(*pfGetKey)(void *pKv);
+} PeaHashPriv_t;
+
+static PeaHashEntry_t *peaHashTableKvFind(PeaHashTable_t *pTable, void *pKey, PeaHashEntry_t **ppLastEntry)
 {
-    PeaHashNode_t *pNode = malloc(sizeof(*pNode) + keyLen + valueLen);
-    if (pNode == NULL) {
-        printf("[ERROR]Hash node malloc failed.\n");
-        goto l_end;
-    }
-    pNode->kv.pKey = &pNode->kv.pad[0];
-    pNode->kv.keyLen = keyLen;
-    pNode->kv.pValue = &pNode->kv.pad[keyLen];
-    pNode->kv.valueLen = valueLen;
-    pNode->pNext = NULL;
-
-l_end:
-    return pNode;
-}
-
-static void peaHashTableNodeFree(PeaHashNode_t *pNode)
-{
-    free(pNode);
-}
-
-static int peaHashTableGetBucketIdx(PeaHashTable_t *pTable, void *pKey, int keyLen)
-{
-    int idx = 0;
-    unsigned char *tmpKey = pKey;
-    for (int i = 0; i < keyLen; i++) {
-        idx += (int)(*tmpKey);
-        tmpKey++;
-    }
-    idx = abs(idx);
-    idx %= pTable->bucketCap;
-    return idx;
-}
-
-static PeaHashNode_t *peaHashTableKvFind(PeaHashTable_t *pTable, void *pKey, int keyLen, PeaHashNode_t **ppLastNode)
-{
-    int bucketIdx = peaHashTableGetBucketIdx(pTable, pKey, keyLen);
-    PeaHashNode_t *pTmpNode = (PeaHashNode_t *)pTable->ppBucket[bucketIdx];
-    PeaHashNode_t *pLastNode = NULL;
-    while (pTmpNode != NULL) {
-        int cmpRc = memcmp(pTmpNode->kv.pKey, pKey, keyLen);
+    int bucketIdx = pTable->pPriv->pfGetIdx(pKey) % pTable->pPriv->bucketCap;
+    PeaHashEntry_t *pTmpEntry = (PeaHashEntry_t *)pTable->pPriv->ppBucket[bucketIdx];
+    PeaHashEntry_t *pLastEntry = NULL;
+    while (pTmpEntry != NULL) {
+        int cmpRc = pTable->pPriv->pfKeyCmp(pTable->pPriv->pfGetKey(pTmpEntry->pKv), pKey);
         if (cmpRc == 0)
         {
             break;
         } else if (cmpRc > 0) {
-            pTmpNode = NULL;
+            pTmpEntry = NULL;
             break;
         } else {
-            pLastNode = pTmpNode;
-            pTmpNode = pTmpNode->pNext;
+            pLastEntry = pTmpEntry;
+            pTmpEntry = pTmpEntry->pNext;
         }
     }
 
-    if (ppLastNode != NULL) {
-        *ppLastNode = pLastNode;
+    if (ppLastEntry != NULL) {
+        *ppLastEntry = pLastEntry;
     }
 
-    return pTmpNode;
+    return pTmpEntry;
 }
 
-static int peaHashTableKvGet(PeaHashTable_t *pTable, PeaHashKv_t *pKv)
+static void *peaHashTableKvGet(PeaHashTable_t *pTable, void *pKey)
 {
-    int rc = -1;
-    PeaHashNode_t *pTmpNode = peaHashTableKvFind(pTable, pKv->pKey, pKv->keyLen, NULL);
-    if (pTmpNode != NULL) {
-        (void)memcpy(pKv->pValue, pTmpNode->kv.pValue, pTmpNode->kv.valueLen);
-        pKv->valueLen = pTmpNode->kv.valueLen;
-        rc = 0;
+    void *pKv = NULL;
+    PeaHashEntry_t *pTmpEntry = peaHashTableKvFind(pTable, pKey, NULL);
+    if (pTmpEntry != NULL) {
+        pKv = pTmpEntry->pKv;
     }
 
-    return rc;
+    return pKv;
 }
 
-static int peaHashTableKvPick(PeaHashTable_t *pTable, PeaHashKv_t *pKv)
+static void *peaHashTableKvPick(PeaHashTable_t *pTable, void *pKey)
 {
-    int rc = -1;
-    PeaHashNode_t *pLastNode = NULL;
-    PeaHashNode_t *pTmpNode = peaHashTableKvFind(pTable, pKv->pKey, pKv->keyLen, &pLastNode);
-    if (pTmpNode != NULL) {
-        (void)memcpy(pKv->pValue, pTmpNode->kv.pValue, pTmpNode->kv.valueLen);
-        pKv->valueLen = pTmpNode->kv.valueLen;
-        rc = 0;
-        if (pLastNode != NULL) {
-            pLastNode->pNext = pTmpNode->pNext;
+    void *pKv = NULL;
+    PeaHashEntry_t *pLastEntry = NULL;
+    PeaHashEntry_t *pTmpEntry = peaHashTableKvFind(pTable, pKey, &pLastEntry);
+    if (pTmpEntry != NULL) {
+        pKv = pTmpEntry->pKv;
+        if (pLastEntry != NULL) {
+            pLastEntry->pNext = pTmpEntry->pNext;
         } else {
-            pTable->ppBucket[peaHashTableGetBucketIdx(pTable, pKv->pKey, pKv->keyLen)] = pTmpNode->pNext;
+            pTable->pPriv->ppBucket[pTable->pPriv->pfGetIdx(pKey) % pTable->pPriv->bucketCap] = pTmpEntry->pNext;
         }
-        free(pTmpNode);
+        free(pTmpEntry);
     }
 
-    return rc;
+    return pKv;
 }
 
-static int peaHashTableKvPut(PeaHashTable_t *pTable, PeaHashKv_t *pKv)
+static int peaHashTableKvPut(PeaHashTable_t *pTable, void *pKv)
 {
     int rc = 0;
-    PeaHashNode_t *pLastNode = NULL;
-    PeaHashNode_t *pTmpNode = peaHashTableKvFind(pTable, pKv->pKey, pKv->keyLen, &pLastNode);
-    if (pTmpNode != NULL) {
-        (void)memcpy(pTmpNode->kv.pValue, pKv->pValue, pKv->valueLen);
+    void *pKey = pTable->pPriv->pfGetKey(pKv);
+    PeaHashEntry_t *pLastEntry = NULL;
+    PeaHashEntry_t *pTmpEntry = peaHashTableKvFind(pTable, pKey, &pLastEntry);
+    if (pTmpEntry != NULL) {
+        rc = -1;
         goto l_end;
     } else {
-        PeaHashNode_t *pNewNode = peaHashTableNodeMalloc(pKv->keyLen, pKv->valueLen);
-        if (pNewNode == NULL) {
+        PeaHashEntry_t *pNewEntry = (PeaHashEntry_t *)malloc(sizeof(*pNewEntry));
+        if (pNewEntry == NULL) {
             rc = -1;
             goto l_end;
         }
-        (void)memcpy(pNewNode->kv.pKey, pKv->pKey, pKv->keyLen);
-        (void)memcpy(pNewNode->kv.pValue, pKv->pValue, pKv->valueLen);
-        if (pLastNode != NULL) {
-            pNewNode->pNext = pLastNode->pNext;
-            pLastNode->pNext = pNewNode;
+        pNewEntry->pKv = pKv;
+        if (pLastEntry != NULL) {
+            pNewEntry->pNext = pLastEntry->pNext;
+            pLastEntry->pNext = pNewEntry;
         } else {
-            int bucketIdx = peaHashTableGetBucketIdx(pTable, pKv->pKey, pKv->keyLen);
-            pNewNode->pNext = pTable->ppBucket[bucketIdx];
-            pTable->ppBucket[bucketIdx] = pNewNode;
+            int bucketIdx = pTable->pPriv->pfGetIdx(pKey) % pTable->pPriv->bucketCap;
+            pNewEntry->pNext = pTable->pPriv->ppBucket[bucketIdx];
+            pTable->pPriv->ppBucket[bucketIdx] = pNewEntry;
         }
     }
 
@@ -134,39 +103,64 @@ l_end:
 
 static void peaHashTableDestroy(PeaHashTable_t *pTable)
 {
-    PeaHashNode_t *pTmpNode;
-    for (int idx = 0; idx < pTable->bucketCap; idx++) {
-        while (pTable->ppBucket[idx] != NULL) {
-            pTmpNode = (PeaHashNode_t *)pTable->ppBucket[idx];
-            pTable->ppBucket[idx] = pTmpNode->pNext;
-            peaHashTableNodeFree(pTmpNode);
+    if (pTable != NULL) {
+        for (int idx = 0; idx < pTable->pPriv->bucketCap; idx++) {
+            while (pTable->pPriv->ppBucket[idx] != NULL) {
+                PeaHashEntry_t *pTmpEntry = (PeaHashEntry_t *)pTable->pPriv->ppBucket[idx];
+                pTable->pPriv->ppBucket[idx] = pTmpEntry->pNext;
+                free(pTmpEntry->pKv);
+                free(pTmpEntry);
+            }
         }
+        if (pTable->pPriv->ppBucket != NULL) {
+            free(pTable->pPriv->ppBucket);
+        }
+        if (pTable->pPriv != NULL) {
+            free(pTable->pPriv);
+        }
+        free(pTable);
     }
-    free(pTable->ppBucket);
-    free(pTable);
+    return;
 }
 
-PeaHashTable_t *peaHashTableCreate(int bucketCap)
+PeaHashTable_t *peaHashTableCreate(
+    int bucketCap,
+    int (*pfKeyCmp)(void *pKv1, void *pKv2),
+    int (*pfGetIdx)(void *pKv),
+    void *(pfGetKey)(void *pKv))
 {
-    PeaHashTable_t *pHashTable = (PeaHashTable_t *)malloc(sizeof(*pHashTable));
-    if (pHashTable == NULL) {
+    PeaHashTable_t *pTable = (PeaHashTable_t *)malloc(sizeof(*pTable));
+    if (pTable == NULL) {
         printf("[ERROR]Hash table malloc failed.\n");
-        goto l_end;
+        goto l_fail;
     }
-    pHashTable->bucketCap = bucketCap;
-    pHashTable->ppBucket = malloc(sizeof(*pHashTable->ppBucket) * bucketCap);
-    if (pHashTable->ppBucket == NULL) {
-        free(pHashTable);
-        pHashTable = NULL;
+
+    pTable->pPriv = (PeaHashPriv_t *)malloc(sizeof(*pTable->pPriv));
+    if (pTable == NULL) {
+        printf("[ERROR]Hash table priv malloc failed.\n");
+        goto l_fail;
+    }
+
+    pTable->pPriv->bucketCap = bucketCap;
+    pTable->pPriv->ppBucket = malloc(sizeof(*pTable->pPriv->ppBucket) * pTable->pPriv->bucketCap);
+    if (pTable->pPriv->ppBucket == NULL) {
         printf("[ERROR]Hash bicket malloc failed.\n");
-        goto l_end;
+        goto l_fail;
     }
-    memset(pHashTable->ppBucket, 0, sizeof(*pHashTable->ppBucket) * bucketCap);
-    pHashTable->pfDestroy = peaHashTableDestroy;
-    pHashTable->pfKvGet = peaHashTableKvGet;
-    pHashTable->pfKvPick = peaHashTableKvPick;
-    pHashTable->pfKvPut = peaHashTableKvPut;
+    memset(pTable->pPriv->ppBucket, 0, sizeof(*pTable->pPriv->ppBucket) * pTable->pPriv->bucketCap);
+    pTable->pfDestroy = peaHashTableDestroy;
+    pTable->pfKvGet = peaHashTableKvGet;
+    pTable->pfKvPick = peaHashTableKvPick;
+    pTable->pfKvPut = peaHashTableKvPut;
+    pTable->pPriv->pfKeyCmp = pfKeyCmp;
+    pTable->pPriv->pfGetIdx = pfGetIdx;
+    pTable->pPriv->pfGetKey = pfGetKey;
+    goto l_end;
+
+l_fail:
+    peaHashTableDestroy(pTable);
+    pTable = NULL;
 
 l_end:
-    return pHashTable;
+    return pTable;
 }

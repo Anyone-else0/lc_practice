@@ -4,30 +4,30 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-typedef struct PeaListNode {
-    struct PeaListNode *pNext;
-    struct PeaListNode *pPrev;
-} PeaListNode_t;
+typedef struct PeaListHead {
+    struct PeaListHead *pNext;
+    struct PeaListHead *pPrev;
+} PeaListHead_t;
 
-static inline void peaNodeInit(PeaListNode_t *pNode)
+static inline void peaListNodeInit(PeaListHead_t *pNode)
 {
     pNode->pNext = pNode;
     pNode->pPrev = pNode;
 }
 
-static inline bool peaListEmpty(PeaListNode_t *pHead)
+static inline bool peaListEmpty(PeaListHead_t *pHead)
 {
     return pHead->pNext == pHead && pHead->pPrev == pHead;
 }
 
-static inline void peaListDel(PeaListNode_t *pNode)
+static inline void peaListDel(PeaListHead_t *pNode)
 {
     pNode->pPrev->pNext = pNode->pNext;
     pNode->pNext->pPrev = pNode->pPrev;
     return;
 }
 
-static inline void peaListAdd(PeaListNode_t *pNode, PeaListNode_t *pPrev, PeaListNode_t *pNext)
+static inline void peaListAdd(PeaListHead_t *pNode, PeaListHead_t *pPrev, PeaListHead_t *pNext)
 {
     pNode->pNext = pNext;
     pNode->pPrev = pPrev;
@@ -36,13 +36,19 @@ static inline void peaListAdd(PeaListNode_t *pNode, PeaListNode_t *pPrev, PeaLis
     return;
 }
 
-static inline void peaListAddTail(PeaListNode_t *pHead, PeaListNode_t *pNode)
+static inline void peaListAddTail(PeaListHead_t *pHead, PeaListHead_t *pNode)
 {
     peaListAdd(pNode, pHead, pHead->pNext);
     return;
 }
 
-static inline PeaListNode_t *peaListHead(PeaListNode_t *pHead)
+static inline void peaListAddHead(PeaListHead_t *pHead, PeaListHead_t *pNode)
+{
+    peaListAdd(pNode, pHead->pPrev, pHead);
+    return;
+}
+
+static inline PeaListHead_t *peaListHead(PeaListHead_t *pHead)
 {
     if (peaListEmpty(pHead)) {
         return NULL;
@@ -50,9 +56,9 @@ static inline PeaListNode_t *peaListHead(PeaListNode_t *pHead)
     return pHead->pPrev;
 }
 
-static inline PeaListNode_t *peaListPickHead(PeaListNode_t *pHead)
+static inline PeaListHead_t *peaListPickHead(PeaListHead_t *pHead)
 {
-    PeaListNode_t *pNode = peaListHead(pHead);
+    PeaListHead_t *pNode = peaListHead(pHead);
     if (pNode == NULL) {
         return NULL;
     }
@@ -60,7 +66,7 @@ static inline PeaListNode_t *peaListPickHead(PeaListNode_t *pHead)
     return pNode;
 }
 
-static inline PeaListNode_t *peaListTail(PeaListNode_t *pHead)
+static inline PeaListHead_t *peaListTail(PeaListHead_t *pHead)
 {
     if (peaListEmpty(pHead)) {
         return NULL;
@@ -68,9 +74,9 @@ static inline PeaListNode_t *peaListTail(PeaListNode_t *pHead)
     return pHead->pNext;
 }
 
-static inline PeaListNode_t *peaListPickTail(PeaListNode_t *pHead)
+static inline PeaListHead_t *peaListPickTail(PeaListHead_t *pHead)
 {
-    PeaListNode_t *pNode = peaListTail(pHead);
+    PeaListHead_t *pNode = peaListTail(pHead);
     if (pNode == NULL) {
         return NULL;
     }

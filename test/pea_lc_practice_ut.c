@@ -5,6 +5,7 @@
 #include "215_find_kth_largest.h"
 #include "208_achieve_trie.h"
 #include "503_next_greater_elements_ii.h"
+#include "146_lru_cache.h"
 
 static void twoSumTest(void)
 {
@@ -139,7 +140,7 @@ static void trieTest(void)
     trieFree(pTrie);
 }
 
-void nextGreaterElementsIITest()
+static void nextGreaterElementsIITest(void)
 {
     {
         int nums[] = {1, 2, 1};
@@ -163,10 +164,45 @@ void nextGreaterElementsIITest()
     }
 }
 
+static void lruCacheTest(void)
+{
+    {
+        LRUCache *pLru = lRUCacheCreate(2);
+        lRUCachePut(pLru, 1, 1);
+        lRUCachePut(pLru, 2, 2);
+        int val = lRUCacheGet(pLru, 1);
+        UT_ASSERT(val == 1);
+        lRUCachePut(pLru, 3, 3);
+        val = lRUCacheGet(pLru, 2);
+        UT_ASSERT(val == -1);
+        lRUCachePut(pLru, 4, 4);
+        val = lRUCacheGet(pLru, 1);
+        UT_ASSERT(val == -1);
+        val = lRUCacheGet(pLru, 3);
+        UT_ASSERT(val == 3);
+        val = lRUCacheGet(pLru, 4);
+        UT_ASSERT(val == 4);
+        lRUCacheFree(pLru);
+    }
+    {
+        LRUCache *pLru = lRUCacheCreate(2);
+        lRUCachePut(pLru, 2, 1);
+        lRUCachePut(pLru, 1, 1);
+        lRUCachePut(pLru, 2, 3);
+        lRUCachePut(pLru, 4, 1);
+        int val = lRUCacheGet(pLru, 1);
+        UT_ASSERT(val == -1);
+        val = lRUCacheGet(pLru, 2);
+        UT_ASSERT(val == 3);
+        lRUCacheFree(pLru);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
     {"trieTest", trieTest},
     {"nextGreaterElementsIITest", nextGreaterElementsIITest},
+    {"lruCacheTest", lruCacheTest},
     {NULL, NULL},
 };
