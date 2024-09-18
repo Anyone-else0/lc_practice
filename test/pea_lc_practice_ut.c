@@ -6,6 +6,8 @@
 #include "208_achieve_trie.h"
 #include "503_next_greater_elements_ii.h"
 #include "146_lru_cache.h"
+#include "875_min_eating_speed.h"
+#include "200_num_islands.h"
 
 static void twoSumTest(void)
 {
@@ -198,11 +200,83 @@ static void lruCacheTest(void)
     }
 }
 
+static void minEatingSpeedTest(void)
+{
+    {
+        int piles[] = {3, 6, 7, 11};
+        int h = 8;
+        int res = minEatingSpeed(piles, sizeof(piles) / sizeof(piles[0]), h);
+        UT_ASSERT(res == 4);
+    }
+    {
+        int piles[] = {30, 11, 23, 4, 20};
+        int h = 5;
+        int res = minEatingSpeed(piles, sizeof(piles) / sizeof(piles[0]), h);
+        UT_ASSERT(res == 30);
+    }
+    {
+        int piles[] = {30, 11, 23, 4, 20};
+        int h = 6;
+        int res = minEatingSpeed(piles, sizeof(piles) / sizeof(piles[0]), h);
+        UT_ASSERT(res == 23);
+    }
+}
+
+static void numIslandsTest(void)
+{
+    {
+        char grid[][5] = {{'1', '1', '1', '1', '0'},
+                        {'1', '1', '0', '1', '0'},
+                        {'1', '1', '0', '0', '0'},
+                        {'0', '0', '0', '0', '0'}};
+        int gridSize = sizeof(grid) / sizeof(grid[0]);
+        int gridColSize[sizeof(grid) / sizeof(grid[0])];
+        char **ppGrid = (char **)malloc(sizeof(*ppGrid) * gridSize);
+        for (int i = 0; i < gridSize; i++) {
+            ppGrid[i] = grid[i];
+            gridColSize[i] = sizeof(grid[i]) / sizeof(grid[i][0]);
+        }
+
+        int res = numIslands(ppGrid, gridSize, gridColSize);
+        UT_ASSERT(res == 1);
+    }
+    {
+        char grid[][5] = {{'1', '1', '0', '0', '0'},
+                        {'1', '1', '0', '0', '0'},
+                        {'0', '0', '1', '0', '0'},
+                        {'0', '0', '0', '1', '1'}};
+        int gridSize = sizeof(grid) / sizeof(grid[0]);
+        int gridColSize[] = {sizeof(grid[0]) / sizeof(grid[0][0])};
+        char **ppGrid = (char **)malloc(sizeof(*ppGrid) * gridSize);
+        for (int i = 0; i < gridSize; i++) {
+            ppGrid[i] = grid[i];
+            gridColSize[i] = sizeof(grid[i]) / sizeof(grid[i][0]);
+        }
+        int res = numIslands(ppGrid, gridSize, gridColSize);
+        UT_ASSERT(res == 3);
+    }
+    {
+        char grid[][1] = {{'1'}};
+        
+        int gridSize = sizeof(grid) / sizeof(grid[0]);
+        int gridColSize[] = {sizeof(grid[0]) / sizeof(grid[0][0])};
+        char **ppGrid = (char **)malloc(sizeof(*ppGrid) * gridSize);
+        for (int i = 0; i < gridSize; i++) {
+            ppGrid[i] = grid[i];
+            gridColSize[i] = sizeof(grid[i]) / sizeof(grid[i][0]);
+        }
+        int res = numIslands(ppGrid, gridSize, gridColSize);
+        UT_ASSERT(res == 1);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
     {"trieTest", trieTest},
     {"nextGreaterElementsIITest", nextGreaterElementsIITest},
     {"lruCacheTest", lruCacheTest},
+    {"minEatingSpeedTest", minEatingSpeedTest},
+    {"numIslandsTest", numIslandsTest},
     {NULL, NULL},
 };
