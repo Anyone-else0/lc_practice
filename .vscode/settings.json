@@ -25,8 +25,8 @@
     "makefile.configureOnOpen": true,
     "makefile.launchConfigurations": [
         {
-            "cwd": "/home/peace/practice_data",
-            "binaryPath": "/home/peace/practice_data/practice",
+            "cwd": "/home/peace/private_data/lc_practice",
+            "binaryPath": "/home/peace/private_data/lc_practice/practice",
             "binaryArgs": []
         }
     ]
