@@ -9,6 +9,7 @@
 #include "875_min_eating_speed.h"
 #include "200_num_islands.h"
 #include "417_pacific_atlantic.h"
+#include "169_majority_element.h"
 
 static void twoSumTest(void)
 {
@@ -369,6 +370,24 @@ static void pacificAtlanticTest(void)
     }
 }
 
+static void majorityElementTest(void)
+{
+    {
+        int nums[] = {2, 2, 1, 1, 1, 2, 2};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+
+        int res = majorityElementHash(nums, numsSize);
+        UT_ASSERT(res = 2);
+    }
+    {
+        int nums[] = {2, 2, 1, 1, 1, 2, 2};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+
+        int res = majorityElement(nums, numsSize);
+        UT_ASSERT(res = 2);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -378,5 +397,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"minEatingSpeedTest", minEatingSpeedTest},
     {"numIslandsTest", numIslandsTest},
     {"pacificAtlanticTest", pacificAtlanticTest},
+    {"majorityElementTest", majorityElementTest},
     {NULL, NULL},
 };

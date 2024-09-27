@@ -27,7 +27,8 @@ static void *majorityElementGetKey(void *pKv)
     return (void *)(&((MajorityElementEntry_t *)pKv)->num);
 }
 
-int majorityElement(int* nums, int numsSize) {
+int majorityElementHash(int* nums, int numsSize)
+{
     int res = nums[0];
     PeaHashTable_t *pTable = peaHashTableCreate(numsSize,
         majorityElementKeyCmp, majorityElementGetIdx, majorityElementGetKey);
@@ -51,5 +52,25 @@ l_end:
     pTable->pfDestroy(pTable);
     return res;
 }
+
+int majorityElement(int* nums, int numsSize)
+{
+    int curNum;
+    int cnt = 0;
+
+    for (int i = 0; i < numsSize; i++) {
+        if (cnt == 0) {
+            curNum = nums[i];
+            cnt = 1;
+        } else if (nums[i] == curNum) {
+            cnt++;
+        } else {
+            cnt--;
+        }
+    }
+
+    return curNum;
+}
+
 // @lc code=end
 
