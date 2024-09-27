@@ -10,7 +10,7 @@
             "request": "launch",
             "cwd": "${workspaceRoot}",
             "program": "${workspaceRoot}/practice",
-            "preLaunchTask": "make_task"
+            "preLaunchTask": "make_task",
         }
 
     ]

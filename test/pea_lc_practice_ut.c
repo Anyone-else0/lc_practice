@@ -6,6 +6,9 @@
 #include "208_achieve_trie.h"
 #include "503_next_greater_elements_ii.h"
 #include "146_lru_cache.h"
+#include "875_min_eating_speed.h"
+#include "200_num_islands.h"
+#include "417_pacific_atlantic.h"
 
 static void twoSumTest(void)
 {
@@ -30,7 +33,6 @@ static void twoSumTest(void)
         UT_ASSERT(res[0] == 5);
         UT_ASSERT(res[1] == 11);
         free(res);
-
     }
     return;
 }
@@ -198,11 +200,183 @@ static void lruCacheTest(void)
     }
 }
 
+static void minEatingSpeedTest(void)
+{
+    {
+        int piles[] = {3, 6, 7, 11};
+        int h = 8;
+        int res = minEatingSpeed(piles, sizeof(piles) / sizeof(piles[0]), h);
+        UT_ASSERT(res == 4);
+    }
+    {
+        int piles[] = {30, 11, 23, 4, 20};
+        int h = 5;
+        int res = minEatingSpeed(piles, sizeof(piles) / sizeof(piles[0]), h);
+        UT_ASSERT(res == 30);
+    }
+    {
+        int piles[] = {30, 11, 23, 4, 20};
+        int h = 6;
+        int res = minEatingSpeed(piles, sizeof(piles) / sizeof(piles[0]), h);
+        UT_ASSERT(res == 23);
+    }
+}
+
+static void numIslandsTest(void)
+{
+    {
+        char grid[][5] = {{'1', '1', '1', '1', '0'},
+                        {'1', '1', '0', '1', '0'},
+                        {'1', '1', '0', '0', '0'},
+                        {'0', '0', '0', '0', '0'}};
+        int gridSize = sizeof(grid) / sizeof(grid[0]);
+        int gridColSize[sizeof(grid) / sizeof(grid[0])];
+        char **ppGrid = (char **)malloc(sizeof(*ppGrid) * gridSize);
+        for (int i = 0; i < gridSize; i++) {
+            ppGrid[i] = grid[i];
+            gridColSize[i] = sizeof(grid[i]) / sizeof(grid[i][0]);
+        }
+
+        int res = numIslands(ppGrid, gridSize, gridColSize);
+        UT_ASSERT(res == 1);
+        free(ppGrid);
+    }
+    {
+        char grid[][5] = {{'1', '1', '0', '0', '0'},
+                        {'1', '1', '0', '0', '0'},
+                        {'0', '0', '1', '0', '0'},
+                        {'0', '0', '0', '1', '1'}};
+        int gridSize = sizeof(grid) / sizeof(grid[0]);
+        int gridColSize[] = {sizeof(grid[0]) / sizeof(grid[0][0])};
+        char **ppGrid = (char **)malloc(sizeof(*ppGrid) * gridSize);
+        for (int i = 0; i < gridSize; i++) {
+            ppGrid[i] = grid[i];
+            gridColSize[i] = sizeof(grid[i]) / sizeof(grid[i][0]);
+        }
+        int res = numIslands(ppGrid, gridSize, gridColSize);
+        UT_ASSERT(res == 3);
+        free(ppGrid);
+    }
+    {
+        char grid[][1] = {{'1'}};
+        
+        int gridSize = sizeof(grid) / sizeof(grid[0]);
+        int gridColSize[] = {sizeof(grid[0]) / sizeof(grid[0][0])};
+        char **ppGrid = (char **)malloc(sizeof(*ppGrid) * gridSize);
+        for (int i = 0; i < gridSize; i++) {
+            ppGrid[i] = grid[i];
+            gridColSize[i] = sizeof(grid[i]) / sizeof(grid[i][0]);
+        }
+        int res = numIslands(ppGrid, gridSize, gridColSize);
+        UT_ASSERT(res == 1);
+        free(ppGrid);
+    }
+}
+
+static void pacificAtlanticTest(void)
+{
+    {
+        int heights[][5] = {
+            {1, 2, 2, 3, 5},
+            {3, 2, 3, 4, 4},
+            {2, 4, 5, 3, 1},
+            {6, 7, 1, 4, 5},
+            {5, 1, 1, 2, 4}};
+        int heightsSize = sizeof(heights) / sizeof(heights[0]);
+        int heightsColSize[sizeof(heights) / sizeof(heights[0])];
+        int **ppHeights = (int **)malloc(sizeof(*ppHeights) * heightsSize);
+        for (int i = 0; i < heightsSize; i++) {
+            ppHeights[i] = heights[i];
+            heightsColSize[i] = sizeof(heights[i]) / sizeof(heights[i][0]);
+        }
+        int expRes[][2] = {
+            {0,4},
+            {1,3},
+            {1,4},
+            {2,2},
+            {3,0},
+            {3,1},
+            {4,0}};
+        int returnSize;
+        int *pReturnColumnSizes = NULL;
+
+        int **ppRes = pacificAtlantic(ppHeights, heightsSize, heightsColSize, &returnSize, &pReturnColumnSizes);
+        UT_ASSERT(returnSize == sizeof(expRes) / sizeof(expRes[0]));
+        int i, j, k;
+        for (i = 0; i < returnSize; i++) {
+            UT_ASSERT(pReturnColumnSizes[i] == sizeof(expRes[0]) / sizeof(expRes[0][0]));
+            for (j = 0; j < sizeof(expRes) / sizeof(expRes[0]); j++) {
+                for (k = 0; k < pReturnColumnSizes[i]; k++) {
+                    if (ppRes[i][k] != expRes[j][k]) {
+                        break;
+                    }
+                }
+                if (k >= pReturnColumnSizes[i]) {
+                    break;
+                }
+            }
+            UT_ASSERT(j < sizeof(expRes) / sizeof(expRes[0]));
+        }
+        for (i = 0; i < returnSize; i++) {
+            free(ppRes[i]);
+        }
+        free(ppRes);
+        free(ppHeights);
+        free(pReturnColumnSizes);
+    }
+    {
+        int heights[][2] = {
+            {2, 1},
+            {1, 2}};
+        int heightsSize = sizeof(heights) / sizeof(heights[0]);
+        int heightsColSize[sizeof(heights) / sizeof(heights[0])];
+        int **ppHeights = (int **)malloc(sizeof(*ppHeights) * heightsSize);
+        for (int i = 0; i < heightsSize; i++) {
+            ppHeights[i] = heights[i];
+            heightsColSize[i] = sizeof(heights[i]) / sizeof(heights[i][0]);
+        }
+        int expRes[][2] = {
+            {0, 0},
+            {0, 1},
+            {1, 0},
+            {1, 1}};
+        int returnSize;
+        int *pReturnColumnSizes = NULL;
+
+        int **ppRes = pacificAtlantic(ppHeights, heightsSize, heightsColSize, &returnSize, &pReturnColumnSizes);
+        UT_ASSERT(returnSize == sizeof(expRes) / sizeof(expRes[0]));
+        int i, j, k;
+        for (i = 0; i < returnSize; i++) {
+            UT_ASSERT(pReturnColumnSizes[i] == sizeof(expRes[0]) / sizeof(expRes[0][0]));
+            for (j = 0; j < sizeof(expRes) / sizeof(expRes[0]); j++) {
+                for (k = 0; k < pReturnColumnSizes[i]; k++) {
+                    if (ppRes[i][k] != expRes[j][k]) {
+                        break;
+                    }
+                }
+                if (k >= pReturnColumnSizes[i]) {
+                    break;
+                }
+            }
+            UT_ASSERT(j < sizeof(expRes) / sizeof(expRes[0]));
+        }
+        for (i = 0; i < returnSize; i++) {
+            free(ppRes[i]);
+        }
+        free(ppRes);
+        free(ppHeights);
+        free(pReturnColumnSizes);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
     {"trieTest", trieTest},
     {"nextGreaterElementsIITest", nextGreaterElementsIITest},
     {"lruCacheTest", lruCacheTest},
+    {"minEatingSpeedTest", minEatingSpeedTest},
+    {"numIslandsTest", numIslandsTest},
+    {"pacificAtlanticTest", pacificAtlanticTest},
     {NULL, NULL},
 };
