@@ -10,6 +10,7 @@
 #include "200_num_islands.h"
 #include "417_pacific_atlantic.h"
 #include "169_majority_element.h"
+#include "22_generate_parenthesis.h"
 
 static void twoSumTest(void)
 {
@@ -388,6 +389,31 @@ static void majorityElementTest(void)
     }
 }
 
+static void generateParenthesisTest(void)
+{
+    int n = 3;
+    int returnSize;
+    char expRes[][6] = {"((()))", "(()())", "(())()", "()(())", "()()()"};
+
+    char **ppRes = generateParenthesis(n, &returnSize);
+
+    UT_ASSERT(returnSize == sizeof(expRes) / sizeof(expRes[0]));
+    for (int i = 0; i < returnSize; i++) {
+        int j;
+        for (j = 0; j < returnSize; j++) {
+            if (memcmp(ppRes[i], expRes[j], sizeof(expRes[j]))) {
+                break;
+            }
+        }
+        UT_ASSERT(j != returnSize);
+    }
+
+    for (int i = 0; i < returnSize; i++) {
+        free(ppRes[i]);
+    }
+    free(ppRes);
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -398,5 +424,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"numIslandsTest", numIslandsTest},
     {"pacificAtlanticTest", pacificAtlanticTest},
     {"majorityElementTest", majorityElementTest},
+    {"generateParenthesisTest", generateParenthesisTest},
     {NULL, NULL},
 };
