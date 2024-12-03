@@ -11,6 +11,7 @@
 #include "417_pacific_atlantic.h"
 #include "169_majority_element.h"
 #include "22_generate_parenthesis.h"
+#include "698_can_partition_k_subsets.h"
 
 static void twoSumTest(void)
 {
@@ -378,14 +379,14 @@ static void majorityElementTest(void)
         int numsSize = sizeof(nums) / sizeof(nums[0]);
 
         int res = majorityElementHash(nums, numsSize);
-        UT_ASSERT(res = 2);
+        UT_ASSERT(res == 2);
     }
     {
         int nums[] = {2, 2, 1, 1, 1, 2, 2};
         int numsSize = sizeof(nums) / sizeof(nums[0]);
 
         int res = majorityElement(nums, numsSize);
-        UT_ASSERT(res = 2);
+        UT_ASSERT(res == 2);
     }
 }
 
@@ -414,6 +415,38 @@ static void generateParenthesisTest(void)
     free(ppRes);
 }
 
+static void canPartitionKSubsetsTest(void)
+{
+    {
+        int nums[] = {4, 3, 2, 3, 5, 2, 1};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        int k = 4;
+        bool res = canPartitionKSubsets(nums, numsSize, k);
+        UT_ASSERT(res == true);
+    }
+    {
+        int nums[] = {1, 2, 3, 4};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        int k = 3;
+        bool res = canPartitionKSubsets(nums, numsSize, k);
+        UT_ASSERT(res == false);
+    }
+    {
+        int nums[] = {1, 1, 1, 1, 2, 2, 2, 2};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        int k = 4;
+        bool res = canPartitionKSubsets(nums, numsSize, k);
+        UT_ASSERT(res == true);
+    }
+    {
+        int nums[] = {2, 2, 2, 2, 3, 4, 5};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        int k = 4;
+        bool res = canPartitionKSubsets(nums, numsSize, k);
+        UT_ASSERT(res == false);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -425,5 +458,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"pacificAtlanticTest", pacificAtlanticTest},
     {"majorityElementTest", majorityElementTest},
     {"generateParenthesisTest", generateParenthesisTest},
+    {"canPartitionKSubsetsTest", canPartitionKSubsetsTest},
     {NULL, NULL},
 };
