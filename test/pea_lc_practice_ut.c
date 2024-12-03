@@ -9,6 +9,9 @@
 #include "875_min_eating_speed.h"
 #include "200_num_islands.h"
 #include "417_pacific_atlantic.h"
+#include "169_majority_element.h"
+#include "22_generate_parenthesis.h"
+#include "698_can_partition_k_subsets.h"
 
 static void twoSumTest(void)
 {
@@ -369,6 +372,81 @@ static void pacificAtlanticTest(void)
     }
 }
 
+static void majorityElementTest(void)
+{
+    {
+        int nums[] = {2, 2, 1, 1, 1, 2, 2};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+
+        int res = majorityElementHash(nums, numsSize);
+        UT_ASSERT(res == 2);
+    }
+    {
+        int nums[] = {2, 2, 1, 1, 1, 2, 2};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+
+        int res = majorityElement(nums, numsSize);
+        UT_ASSERT(res == 2);
+    }
+}
+
+static void generateParenthesisTest(void)
+{
+    int n = 3;
+    int returnSize;
+    char expRes[][6] = {"((()))", "(()())", "(())()", "()(())", "()()()"};
+
+    char **ppRes = generateParenthesis(n, &returnSize);
+
+    UT_ASSERT(returnSize == sizeof(expRes) / sizeof(expRes[0]));
+    for (int i = 0; i < returnSize; i++) {
+        int j;
+        for (j = 0; j < returnSize; j++) {
+            if (memcmp(ppRes[i], expRes[j], sizeof(expRes[j]))) {
+                break;
+            }
+        }
+        UT_ASSERT(j != returnSize);
+    }
+
+    for (int i = 0; i < returnSize; i++) {
+        free(ppRes[i]);
+    }
+    free(ppRes);
+}
+
+static void canPartitionKSubsetsTest(void)
+{
+    {
+        int nums[] = {4, 3, 2, 3, 5, 2, 1};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        int k = 4;
+        bool res = canPartitionKSubsets(nums, numsSize, k);
+        UT_ASSERT(res == true);
+    }
+    {
+        int nums[] = {1, 2, 3, 4};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        int k = 3;
+        bool res = canPartitionKSubsets(nums, numsSize, k);
+        UT_ASSERT(res == false);
+    }
+    {
+        int nums[] = {1, 1, 1, 1, 2, 2, 2, 2};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        int k = 4;
+        bool res = canPartitionKSubsets(nums, numsSize, k);
+        UT_ASSERT(res == true);
+    }
+    {
+        int nums[] = {2, 2, 2, 2, 3, 4, 5};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        int k = 4;
+        bool res = canPartitionKSubsets(nums, numsSize, k);
+        UT_ASSERT(res == false);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -378,5 +456,8 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"minEatingSpeedTest", minEatingSpeedTest},
     {"numIslandsTest", numIslandsTest},
     {"pacificAtlanticTest", pacificAtlanticTest},
+    {"majorityElementTest", majorityElementTest},
+    {"generateParenthesisTest", generateParenthesisTest},
+    {"canPartitionKSubsetsTest", canPartitionKSubsetsTest},
     {NULL, NULL},
 };

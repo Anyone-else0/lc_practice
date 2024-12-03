@@ -12,25 +12,26 @@ typedef struct MajorityElementEntry {
     int count;
 } MajorityElementEntry_t;
 
-static int majorityElementKeyCmp(void *key1, void *key2)
+static int mapKeyCmp(void *key1, void *key2)
 {
     return *(int *)key1 - *(int *)key2;
 }
 
-static int majorityElementGetIdx(void *pKey)
+static int mapGetIdx(void *pKey)
 {
     return abs(*(int *)pKey);
 }
 
-static void *majorityElementGetKey(void *pKv)
+static void *mapGetKey(void *pKv)
 {
     return (void *)(&((MajorityElementEntry_t *)pKv)->num);
 }
 
-int majorityElement(int* nums, int numsSize) {
+int majorityElementHash(int* nums, int numsSize)
+{
     int res = nums[0];
     PeaHashTable_t *pTable = peaHashTableCreate(numsSize,
-        majorityElementKeyCmp, majorityElementGetIdx, majorityElementGetKey);
+        mapKeyCmp, mapGetIdx, mapGetKey);
     for (int i = 0; i < numsSize; i++) {
         MajorityElementEntry_t *pEntry = pTable->pfKvGet(pTable, &nums[i]);
         if (pEntry == NULL) {
@@ -51,5 +52,25 @@ l_end:
     pTable->pfDestroy(pTable);
     return res;
 }
+
+int majorityElement(int* nums, int numsSize)
+{
+    int curNum;
+    int cnt = 0;
+
+    for (int i = 0; i < numsSize; i++) {
+        if (cnt == 0) {
+            curNum = nums[i];
+            cnt = 1;
+        } else if (nums[i] == curNum) {
+            cnt++;
+        } else {
+            cnt--;
+        }
+    }
+
+    return curNum;
+}
+
 // @lc code=end
 
