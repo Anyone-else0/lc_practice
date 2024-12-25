@@ -12,6 +12,8 @@
 #include "169_majority_element.h"
 #include "22_generate_parenthesis.h"
 #include "698_can_partition_k_subsets.h"
+#include "47_permute_unique.h"
+#include "34_search_range.h"
 
 static void twoSumTest(void)
 {
@@ -447,6 +449,72 @@ static void canPartitionKSubsetsTest(void)
     }
 }
 
+static void permuteUniqueTest(void)
+{
+    int nums[] = { 1, 1, 2 };
+    int numsSize = sizeof(nums) / sizeof(nums[0]);
+    int exp[][3] = {{ 1, 1, 2 }, { 1, 2, 1 }, { 2, 1, 1 }};
+    int returnSize;
+    int *returnColumeSize = NULL;
+    int **res = permuteUnique(nums, numsSize, &returnSize, &returnColumeSize);
+    UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+    for (int i = 0; i < returnSize; i++) {
+        UT_ASSERT(returnColumeSize[i] == numsSize);
+        int j = 0;
+        for (j = 0; j < sizeof(exp) / sizeof(exp[0]); j++) {
+            if (memcmp(res[i], exp[j], sizeof(exp[j])) == 0) {
+                break;
+            }
+        }
+        UT_ASSERT(j != sizeof(exp) / sizeof(exp[0]));
+    }
+    free(returnColumeSize);
+    for (int i = 0; i < returnSize; i++) {
+        free(res[i]);
+    }
+    free(res);
+}
+
+static void searchRangeTest(void)
+{
+    {
+        int nums[] = { 5, 7, 7, 8, 8, 10 };
+        int target = 8;
+        int exp[] = { 3, 4 };
+        int returnSize;
+        int *pRes = searchRange(nums, sizeof(nums) / sizeof(nums[0]), target, &returnSize);
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(pRes[i] == exp[i]);
+        }
+        free(pRes);
+    }
+    {
+        int nums[] = { 5, 7, 7, 8, 8, 10 };
+        int target = 6;
+        int exp[] = { -1, -1 };
+        int returnSize;
+        int *pRes = searchRange(nums, sizeof(nums) / sizeof(nums[0]), target, &returnSize);
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(pRes[i] == exp[i]);
+        }
+        free(pRes);
+    }
+    {
+        int nums[1] = { 0 };
+        int target = 0;
+        int exp[] = { -1, -1 };
+        int returnSize;
+        int *pRes = searchRange(nums, 0, target, &returnSize);
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(pRes[i] == exp[i]);
+        }
+        free(pRes);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -459,5 +527,7 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"majorityElementTest", majorityElementTest},
     {"generateParenthesisTest", generateParenthesisTest},
     {"canPartitionKSubsetsTest", canPartitionKSubsetsTest},
+    {"permuteUniqueTest", permuteUniqueTest},
+    {"searchRangeTest", searchRangeTest},
     {NULL, NULL},
 };
