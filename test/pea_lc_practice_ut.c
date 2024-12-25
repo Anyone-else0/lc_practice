@@ -14,6 +14,7 @@
 #include "698_can_partition_k_subsets.h"
 #include "47_permute_unique.h"
 #include "34_search_range.h"
+#include "720_longest_word.h"
 
 static void twoSumTest(void)
 {
@@ -515,6 +516,24 @@ static void searchRangeTest(void)
     }
 }
 
+static void longestWordTest(void)
+{
+    {
+        char *words[] = {"w", "wo", "wor", "worl", "world"};
+        char exp[] = "world";
+        char *pRes = longestWord(words, sizeof(words) / sizeof(words[0]));
+        UT_ASSERT(0 == memcmp(exp, pRes, sizeof(exp)));
+        free(pRes);
+    }
+    {
+        char *words[] = {"a", "banana", "app", "appl", "ap", "apply", "apple"};
+        char exp[] = "apple";
+        char *pRes = longestWord(words, sizeof(words) / sizeof(words[0]));
+        UT_ASSERT(0 == memcmp(exp, pRes, sizeof(exp)));
+        free(pRes);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -529,5 +548,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"canPartitionKSubsetsTest", canPartitionKSubsetsTest},
     {"permuteUniqueTest", permuteUniqueTest},
     {"searchRangeTest", searchRangeTest},
+    {"longestWordTest", longestWordTest},
     {NULL, NULL},
 };
