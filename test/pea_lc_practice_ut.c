@@ -15,6 +15,7 @@
 #include "47_permute_unique.h"
 #include "34_search_range.h"
 #include "720_longest_word.h"
+#include "155_min_stack.h"
 
 static void twoSumTest(void)
 {
@@ -534,6 +535,22 @@ static void longestWordTest(void)
     }
 }
 
+static void minStackTest(void)
+{
+    MinStack *pMinStack = minStackCreate();
+    minStackPush(pMinStack, -2);
+    minStackPush(pMinStack, 0);
+    minStackPush(pMinStack, -3);
+    int min = minStackGetMin(pMinStack);
+    UT_ASSERT(min == -3);
+    minStackPop(pMinStack);
+    int top = minStackTop(pMinStack);
+    UT_ASSERT(top == 0);
+    min = minStackGetMin(pMinStack);
+    UT_ASSERT(min == -2);
+    minStackFree(pMinStack);
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -549,5 +566,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"permuteUniqueTest", permuteUniqueTest},
     {"searchRangeTest", searchRangeTest},
     {"longestWordTest", longestWordTest},
+    {"minStackTest", minStackTest},
     {NULL, NULL},
 };
