@@ -4,7 +4,7 @@
 #define ELE_NUM_MAX (26)
 
 typedef struct Trie_s {
-    struct Trie_s *pNextNode[ELE_NUM_MAX];
+    struct Trie_s *pNext[ELE_NUM_MAX];
     bool isWord;
     char val;
 } Trie;

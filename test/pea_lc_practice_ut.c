@@ -14,6 +14,8 @@
 #include "698_can_partition_k_subsets.h"
 #include "47_permute_unique.h"
 #include "34_search_range.h"
+#include "720_longest_word.h"
+#include "155_min_stack.h"
 
 static void twoSumTest(void)
 {
@@ -515,6 +517,40 @@ static void searchRangeTest(void)
     }
 }
 
+static void longestWordTest(void)
+{
+    {
+        char *words[] = {"w", "wo", "wor", "worl", "world"};
+        char exp[] = "world";
+        char *pRes = longestWord(words, sizeof(words) / sizeof(words[0]));
+        UT_ASSERT(0 == memcmp(exp, pRes, sizeof(exp)));
+        free(pRes);
+    }
+    {
+        char *words[] = {"a", "banana", "app", "appl", "ap", "apply", "apple"};
+        char exp[] = "apple";
+        char *pRes = longestWord(words, sizeof(words) / sizeof(words[0]));
+        UT_ASSERT(0 == memcmp(exp, pRes, sizeof(exp)));
+        free(pRes);
+    }
+}
+
+static void minStackTest(void)
+{
+    MinStack *pMinStack = minStackCreate();
+    minStackPush(pMinStack, -2);
+    minStackPush(pMinStack, 0);
+    minStackPush(pMinStack, -3);
+    int min = minStackGetMin(pMinStack);
+    UT_ASSERT(min == -3);
+    minStackPop(pMinStack);
+    int top = minStackTop(pMinStack);
+    UT_ASSERT(top == 0);
+    min = minStackGetMin(pMinStack);
+    UT_ASSERT(min == -2);
+    minStackFree(pMinStack);
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -529,5 +565,7 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"canPartitionKSubsetsTest", canPartitionKSubsetsTest},
     {"permuteUniqueTest", permuteUniqueTest},
     {"searchRangeTest", searchRangeTest},
+    {"longestWordTest", longestWordTest},
+    {"minStackTest", minStackTest},
     {NULL, NULL},
 };

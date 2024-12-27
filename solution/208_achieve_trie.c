@@ -14,7 +14,7 @@
 
 #define ELE_NUM_MAX (26)
 typedef struct Trie_s {
-    struct Trie_s *pNextNode[ELE_NUM_MAX];
+    struct Trie_s *pNext[ELE_NUM_MAX];
     bool isWord;
     char val;
 } Trie;
@@ -37,16 +37,16 @@ void trieInsert(Trie* obj, char* word)
     Trie *pNode = obj;
     for (int curPos = 0; curPos < len; curPos++) {
         int charIdx = (int)(word[curPos] - 'a');
-        if (pNode->pNextNode[charIdx] == NULL) {
+        if (pNode->pNext[charIdx] == NULL) {
             Trie *pTmpNode = (Trie *)malloc(sizeof(*pTmpNode));
             if (pTmpNode == NULL) {
                 printf("Insert failed.\n");
             }
             (void)memset(pTmpNode, 0, sizeof(*pTmpNode));
             pTmpNode->val = word[curPos];
-            pNode->pNextNode[charIdx] = pTmpNode;
+            pNode->pNext[charIdx] = pTmpNode;
         }
-        pNode = pNode->pNextNode[charIdx];
+        pNode = pNode->pNext[charIdx];
     }
     pNode->isWord = true;
     return;
@@ -59,11 +59,11 @@ bool trieSearch(Trie* obj, char* word)
     bool rc = true;
     for (int curPos = 0; curPos < len; curPos++) {
         int charIdx = (int)(word[curPos] - 'a');
-        if (pNode->pNextNode[charIdx] == NULL) {
+        if (pNode->pNext[charIdx] == NULL) {
             rc = false;
             goto l_end;
         }
-        pNode = pNode->pNextNode[charIdx];
+        pNode = pNode->pNext[charIdx];
     }
     if (pNode->isWord == false) {
         rc = false;
@@ -81,11 +81,11 @@ bool trieStartsWith(Trie* obj, char* prefix)
     bool rc = true;
     for (int curPos = 0; curPos < len; curPos++) {
         int charIdx = (int)(prefix[curPos] - 'a');
-        if (pNode->pNextNode[charIdx] == NULL) {
+        if (pNode->pNext[charIdx] == NULL) {
             rc = false;
             goto l_end;
         }
-        pNode = pNode->pNextNode[charIdx];
+        pNode = pNode->pNext[charIdx];
     }
 
 l_end:
@@ -122,9 +122,9 @@ void trieFree(Trie* obj)
         pTmpNode = *((Trie **)pStack->pfTop(pStack));
         Trie *pNextNode = NULL;
         int i;
-        for (i = 0; i < sizeof(pTmpNode->pNextNode) / sizeof(pTmpNode->pNextNode[0]); i++) {
-            if (pTmpNode->pNextNode[i] != NULL) {
-                pNextNode = pTmpNode->pNextNode[i];
+        for (i = 0; i < sizeof(pTmpNode->pNext) / sizeof(pTmpNode->pNext[0]); i++) {
+            if (pTmpNode->pNext[i] != NULL) {
+                pNextNode = pTmpNode->pNext[i];
                 break;
             }
         }
@@ -132,7 +132,7 @@ void trieFree(Trie* obj)
             pStack->pfPop(pStack);
             free(pTmpNode);
         } else {
-            pTmpNode->pNextNode[i] = NULL;
+            pTmpNode->pNext[i] = NULL;
             pStack->pfPush(pStack, &pNextNode);
         }
     }
