@@ -17,6 +17,7 @@
 #include "720_longest_word.h"
 #include "155_min_stack.h"
 #include "816_ambiguous_coordinates.h"
+#include "211_word_dictionary.h"
 
 static void twoSumTest(void)
 {
@@ -616,6 +617,19 @@ static void ambiguousCoordinatesTest(void)
     }
 }
 
+static void wordDictionaryTest(void)
+{
+    WordDictionary* obj = wordDictionaryCreate();
+    wordDictionaryAddWord(obj, "bad");
+    wordDictionaryAddWord(obj, "dad");
+    wordDictionaryAddWord(obj, "mad");
+    UT_ASSERT(wordDictionarySearch(obj, "pad") == false); // returns false
+    UT_ASSERT(wordDictionarySearch(obj, "bad") == true);  // returns true
+    UT_ASSERT(wordDictionarySearch(obj, ".ad") == true);  // returns true
+    UT_ASSERT(wordDictionarySearch(obj, "b..") == true);  // returns true
+    wordDictionaryFree(obj);
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -633,5 +647,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"longestWordTest", longestWordTest},
     {"minStackTest", minStackTest},
     {"ambiguousCoordinatesTest", ambiguousCoordinatesTest},
+    {"wordDictionaryTest", wordDictionaryTest},
     {NULL, NULL},
 };
