@@ -18,6 +18,7 @@
 #include "155_min_stack.h"
 #include "816_ambiguous_coordinates.h"
 #include "211_word_dictionary.h"
+#include "11_max_area.h"
 
 static void twoSumTest(void)
 {
@@ -630,6 +631,34 @@ static void wordDictionaryTest(void)
     wordDictionaryFree(obj);
 }
 
+static void maxAreaTest(void)
+{
+    {
+        int height[] = {1, 8, 6, 2, 5, 4, 8, 3, 7};
+        int heightSize = sizeof(height) / sizeof(height[0]);
+        int res = maxArea(height, heightSize);
+        UT_ASSERT(res == 49);
+    }
+    {
+        int height[] = {1, 1};
+        int heightSize = sizeof(height) / sizeof(height[0]);
+        int res = maxArea(height, heightSize);
+        UT_ASSERT(res == 1);
+    }
+    {
+        int height[] = {4, 3, 2, 1, 4};
+        int heightSize = sizeof(height) / sizeof(height[0]);
+        int res = maxArea(height, heightSize);
+        UT_ASSERT(res == 16);
+    }
+    {
+        int height[] = {1, 2, 1};
+        int heightSize = sizeof(height) / sizeof(height[0]);
+        int res = maxArea(height, heightSize);
+        UT_ASSERT(res == 2);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -648,5 +677,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"minStackTest", minStackTest},
     {"ambiguousCoordinatesTest", ambiguousCoordinatesTest},
     {"wordDictionaryTest", wordDictionaryTest},
+    {"maxAreaTest", maxAreaTest},
     {NULL, NULL},
 };
