@@ -16,6 +16,7 @@
 #include "34_search_range.h"
 #include "720_longest_word.h"
 #include "155_min_stack.h"
+#include "816_ambiguous_coordinates.h"
 
 static void twoSumTest(void)
 {
@@ -551,6 +552,70 @@ static void minStackTest(void)
     minStackFree(pMinStack);
 }
 
+static void ambiguousCoordinatesTest(void)
+{
+    {
+        char *s = "(123)";
+        char *exp[] = {"(1, 23)", "(1.2, 3)", "(12, 3)", "(1, 2.3)"};
+        int returnSize;
+        char **res = ambiguousCoordinates(s, &returnSize);
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            int j;
+            for (j = 0; j < sizeof(exp) / sizeof(exp[0]); j++) {
+                if (strcmp(res[i], exp[j]) == 0) {
+                    break;
+                }
+            }
+            UT_ASSERT(j != sizeof(exp) / sizeof(exp[0]));
+        }
+        for (int i = 0; i < returnSize; i++) {
+            free(res[i]);
+        }
+        free(res);
+    }
+    {
+        char *s = "(0123)";
+        char *exp[] = {"(0, 123)", "(0, 1.23)", "(0, 12.3)", "(0.1, 23)", "(0.12, 3)", "(0.1, 2.3)"};
+        int returnSize;
+        char **res = ambiguousCoordinates(s, &returnSize);
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            int j;
+            for (j = 0; j < sizeof(exp) / sizeof(exp[0]); j++) {
+                if (strcmp(res[i], exp[j]) == 0) {
+                    break;
+                }
+            }
+            UT_ASSERT(j != sizeof(exp) / sizeof(exp[0]));
+        }
+        for (int i = 0; i < returnSize; i++) {
+            free(res[i]);
+        }
+        free(res);
+    }
+    {
+        char *s = "(00011)";
+        char *exp[] = {"(0, 0.011)", "(0.001, 1)"};
+        int returnSize;
+        char **res = ambiguousCoordinates(s, &returnSize);
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            int j;
+            for (j = 0; j < sizeof(exp) / sizeof(exp[0]); j++) {
+                if (strcmp(res[i], exp[j]) == 0) {
+                    break;
+                }
+            }
+            UT_ASSERT(j != sizeof(exp) / sizeof(exp[0]));
+        }
+        for (int i = 0; i < returnSize; i++) {
+            free(res[i]);
+        }
+        free(res);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -567,5 +632,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"searchRangeTest", searchRangeTest},
     {"longestWordTest", longestWordTest},
     {"minStackTest", minStackTest},
+    {"ambiguousCoordinatesTest", ambiguousCoordinatesTest},
     {NULL, NULL},
 };
