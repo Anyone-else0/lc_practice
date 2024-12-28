@@ -19,6 +19,7 @@
 #include "816_ambiguous_coordinates.h"
 #include "211_word_dictionary.h"
 #include "11_max_area.h"
+#include "92_reverse_between_ii.h"
 
 static void twoSumTest(void)
 {
@@ -659,6 +660,87 @@ static void maxAreaTest(void)
     }
 }
 
+static struct ListNode* reverseBetweenIICreateList(int* nums, int numsSize) {
+    struct ListNode* head = NULL;
+    struct ListNode* tail = NULL;
+    for (int i = 0; i < numsSize; i++) {
+        struct ListNode* newNode = (struct ListNode*)malloc(sizeof(struct ListNode));
+        newNode->val = nums[i];
+        newNode->next = NULL;
+        if (head == NULL) {
+            head = newNode;
+            tail = newNode;
+        } else {
+            tail->next = newNode;
+            tail = newNode;
+        }
+    }
+    return head;
+}
+
+static void reverseBetweenIIFreeList(struct ListNode* head) {
+    while (head) {
+        struct ListNode* temp = head;
+        head = head->next;
+        free(temp);
+    }
+}
+
+static void reverseBetweenIITest(void)
+{
+    {
+        int nums[] = {1, 2, 3, 4, 5};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        int left = 2;
+        int right = 4;
+        int exp[] = {1, 4, 3, 2, 5};
+        struct ListNode *pHead = reverseBetweenIICreateList(nums, numsSize);
+        struct ListNode *pRes = reverseBetween(pHead, left, right);
+        int i = 0;
+        while (pRes) {
+            UT_ASSERT(pRes->val == exp[i]);
+            pRes = pRes->next;
+            i++;
+        }
+        UT_ASSERT(i == numsSize);
+        reverseBetweenIIFreeList(pRes);
+    }
+    {
+        int nums[] = {5};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        int left = 1;
+        int right = 1;
+        int exp[] = {5};
+        struct ListNode *pHead = reverseBetweenIICreateList(nums, numsSize);
+        struct ListNode *pRes = reverseBetween(pHead, left, right);
+        int i = 0;
+        while (pRes) {
+            UT_ASSERT(pRes->val == exp[i]);
+            pRes = pRes->next;
+            i++;
+        }
+        UT_ASSERT(i == numsSize);
+        reverseBetweenIIFreeList(pRes);
+    }
+    {
+        int nums[] = {3, 5};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        int left = 1;
+        int right = 2;
+        int exp[] = {5, 3};
+        struct ListNode *pHead = reverseBetweenIICreateList(nums, numsSize);
+        struct ListNode *pRes = reverseBetween(pHead, left, right);
+        int i = 0;
+        while (pRes) {
+            UT_ASSERT(pRes->val == exp[i]);
+            pRes = pRes->next;
+            i++;
+        }
+        UT_ASSERT(i == numsSize);
+        reverseBetweenIIFreeList(pRes);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -678,5 +760,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"ambiguousCoordinatesTest", ambiguousCoordinatesTest},
     {"wordDictionaryTest", wordDictionaryTest},
     {"maxAreaTest", maxAreaTest},
+    {"reverseBetweenIITest", reverseBetweenIITest},
     {NULL, NULL},
 };
