@@ -20,7 +20,8 @@
         "pea_queue.h": "c",
         "pea_hash_table.h": "c",
         "146_lru_cache.h": "c",
-        "cstdlib": "c"
+        "cstdlib": "c",
+        "92_reverse_between_ii.h": "c"
     },
     "makefile.configureOnOpen": true,
     "makefile.launchConfigurations": [
