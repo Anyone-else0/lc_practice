@@ -21,7 +21,8 @@
         "pea_hash_table.h": "c",
         "146_lru_cache.h": "c",
         "cstdlib": "c",
-        "92_reverse_between_ii.h": "c"
+        "92_reverse_between_ii.h": "c",
+        "817_num_components.h": "c"
     },
     "makefile.configureOnOpen": true,
     "makefile.launchConfigurations": [

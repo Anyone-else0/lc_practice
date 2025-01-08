@@ -20,6 +20,9 @@
 #include "211_word_dictionary.h"
 #include "11_max_area.h"
 #include "92_reverse_between_ii.h"
+#include "817_num_components.h"
+#include "214_shortest_palindrome.h"
+#include "5_longest_palindrome.h"
 
 static void twoSumTest(void)
 {
@@ -741,6 +744,73 @@ static void reverseBetweenIITest(void)
     }
 }
 
+static void numComponentsTest(void)
+{
+    {
+        int nums[] = {0, 1, 2, 3};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        int G[] = {0, 1, 3};
+        int GSize = sizeof(G) / sizeof(G[0]);
+        struct ListNode *pHead = reverseBetweenIICreateList(nums, numsSize);
+        int res = numComponents(pHead, G, GSize);
+        UT_ASSERT(res == 2);
+        reverseBetweenIIFreeList(pHead);
+    }
+    {
+        int nums[] = {0, 1, 2, 3, 4};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        int G[] = {0, 3, 1, 4};
+        int GSize = sizeof(G) / sizeof(G[0]);
+        struct ListNode *pHead = reverseBetweenIICreateList(nums, numsSize);
+        int res = numComponents(pHead, G, GSize);
+        UT_ASSERT(res == 2);
+        reverseBetweenIIFreeList(pHead);
+    }
+}
+
+static void shortestPalindromeTest(void)
+{
+    {
+        char s[] = "aacecaaa";
+        char exp[] = "aaacecaaa";
+        char *res = shortestPalindrome(s);
+        UT_ASSERT(strcmp(res, exp) == 0);
+        free(res);
+    }
+    {
+        char s[] = "abcd";
+        char exp[] = "dcbabcd";
+        char *res = shortestPalindrome(s);
+        UT_ASSERT(strcmp(res, exp) == 0);
+        free(res);
+    }
+    {
+        char s[] = "a";
+        char exp[] = "a";
+        char *res = shortestPalindrome(s);
+        UT_ASSERT(strcmp(res, exp) == 0);
+        free(res);
+    }
+}
+
+static void longestPalindromeTest(void)
+{
+    {
+        char s[] = "babad";
+        char exp[] = "bab";
+        char *res = longestPalindrome(s);
+        UT_ASSERT(strcmp(res, exp) == 0);
+        free(res);
+    }
+    {
+        char s[] = "cbbd";
+        char exp[] = "bb";
+        char *res = longestPalindrome(s);
+        UT_ASSERT(strcmp(res, exp) == 0);
+        free(res);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -761,5 +831,8 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"wordDictionaryTest", wordDictionaryTest},
     {"maxAreaTest", maxAreaTest},
     {"reverseBetweenIITest", reverseBetweenIITest},
+    {"numComponentsTest", numComponentsTest},
+    {"shortestPalindromeTest", shortestPalindromeTest},
+    {"longestPalindromeTest", longestPalindromeTest},
     {NULL, NULL},
 };
