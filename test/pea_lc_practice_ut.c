@@ -21,6 +21,7 @@
 #include "11_max_area.h"
 #include "92_reverse_between_ii.h"
 #include "817_num_components.h"
+#include "214_shortest_palindrome.h"
 
 static void twoSumTest(void)
 {
@@ -766,6 +767,31 @@ static void numComponentsTest(void)
     }
 }
 
+static void shortestPalindromeTest(void)
+{
+    {
+        char s[] = "aacecaaa";
+        char exp[] = "aaacecaaa";
+        char *res = shortestPalindrome(s);
+        UT_ASSERT(strcmp(res, exp) == 0);
+        free(res);
+    }
+    {
+        char s[] = "abcd";
+        char exp[] = "dcbabcd";
+        char *res = shortestPalindrome(s);
+        UT_ASSERT(strcmp(res, exp) == 0);
+        free(res);
+    }
+    {
+        char s[] = "a";
+        char exp[] = "a";
+        char *res = shortestPalindrome(s);
+        UT_ASSERT(strcmp(res, exp) == 0);
+        free(res);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -787,5 +813,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"maxAreaTest", maxAreaTest},
     {"reverseBetweenIITest", reverseBetweenIITest},
     {"numComponentsTest", numComponentsTest},
+    {"shortestPalindromeTest", shortestPalindromeTest},
     {NULL, NULL},
 };
