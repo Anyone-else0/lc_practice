@@ -22,6 +22,7 @@
 #include "92_reverse_between_ii.h"
 #include "817_num_components.h"
 #include "214_shortest_palindrome.h"
+#include "5_longest_palindrome.h"
 
 static void twoSumTest(void)
 {
@@ -792,6 +793,24 @@ static void shortestPalindromeTest(void)
     }
 }
 
+static void longestPalindromeTest(void)
+{
+    {
+        char s[] = "babad";
+        char exp[] = "bab";
+        char *res = longestPalindrome(s);
+        UT_ASSERT(strcmp(res, exp) == 0);
+        free(res);
+    }
+    {
+        char s[] = "cbbd";
+        char exp[] = "bb";
+        char *res = longestPalindrome(s);
+        UT_ASSERT(strcmp(res, exp) == 0);
+        free(res);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -814,5 +833,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"reverseBetweenIITest", reverseBetweenIITest},
     {"numComponentsTest", numComponentsTest},
     {"shortestPalindromeTest", shortestPalindromeTest},
+    {"longestPalindromeTest", longestPalindromeTest},
     {NULL, NULL},
 };
