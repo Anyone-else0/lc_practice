@@ -23,6 +23,7 @@
 #include "817_num_components.h"
 #include "214_shortest_palindrome.h"
 #include "5_longest_palindrome.h"
+#include "57_insert.h"
 
 static void twoSumTest(void)
 {
@@ -811,6 +812,91 @@ static void longestPalindromeTest(void)
     }
 }
 
+static void insertTest(void)
+{
+    {
+        int intervalsArr[][2] = {{1, 3}, {6, 9}};
+        int intervalsSize = sizeof(intervalsArr) / sizeof(intervalsArr[0]);
+        int intervalsColSize[] = {2, 2};
+        int newInterval[] = {2, 5};
+        int exp[][2] = {{1, 5}, {6, 9}};
+        int returnSize;
+        int *returnColumnSizes = NULL;
+        int **intervals = (int **)malloc(intervalsSize * sizeof(int *));
+        for (int i = 0; i < intervalsSize; i++) {
+            intervals[i] = intervalsArr[i];
+        }
+        int **res = insert(intervals, intervalsSize, intervalsColSize, newInterval, sizeof(newInterval) / sizeof(newInterval[0]), &returnSize, &returnColumnSizes);
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(returnColumnSizes[i] == 2);
+            for (int j = 0; j < 2; j++) {
+                UT_ASSERT(res[i][j] == exp[i][j]);
+            }
+        }
+        for (int i = 0; i < returnSize; i++) {
+            free(res[i]);
+        }
+        free(res);
+        free(returnColumnSizes);
+        free(intervals);
+    }
+    {
+        int intervalsArr[][2] = {{1, 2}, {3, 5}, {6, 7}, {8, 10}, {12, 16}};
+        int intervalsSize = sizeof(intervalsArr) / sizeof(intervalsArr[0]);
+        int intervalsColSize[] = {2, 2, 2, 2, 2};
+        int newInterval[] = {4, 8};
+        int exp[][2] = {{1, 2}, {3, 10}, {12, 16}};
+        int returnSize;
+        int *returnColumnSizes = NULL;
+        int **intervals = (int **)malloc(intervalsSize * sizeof(int *));
+        for (int i = 0; i < intervalsSize; i++) {
+            intervals[i] = intervalsArr[i];
+        }
+        int **res = insert(intervals, intervalsSize, intervalsColSize, newInterval, sizeof(newInterval) / sizeof(newInterval[0]), &returnSize, &returnColumnSizes);
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(returnColumnSizes[i] == 2);
+            for (int j = 0; j < 2; j++) {
+                UT_ASSERT(res[i][j] == exp[i][j]);
+            }
+        }
+        for (int i = 0; i < returnSize; i++) {
+            free(res[i]);
+        }
+        free(res);
+        free(returnColumnSizes);
+        free(intervals);
+    }
+    {
+        int intervalsArr[][2] = {{1, 5}};
+        int intervalsSize = sizeof(intervalsArr) / sizeof(intervalsArr[0]);
+        int intervalsColSize[] = {2};
+        int newInterval[] = {6, 8};
+        int exp[][2] = {{1, 5}, {6, 8}};
+        int returnSize;
+        int *returnColumnSizes = NULL;
+        int **intervals = (int **)malloc(intervalsSize * sizeof(int *));
+        for (int i = 0; i < intervalsSize; i++) {
+            intervals[i] = intervalsArr[i];
+        }
+        int **res = insert(intervals, intervalsSize, intervalsColSize, newInterval, sizeof(newInterval) / sizeof(newInterval[0]), &returnSize, &returnColumnSizes);
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(returnColumnSizes[i] == 2);
+            for (int j = 0; j < 2; j++) {
+                UT_ASSERT(res[i][j] == exp[i][j]);
+            }
+        }
+        for (int i = 0; i < returnSize; i++) {
+            free(res[i]);
+        }
+        free(res);
+        free(returnColumnSizes);
+        free(intervals);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -834,5 +920,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"numComponentsTest", numComponentsTest},
     {"shortestPalindromeTest", shortestPalindromeTest},
     {"longestPalindromeTest", longestPalindromeTest},
+    {"insertTest", insertTest},
     {NULL, NULL},
 };
