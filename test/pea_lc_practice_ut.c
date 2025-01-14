@@ -24,6 +24,7 @@
 #include "214_shortest_palindrome.h"
 #include "5_longest_palindrome.h"
 #include "57_insert.h"
+#include "23_merge_k_lists.h"
 
 static void twoSumTest(void)
 {
@@ -897,6 +898,56 @@ static void insertTest(void)
     }
 }
 
+static void mergeKListsTest(void)
+{
+    {
+        int nums1[] = {1, 4, 5};
+        int nums2[] = {1, 3, 4};
+        int nums3[] = {2, 6};
+        struct ListNode *pList1 = reverseBetweenIICreateList(nums1, sizeof(nums1) / sizeof(nums1[0]));
+        struct ListNode *pList2 = reverseBetweenIICreateList(nums2, sizeof(nums2) / sizeof(nums2[0]));
+        struct ListNode *pList3 = reverseBetweenIICreateList(nums3, sizeof(nums3) / sizeof(nums3[0]));
+        struct ListNode *lists[] = {pList1, pList2, pList3};
+        struct ListNode *pRes = mergeKLists(lists, sizeof(lists) / sizeof(lists[0]));
+        int exp[] = {1, 1, 2, 3, 4, 4, 5, 6};
+        int i = 0;
+        while (pRes) {
+            UT_ASSERT(pRes->val == exp[i]);
+            pRes = pRes->next;
+            i++;
+        }
+        UT_ASSERT(i == sizeof(exp) / sizeof(exp[0]));
+        reverseBetweenIIFreeList(pRes);
+    }
+    {
+        struct ListNode *lists[] = {NULL};
+        struct ListNode *pRes = mergeKLists(lists, sizeof(lists) / sizeof(lists[0]));
+        UT_ASSERT(pRes == NULL);
+    }
+    {
+        struct ListNode *lists[] = {NULL, NULL};
+        struct ListNode *pRes = mergeKLists(lists, sizeof(lists) / sizeof(lists[0]));
+        UT_ASSERT(pRes == NULL);
+    }
+    {
+        int nums1[] = {};
+        int nums2[] = {1};
+        struct ListNode *pList1 = reverseBetweenIICreateList(nums1, sizeof(nums1) / sizeof(nums1[0]));
+        struct ListNode *pList2 = reverseBetweenIICreateList(nums2, sizeof(nums2) / sizeof(nums2[0]));
+        struct ListNode *lists[] = {pList1, pList2};
+        struct ListNode *pRes = mergeKLists(lists, sizeof(lists) / sizeof(lists[0]));
+        int exp[] = {1};
+        int i = 0;
+        while (pRes) {
+            UT_ASSERT(pRes->val == exp[i]);
+            pRes = pRes->next;
+            i++;
+        }
+        UT_ASSERT(i == sizeof(exp) / sizeof(exp[0]));
+        reverseBetweenIIFreeList(pRes);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -921,5 +972,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"shortestPalindromeTest", shortestPalindromeTest},
     {"longestPalindromeTest", longestPalindromeTest},
     {"insertTest", insertTest},
+    {"mergeKListsTest", mergeKListsTest},
     {NULL, NULL},
 };
