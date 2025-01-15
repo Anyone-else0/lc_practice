@@ -25,6 +25,7 @@
 #include "5_longest_palindrome.h"
 #include "57_insert.h"
 #include "23_merge_k_lists.h"
+#include "692_top_k_frequent.h"
 
 static void twoSumTest(void)
 {
@@ -948,6 +949,26 @@ static void mergeKListsTest(void)
     }
 }
 
+static void topKFrequentTest(void)
+{
+    {
+        char *words[] = {"i", "love", "leetcode", "i", "love", "coding"};
+        int wordsSize = sizeof(words) / sizeof(words[0]);
+        int k = 3;
+        char *exp[] = {"i", "love", "coding"};
+        int returnSize;
+        char **pRes = topKFrequent(words, wordsSize, k, &returnSize);
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(strcmp(pRes[i], exp[i]) == 0);
+        }
+        for (int i = 0; i < returnSize; i++) {
+            free(pRes[i]);
+        }
+        free(pRes);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -973,5 +994,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"longestPalindromeTest", longestPalindromeTest},
     {"insertTest", insertTest},
     {"mergeKListsTest", mergeKListsTest},
+    {"topKFrequentTest", topKFrequentTest},
     {NULL, NULL},
 };
