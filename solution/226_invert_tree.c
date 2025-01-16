@@ -13,7 +13,7 @@
  *     struct TreeNode *right;
  * };
  */
-
+/*
 static void dfs(struct TreeNode *pNode)
 {
     if (pNode == NULL) {
@@ -31,6 +31,6 @@ struct TreeNode* invertTree(struct TreeNode* root)
 {
     dfs(root);
     return root;
-}
+}*/
 // @lc code=end
 

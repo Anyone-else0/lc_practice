@@ -16,7 +16,7 @@
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
-
+/*
 static void dfs(struct TreeNode *pNode, int *pRes, int *nr)
 {
     if (pNode == NULL) {
@@ -36,6 +36,6 @@ int* preorderTraversal(struct TreeNode* root, int* returnSize)
     dfs(root, pRes, &nr);
     *returnSize = nr;
     return pRes;
-}
+}*/
 // @lc code=end
 

@@ -13,8 +13,10 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include "pea_queue.h"
 
+/*
 typedef struct HeightInfo {
     int **ppHeights;
     int rowSize;
@@ -169,5 +171,161 @@ int **pacificAtlantic(int **heights, int heightsSize, int *heightsColSize, int *
     info.pQue->pfDestroy(info.pQue);
     free(info.ppMark);
     return ppRes;
+}
+*/
+
+typedef struct Info_s
+{
+    int **ppHeights;
+    int rawSize;
+    int colSize;
+
+    int **ppMap;
+    PeaQueue_t *pQue;
+    bool isPacific;
+
+    int **ppRes;
+    int resNr;
+} Info_t;
+
+typedef struct Idx_s
+{
+    int rawIdx;
+    int colIdx;
+} Idx_t;
+
+static int nextIdx[][2] = {
+    {0, 1},
+    {0, -1},
+    {1, 0},
+    {-1, 0},
+};
+
+static bool isValid(Info_t *pInfo, Idx_t *pIdx)
+{
+    return pIdx->rawIdx >= 0 && pIdx->rawIdx < pInfo->rawSize && pIdx->colIdx >= 0 && pIdx->colIdx < pInfo->colSize;
+}
+
+static void bfs(Info_t *pInfo)
+{
+    PeaQueue_t *pQue = pInfo->pQue;
+    while (pQue->pfEmpty(pQue) == false) {
+        Idx_t cur = *((Idx_t *)pQue->pfFront(pQue));
+        pQue->pfPop(pQue);
+        for (int i = 0; i < sizeof(nextIdx) / sizeof(nextIdx[0]); i++) {
+            Idx_t nex;
+            nex.rawIdx = cur.rawIdx + nextIdx[i][0];
+            nex.colIdx = cur.colIdx + nextIdx[i][1];
+            if (isValid(pInfo, &nex) == false) {
+                continue;
+            }
+            if (pInfo->isPacific == false) {
+                if (pInfo->ppMap[nex.rawIdx][nex.colIdx] != 2 && 
+                    pInfo->ppHeights[nex.rawIdx][nex.colIdx] >= pInfo->ppHeights[cur.rawIdx][cur.colIdx]) {
+                    if (pInfo->ppMap[nex.rawIdx][nex.colIdx] == 1) {
+                        pInfo->ppRes[pInfo->resNr][0] = nex.rawIdx;
+                        pInfo->ppRes[pInfo->resNr][1] = nex.colIdx;
+                        pInfo->resNr++;
+                    }
+                    pInfo->ppMap[nex.rawIdx][nex.colIdx] = 2;
+                    pQue->pfPush(pQue, &nex);
+                } else {
+                    continue;
+                }
+            } else {
+                if (pInfo->ppMap[nex.rawIdx][nex.colIdx] == 0 && 
+                    pInfo->ppHeights[nex.rawIdx][nex.colIdx] >= pInfo->ppHeights[cur.rawIdx][cur.colIdx]) {
+                    pInfo->ppMap[nex.rawIdx][nex.colIdx] = 1;
+                    pQue->pfPush(pQue, &nex);
+                } else {
+                    continue;
+                }
+            }
+        }
+    }
+}
+
+void reachPacific(Info_t *pInfo)
+{
+    pInfo->isPacific = true;
+    for (int i = 0; i < pInfo->colSize; i++)
+    {
+        Idx_t idx = {.rawIdx = 0, .colIdx = i};
+        pInfo->ppMap[idx.rawIdx][idx.colIdx] = 1;
+        pInfo->pQue->pfPush(pInfo->pQue, &idx);
+    }
+    bfs(pInfo);
+    for (int i = 0; i < pInfo->rawSize; i++)
+    {
+        Idx_t idx = {.rawIdx = i, .colIdx = 0};
+        pInfo->ppMap[idx.rawIdx][idx.colIdx] = 1;
+        pInfo->pQue->pfPush(pInfo->pQue, &idx);
+    }
+    bfs(pInfo);
+    return;
+}
+
+void reachAtlantic(Info_t *pInfo)
+{
+    pInfo->isPacific = false;
+    for (int i = 0; i < pInfo->colSize; i++)
+    {
+        Idx_t idx = {.rawIdx = pInfo->rawSize - 1, .colIdx = i};
+        if (pInfo->ppMap[idx.rawIdx][idx.colIdx] == 1) {
+            pInfo->ppRes[pInfo->resNr][0] = idx.rawIdx;
+            pInfo->ppRes[pInfo->resNr][1] = idx.colIdx;
+            pInfo->resNr++;
+        }
+        pInfo->ppMap[idx.rawIdx][idx.colIdx] = 2;
+        pInfo->pQue->pfPush(pInfo->pQue, &idx);
+    }
+    bfs(pInfo);
+    for (int i = 0; i < pInfo->rawSize; i++)
+    {
+        Idx_t idx = {.rawIdx = i, .colIdx = pInfo->colSize - 1};
+        if (pInfo->ppMap[idx.rawIdx][idx.colIdx] == 1) {
+            pInfo->ppRes[pInfo->resNr][0] = idx.rawIdx;
+            pInfo->ppRes[pInfo->resNr][1] = idx.colIdx;
+            pInfo->resNr++;
+        }
+        pInfo->ppMap[idx.rawIdx][idx.colIdx] = 2;
+        pInfo->pQue->pfPush(pInfo->pQue, &idx);
+    }
+    bfs(pInfo);
+    return;
+}
+
+int **pacificAtlantic(int **heights, int heightsSize, int *heightsColSize, int *returnSize, int **returnColumnSizes)
+{
+    Info_t info = {0};
+    info.ppHeights = heights;
+    info.rawSize = heightsSize;
+    info.colSize = heightsColSize[0];
+    info.ppMap = (int **)malloc(sizeof(int *) * info.rawSize);
+    for (int i = 0; i < info.rawSize; i++) {
+        info.ppMap[i] = (int *)malloc(sizeof(int) * info.colSize);
+        memset(info.ppMap[i], 0, sizeof(int) * info.colSize);
+    }
+    info.pQue = peaQueueCreate(info.rawSize * info.colSize, sizeof(Idx_t));
+
+    info.ppRes = (int **)malloc(sizeof(int *) * info.rawSize * info.colSize);
+    for (int i = 0; i < info.rawSize * info.colSize; i++) {
+        info.ppRes[i] = (int *)malloc(sizeof(int) * 2);
+    }
+    info.resNr = 0;
+
+    reachPacific(&info);
+    reachAtlantic(&info);
+
+    for (int i = 0; i < info.rawSize; i++) {
+        free(info.ppMap[i]);
+    }
+    free(info.ppMap);
+    *returnSize = info.resNr;
+    *returnColumnSizes = (int *)malloc(sizeof(int) * *returnSize);
+    for (int i = 0; i < *returnSize; i++) {
+        (*returnColumnSizes)[i] = 2;
+    }
+    return info.ppRes;
 }
 // @lc code=end
