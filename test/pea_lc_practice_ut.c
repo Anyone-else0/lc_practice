@@ -25,6 +25,11 @@
 #include "5_longest_palindrome.h"
 #include "57_insert.h"
 #include "23_merge_k_lists.h"
+#include "692_top_k_frequent.h"
+#include "142_detect_cycle_ii.h"
+#include "144_preorder_traversal.h"
+#include "145_postorder_traversal.h"
+#include "94_inorder_traversal.h"
 
 static void twoSumTest(void)
 {
@@ -665,7 +670,7 @@ static void maxAreaTest(void)
     }
 }
 
-static struct ListNode* reverseBetweenIICreateList(int* nums, int numsSize) {
+static struct ListNode* singleListCreateFromNums(int* nums, int numsSize) {
     struct ListNode* head = NULL;
     struct ListNode* tail = NULL;
     for (int i = 0; i < numsSize; i++) {
@@ -683,7 +688,7 @@ static struct ListNode* reverseBetweenIICreateList(int* nums, int numsSize) {
     return head;
 }
 
-static void reverseBetweenIIFreeList(struct ListNode* head) {
+static void singleListFree(struct ListNode* head) {
     while (head) {
         struct ListNode* temp = head;
         head = head->next;
@@ -699,7 +704,7 @@ static void reverseBetweenIITest(void)
         int left = 2;
         int right = 4;
         int exp[] = {1, 4, 3, 2, 5};
-        struct ListNode *pHead = reverseBetweenIICreateList(nums, numsSize);
+        struct ListNode *pHead = singleListCreateFromNums(nums, numsSize);
         struct ListNode *pRes = reverseBetween(pHead, left, right);
         int i = 0;
         while (pRes) {
@@ -708,7 +713,7 @@ static void reverseBetweenIITest(void)
             i++;
         }
         UT_ASSERT(i == numsSize);
-        reverseBetweenIIFreeList(pRes);
+        singleListFree(pRes);
     }
     {
         int nums[] = {5};
@@ -716,7 +721,7 @@ static void reverseBetweenIITest(void)
         int left = 1;
         int right = 1;
         int exp[] = {5};
-        struct ListNode *pHead = reverseBetweenIICreateList(nums, numsSize);
+        struct ListNode *pHead = singleListCreateFromNums(nums, numsSize);
         struct ListNode *pRes = reverseBetween(pHead, left, right);
         int i = 0;
         while (pRes) {
@@ -725,7 +730,7 @@ static void reverseBetweenIITest(void)
             i++;
         }
         UT_ASSERT(i == numsSize);
-        reverseBetweenIIFreeList(pRes);
+        singleListFree(pRes);
     }
     {
         int nums[] = {3, 5};
@@ -733,7 +738,7 @@ static void reverseBetweenIITest(void)
         int left = 1;
         int right = 2;
         int exp[] = {5, 3};
-        struct ListNode *pHead = reverseBetweenIICreateList(nums, numsSize);
+        struct ListNode *pHead = singleListCreateFromNums(nums, numsSize);
         struct ListNode *pRes = reverseBetween(pHead, left, right);
         int i = 0;
         while (pRes) {
@@ -742,7 +747,7 @@ static void reverseBetweenIITest(void)
             i++;
         }
         UT_ASSERT(i == numsSize);
-        reverseBetweenIIFreeList(pRes);
+        singleListFree(pRes);
     }
 }
 
@@ -753,20 +758,20 @@ static void numComponentsTest(void)
         int numsSize = sizeof(nums) / sizeof(nums[0]);
         int G[] = {0, 1, 3};
         int GSize = sizeof(G) / sizeof(G[0]);
-        struct ListNode *pHead = reverseBetweenIICreateList(nums, numsSize);
+        struct ListNode *pHead = singleListCreateFromNums(nums, numsSize);
         int res = numComponents(pHead, G, GSize);
         UT_ASSERT(res == 2);
-        reverseBetweenIIFreeList(pHead);
+        singleListFree(pHead);
     }
     {
         int nums[] = {0, 1, 2, 3, 4};
         int numsSize = sizeof(nums) / sizeof(nums[0]);
         int G[] = {0, 3, 1, 4};
         int GSize = sizeof(G) / sizeof(G[0]);
-        struct ListNode *pHead = reverseBetweenIICreateList(nums, numsSize);
+        struct ListNode *pHead = singleListCreateFromNums(nums, numsSize);
         int res = numComponents(pHead, G, GSize);
         UT_ASSERT(res == 2);
-        reverseBetweenIIFreeList(pHead);
+        singleListFree(pHead);
     }
 }
 
@@ -904,9 +909,9 @@ static void mergeKListsTest(void)
         int nums1[] = {1, 4, 5};
         int nums2[] = {1, 3, 4};
         int nums3[] = {2, 6};
-        struct ListNode *pList1 = reverseBetweenIICreateList(nums1, sizeof(nums1) / sizeof(nums1[0]));
-        struct ListNode *pList2 = reverseBetweenIICreateList(nums2, sizeof(nums2) / sizeof(nums2[0]));
-        struct ListNode *pList3 = reverseBetweenIICreateList(nums3, sizeof(nums3) / sizeof(nums3[0]));
+        struct ListNode *pList1 = singleListCreateFromNums(nums1, sizeof(nums1) / sizeof(nums1[0]));
+        struct ListNode *pList2 = singleListCreateFromNums(nums2, sizeof(nums2) / sizeof(nums2[0]));
+        struct ListNode *pList3 = singleListCreateFromNums(nums3, sizeof(nums3) / sizeof(nums3[0]));
         struct ListNode *lists[] = {pList1, pList2, pList3};
         struct ListNode *pRes = mergeKLists(lists, sizeof(lists) / sizeof(lists[0]));
         int exp[] = {1, 1, 2, 3, 4, 4, 5, 6};
@@ -917,7 +922,7 @@ static void mergeKListsTest(void)
             i++;
         }
         UT_ASSERT(i == sizeof(exp) / sizeof(exp[0]));
-        reverseBetweenIIFreeList(pRes);
+        singleListFree(pRes);
     }
     {
         struct ListNode *lists[] = {NULL};
@@ -932,8 +937,8 @@ static void mergeKListsTest(void)
     {
         int nums1[] = {};
         int nums2[] = {1};
-        struct ListNode *pList1 = reverseBetweenIICreateList(nums1, sizeof(nums1) / sizeof(nums1[0]));
-        struct ListNode *pList2 = reverseBetweenIICreateList(nums2, sizeof(nums2) / sizeof(nums2[0]));
+        struct ListNode *pList1 = singleListCreateFromNums(nums1, sizeof(nums1) / sizeof(nums1[0]));
+        struct ListNode *pList2 = singleListCreateFromNums(nums2, sizeof(nums2) / sizeof(nums2[0]));
         struct ListNode *lists[] = {pList1, pList2};
         struct ListNode *pRes = mergeKLists(lists, sizeof(lists) / sizeof(lists[0]));
         int exp[] = {1};
@@ -944,7 +949,226 @@ static void mergeKListsTest(void)
             i++;
         }
         UT_ASSERT(i == sizeof(exp) / sizeof(exp[0]));
-        reverseBetweenIIFreeList(pRes);
+        singleListFree(pRes);
+    }
+}
+
+static void topKFrequentTest(void)
+{
+    {
+        char *words[] = {"i", "love", "leetcode", "i", "love", "coding"};
+        int wordsSize = sizeof(words) / sizeof(words[0]);
+        int k = 3;
+        char *exp[] = {"i", "love", "coding"};
+        int returnSize;
+        char **pRes = topKFrequent(words, wordsSize, k, &returnSize);
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(strcmp(pRes[i], exp[i]) == 0);
+        }
+        for (int i = 0; i < returnSize; i++) {
+            free(pRes[i]);
+        }
+        free(pRes);
+    }
+}
+
+static void detectCycleIITest(void)
+{
+    {
+        int nums[] = {3, 2, 0, -4};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        struct ListNode *pHead = singleListCreateFromNums(nums, numsSize);
+        struct ListNode *pTail = pHead;
+        while (pTail->next) {
+            pTail = pTail->next;
+        }
+        struct ListNode *pCycle = pHead->next;
+        pTail->next = pCycle;
+        struct ListNode *pRes = detectCycle(pHead);
+        UT_ASSERT(pRes == pCycle);
+        pTail->next = NULL;
+        singleListFree(pHead);
+    }
+    {
+        int nums[] = {1, 2};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        struct ListNode *pHead = singleListCreateFromNums(nums, numsSize);
+        struct ListNode *pTail = pHead;
+        while (pTail->next) {
+            pTail = pTail->next;
+        }
+        struct ListNode *pCycle = pHead;
+        pTail->next = pCycle;
+        struct ListNode *pRes = detectCycle(pHead);
+        UT_ASSERT(pRes == pCycle);
+        pTail->next = NULL;
+        singleListFree(pHead);
+    }
+    {
+        int nums[] = {1};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        struct ListNode *pHead = singleListCreateFromNums(nums, numsSize);
+        struct ListNode *pCycle = NULL;
+        struct ListNode *pRes = detectCycle(pHead);
+        UT_ASSERT(pRes == pCycle);
+        singleListFree(pHead);
+    }
+}
+
+static void preorderTraversalTest(void)
+{
+    {
+        struct TreeNode *root = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->val = 1;
+        root->left = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->left->val = 2;
+        root->left->left = NULL;
+        root->left->right = NULL;
+        root->right = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->right->val = 3;
+        root->right->left = NULL;
+        root->right->right = NULL;
+
+        int returnSize;
+        int *res = preorderTraversal(root, &returnSize);
+        int exp[] = {1, 2, 3};
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(res[i] == exp[i]);
+        }
+        free(res);
+        free(root->left);
+        free(root->right);
+        free(root);
+    }
+    {
+        struct TreeNode *root = NULL;
+        int returnSize;
+        int *res = preorderTraversal(root, &returnSize);
+        UT_ASSERT(returnSize == 0);
+        UT_ASSERT(res != NULL);
+        free(res);
+    }
+    {
+        struct TreeNode *root = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->val = 1;
+        root->left = NULL;
+        root->right = NULL;
+
+        int returnSize;
+        int *res = preorderTraversal(root, &returnSize);
+        int exp[] = {1};
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(res[i] == exp[i]);
+        }
+        free(res);
+        free(root);
+    }
+}
+
+static void postorderTraversalTest(void)
+{
+    {
+        struct TreeNode *root = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->val = 1;
+        root->left = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->left->val = 2;
+        root->left->left = NULL;
+        root->left->right = NULL;
+        root->right = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->right->val = 3;
+        root->right->left = NULL;
+        root->right->right = NULL;
+
+        int returnSize;
+        int *res = postorderTraversal(root, &returnSize);
+        int exp[] = {2, 3, 1};
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(res[i] == exp[i]);
+        }
+        free(res);
+        free(root->left);
+        free(root->right);
+        free(root);
+    }
+    {
+        struct TreeNode *root = NULL;
+        int returnSize;
+        int *res = postorderTraversal(root, &returnSize);
+        UT_ASSERT(returnSize == 0);
+        UT_ASSERT(res != NULL);
+        free(res);
+    }
+    {
+        struct TreeNode *root = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->val = 1;
+        root->left = NULL;
+        root->right = NULL;
+
+        int returnSize;
+        int *res = postorderTraversal(root, &returnSize);
+        int exp[] = {1};
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(res[i] == exp[i]);
+        }
+        free(res);
+        free(root);
+    }
+}
+
+static void inorderTraversalTest(void)
+{
+    {
+        struct TreeNode *root = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->val = 1;
+        root->left = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->left->val = 2;
+        root->left->left = NULL;
+        root->left->right = NULL;
+        root->right = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->right->val = 3;
+        root->right->left = NULL;
+        root->right->right = NULL;
+
+        int returnSize;
+        int *res = inorderTraversal(root, &returnSize);
+        int exp[] = {2, 1, 3};
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(res[i] == exp[i]);
+        }
+        free(res);
+        free(root->left);
+        free(root->right);
+        free(root);
+    }
+    {
+        struct TreeNode *root = NULL;
+        int returnSize;
+        int *res = inorderTraversal(root, &returnSize);
+        UT_ASSERT(returnSize == 0);
+        UT_ASSERT(res != NULL);
+        free(res);
+    }
+    {
+        struct TreeNode *root = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->val = 1;
+        root->left = NULL;
+        root->right = NULL;
+
+        int returnSize;
+        int *res = inorderTraversal(root, &returnSize);
+        int exp[] = {1};
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(res[i] == exp[i]);
+        }
+        free(res);
+        free(root);
     }
 }
 
@@ -973,5 +1197,10 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"longestPalindromeTest", longestPalindromeTest},
     {"insertTest", insertTest},
     {"mergeKListsTest", mergeKListsTest},
+    {"topKFrequentTest", topKFrequentTest},
+    {"detectCycleIITest", detectCycleIITest},
+    {"preorderTraversalTest", preorderTraversalTest},
+    {"postorderTraversalTest", postorderTraversalTest},
+    {"inorderTraversalTest", inorderTraversalTest},
     {NULL, NULL},
 };

@@ -13,8 +13,8 @@ typedef struct PeaHashTable {
 
 PeaHashTable_t *peaHashTableCreate(
     int bucketCap,
-    int (*pfKeyCmp)(void *pKv1, void *pKv2),
-    int (*pfGetIdx)(void *pKv),
+    int (*pfKeyCmp)(void *pKey1, void *pKey2),
+    int (*pfGetIdx)(void *pKey),
     void *(pfGetKey)(void *pKv));
 
 #endif
