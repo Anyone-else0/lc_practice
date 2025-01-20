@@ -30,6 +30,7 @@
 #include "144_preorder_traversal.h"
 #include "145_postorder_traversal.h"
 #include "94_inorder_traversal.h"
+#include "287_find_duplicate.h"
 
 static void twoSumTest(void)
 {
@@ -1172,6 +1173,34 @@ static void inorderTraversalTest(void)
     }
 }
 
+static void findDuplicateTest(void)
+{
+    {
+        int nums[] = {1, 3, 4, 2, 2};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        int res = findDuplicate(nums, numsSize);
+        UT_ASSERT(res == 2);
+    }
+    {
+        int nums[] = {3, 1, 3, 4, 2};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        int res = findDuplicate(nums, numsSize);
+        UT_ASSERT(res == 3);
+    }
+    {
+        int nums[] = {1, 1};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        int res = findDuplicate(nums, numsSize);
+        UT_ASSERT(res == 1);
+    }
+    {
+        int nums[] = {1, 1, 2};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        int res = findDuplicate(nums, numsSize);
+        UT_ASSERT(res == 1);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -1202,5 +1231,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"preorderTraversalTest", preorderTraversalTest},
     {"postorderTraversalTest", postorderTraversalTest},
     {"inorderTraversalTest", inorderTraversalTest},
+    {"findDuplicateTest", findDuplicateTest},
     {NULL, NULL},
 };
