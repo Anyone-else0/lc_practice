@@ -37,5 +37,47 @@ int* preorderTraversal(struct TreeNode* root, int* returnSize)
     *returnSize = nr;
     return pRes;
 }*/
+#include "144_preorder_traversal.h"
+#include "pea_stack.h"
+#include <stdlib.h>
+
+int* preorderTraversal(struct TreeNode* root, int* returnSize)
+{
+    int *pRes = (int *)malloc(sizeof(int) * 100);
+    int nr = 0;
+
+    if (root == NULL) {
+        goto l_end;
+    }
+
+    PeaStack_t *pStack = peaStackCreate(100, sizeof(struct TreeNode *));
+
+    struct TreeNode *pNode = root;
+
+    pRes[nr++] = pNode->val;
+    if (pNode->right != NULL) {
+        pStack->pfPush(pStack, &pNode->right);
+    }
+    if (pNode->left != NULL) {
+        pStack->pfPush(pStack, &pNode->left);
+    }
+
+    while (pStack->pfEmpty(pStack) == false) {
+        pNode = *(struct TreeNode **)(pStack->pfTop(pStack));
+        pRes[nr++] = pNode->val;
+        pStack->pfPop(pStack);
+        if (pNode->right != NULL) {
+            pStack->pfPush(pStack, &pNode->right);
+        }
+        if (pNode->left != NULL) {
+            pStack->pfPush(pStack, &pNode->left);
+        }
+    }
+    pStack->pfDestroy(pStack);
+l_end:
+    *returnSize = nr;
+    return pRes;
+}
+
 // @lc code=end
 

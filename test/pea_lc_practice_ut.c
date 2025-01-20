@@ -27,6 +27,9 @@
 #include "23_merge_k_lists.h"
 #include "692_top_k_frequent.h"
 #include "142_detect_cycle_ii.h"
+#include "144_preorder_traversal.h"
+#include "145_postorder_traversal.h"
+#include "94_inorder_traversal.h"
 
 static void twoSumTest(void)
 {
@@ -1013,6 +1016,162 @@ static void detectCycleIITest(void)
     }
 }
 
+static void preorderTraversalTest(void)
+{
+    {
+        struct TreeNode *root = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->val = 1;
+        root->left = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->left->val = 2;
+        root->left->left = NULL;
+        root->left->right = NULL;
+        root->right = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->right->val = 3;
+        root->right->left = NULL;
+        root->right->right = NULL;
+
+        int returnSize;
+        int *res = preorderTraversal(root, &returnSize);
+        int exp[] = {1, 2, 3};
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(res[i] == exp[i]);
+        }
+        free(res);
+        free(root->left);
+        free(root->right);
+        free(root);
+    }
+    {
+        struct TreeNode *root = NULL;
+        int returnSize;
+        int *res = preorderTraversal(root, &returnSize);
+        UT_ASSERT(returnSize == 0);
+        UT_ASSERT(res != NULL);
+        free(res);
+    }
+    {
+        struct TreeNode *root = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->val = 1;
+        root->left = NULL;
+        root->right = NULL;
+
+        int returnSize;
+        int *res = preorderTraversal(root, &returnSize);
+        int exp[] = {1};
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(res[i] == exp[i]);
+        }
+        free(res);
+        free(root);
+    }
+}
+
+static void postorderTraversalTest(void)
+{
+    {
+        struct TreeNode *root = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->val = 1;
+        root->left = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->left->val = 2;
+        root->left->left = NULL;
+        root->left->right = NULL;
+        root->right = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->right->val = 3;
+        root->right->left = NULL;
+        root->right->right = NULL;
+
+        int returnSize;
+        int *res = postorderTraversal(root, &returnSize);
+        int exp[] = {2, 3, 1};
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(res[i] == exp[i]);
+        }
+        free(res);
+        free(root->left);
+        free(root->right);
+        free(root);
+    }
+    {
+        struct TreeNode *root = NULL;
+        int returnSize;
+        int *res = postorderTraversal(root, &returnSize);
+        UT_ASSERT(returnSize == 0);
+        UT_ASSERT(res != NULL);
+        free(res);
+    }
+    {
+        struct TreeNode *root = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->val = 1;
+        root->left = NULL;
+        root->right = NULL;
+
+        int returnSize;
+        int *res = postorderTraversal(root, &returnSize);
+        int exp[] = {1};
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(res[i] == exp[i]);
+        }
+        free(res);
+        free(root);
+    }
+}
+
+static void inorderTraversalTest(void)
+{
+    {
+        struct TreeNode *root = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->val = 1;
+        root->left = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->left->val = 2;
+        root->left->left = NULL;
+        root->left->right = NULL;
+        root->right = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->right->val = 3;
+        root->right->left = NULL;
+        root->right->right = NULL;
+
+        int returnSize;
+        int *res = inorderTraversal(root, &returnSize);
+        int exp[] = {2, 1, 3};
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(res[i] == exp[i]);
+        }
+        free(res);
+        free(root->left);
+        free(root->right);
+        free(root);
+    }
+    {
+        struct TreeNode *root = NULL;
+        int returnSize;
+        int *res = inorderTraversal(root, &returnSize);
+        UT_ASSERT(returnSize == 0);
+        UT_ASSERT(res != NULL);
+        free(res);
+    }
+    {
+        struct TreeNode *root = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->val = 1;
+        root->left = NULL;
+        root->right = NULL;
+
+        int returnSize;
+        int *res = inorderTraversal(root, &returnSize);
+        int exp[] = {1};
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(res[i] == exp[i]);
+        }
+        free(res);
+        free(root);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -1040,5 +1199,8 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"mergeKListsTest", mergeKListsTest},
     {"topKFrequentTest", topKFrequentTest},
     {"detectCycleIITest", detectCycleIITest},
+    {"preorderTraversalTest", preorderTraversalTest},
+    {"postorderTraversalTest", postorderTraversalTest},
+    {"inorderTraversalTest", inorderTraversalTest},
     {NULL, NULL},
 };
