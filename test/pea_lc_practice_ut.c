@@ -31,6 +31,7 @@
 #include "145_postorder_traversal.h"
 #include "94_inorder_traversal.h"
 #include "287_find_duplicate.h"
+#include "910_smallest_range_ii.h"
 
 static void twoSumTest(void)
 {
@@ -1201,6 +1202,31 @@ static void findDuplicateTest(void)
     }
 }
 
+static void smallestRangeIITest(void)
+{
+    {
+        int A[] = {1};
+        int ASize = sizeof(A) / sizeof(A[0]);
+        int K = 0;
+        int res = smallestRangeII(A, ASize, K);
+        UT_ASSERT(res == 0);
+    }
+    {
+        int A[] = {0, 10};
+        int ASize = sizeof(A) / sizeof(A[0]);
+        int K = 2;
+        int res = smallestRangeII(A, ASize, K);
+        UT_ASSERT(res == 6);
+    }
+    {
+        int A[] = {1, 3, 6};
+        int ASize = sizeof(A) / sizeof(A[0]);
+        int K = 3;
+        int res = smallestRangeII(A, ASize, K);
+        UT_ASSERT(res == 3);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -1232,5 +1258,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"postorderTraversalTest", postorderTraversalTest},
     {"inorderTraversalTest", inorderTraversalTest},
     {"findDuplicateTest", findDuplicateTest},
+    {"smallestRangeIITest", smallestRangeIITest},
     {NULL, NULL},
 };
