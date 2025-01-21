@@ -50,29 +50,26 @@ int* postorderTraversal(struct TreeNode* root, int* returnSize)
         goto l_end;
     }
 
-    struct TreeNode *pNode = root;
     PeaStack_t *pStack = peaStackCreate(100, sizeof(struct TreeNode *));
-    pStack->pfPush(pStack, &pNode);
-
+    struct TreeNode *pNode = root;
     struct TreeNode *pTmp = NULL;
 
-    while (pStack->pfEmpty(pStack) == false) {
-        pNode = *(struct TreeNode **)pStack->pfTop(pStack);
-        while (pNode->left != NULL) {
-            pStack->pfPush(pStack, &pNode->left);
+    while (pNode != NULL || pStack->pfEmpty(pStack) == false) {
+        while (pNode != NULL && pNode != pTmp) {
+            pStack->pfPush(pStack, &pNode);
             pNode = pNode->left;
         }
-
-        while (pStack->pfEmpty(pStack) == false) {
+        pNode = *(struct TreeNode **)pStack->pfTop(pStack);
+        if (pNode->right == NULL || pNode->right == pTmp) {
+            pStack->pfPop(pStack);
+            pRes[nr++] = pNode->val;
+            pTmp = pNode;
+        }
+        if (pStack->pfEmpty(pStack) == false) {
             pNode = *(struct TreeNode **)pStack->pfTop(pStack);
-            if (pNode->right == NULL || pNode->right == pTmp) {
-                pTmp = pNode;
-                pStack->pfPop(pStack);
-                pRes[nr++] = pNode->val;
-            } else {
-                pStack->pfPush(pStack, &pNode->right);
-                break;
-            }
+            pNode = pNode->right;
+        } else {
+            pNode = NULL;
         }
     }
 

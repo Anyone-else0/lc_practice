@@ -51,29 +51,25 @@ int* preorderTraversal(struct TreeNode* root, int* returnSize)
     }
 
     PeaStack_t *pStack = peaStackCreate(100, sizeof(struct TreeNode *));
-
     struct TreeNode *pNode = root;
 
-    pRes[nr++] = pNode->val;
-    if (pNode->right != NULL) {
-        pStack->pfPush(pStack, &pNode->right);
-    }
-    if (pNode->left != NULL) {
-        pStack->pfPush(pStack, &pNode->left);
-    }
-
-    while (pStack->pfEmpty(pStack) == false) {
-        pNode = *(struct TreeNode **)(pStack->pfTop(pStack));
-        pRes[nr++] = pNode->val;
-        pStack->pfPop(pStack);
-        if (pNode->right != NULL) {
-            pStack->pfPush(pStack, &pNode->right);
+    while (pNode != NULL || pStack->pfEmpty(pStack) == false) {
+        while (pNode != NULL) {
+            pRes[nr++] = pNode->val;
+            if (pNode->right != NULL) {
+                pStack->pfPush(pStack, &pNode->right);
+            }
+            pNode = pNode->left;
         }
-        if (pNode->left != NULL) {
-            pStack->pfPush(pStack, &pNode->left);
+        if (pStack->pfEmpty(pStack) == false) {
+            pNode = *(struct TreeNode **)pStack->pfTop(pStack);
+            pStack->pfPop(pStack);
+        } else {
+            pNode = NULL;
         }
     }
     pStack->pfDestroy(pStack);
+
 l_end:
     *returnSize = nr;
     return pRes;

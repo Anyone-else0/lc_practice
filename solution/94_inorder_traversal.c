@@ -36,11 +36,9 @@ int* inorderTraversal(struct TreeNode* root, int* returnSize)
             pStack->pfPush(pStack, &pNode);
             pNode = pNode->left;
         }
-
         pNode = *(struct TreeNode **)pStack->pfTop(pStack);
         pStack->pfPop(pStack);
         pRes[nr++] = pNode->val;
-        
         pNode = pNode->right;
     }
 
