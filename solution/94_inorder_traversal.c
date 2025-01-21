@@ -28,26 +28,20 @@ int* inorderTraversal(struct TreeNode* root, int* returnSize)
         goto l_end;
     }
 
+    PeaStack_t *pStack = peaStackCreate(100, sizeof(struct TreeNode*));
     struct TreeNode *pNode = root;
 
-    PeaStack_t *pStack = peaStackCreate(100, sizeof(struct TreeNode*));
-    pStack->pfPush(pStack, &pNode);
-
-    while (pStack->pfEmpty(pStack) == false) {
-        pNode = *(struct TreeNode **)pStack->pfTop(pStack);
-        while (pNode->left != NULL) {
-            pStack->pfPush(pStack, &pNode->left);
+    while (pNode != NULL || pStack->pfEmpty(pStack) == false) {
+        while (pNode != NULL) {
+            pStack->pfPush(pStack, &pNode);
             pNode = pNode->left;
         }
-        while (pStack->pfEmpty(pStack) == false) {
-            pNode = *(struct TreeNode **)pStack->pfTop(pStack);
-            pRes[nr++] = pNode->val;
-            pStack->pfPop(pStack);
-            if (pNode->right != NULL) {
-                pStack->pfPush(pStack, &pNode->right);
-                break;
-            }
-        }
+
+        pNode = *(struct TreeNode **)pStack->pfTop(pStack);
+        pStack->pfPop(pStack);
+        pRes[nr++] = pNode->val;
+        
+        pNode = pNode->right;
     }
 
 l_end:
