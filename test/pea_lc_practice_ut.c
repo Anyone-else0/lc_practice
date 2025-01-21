@@ -34,6 +34,7 @@
 #include "910_smallest_range_ii.h"
 #include "460_lfu_cache.h"
 #include "230_kth_smallest.h"
+#include "98_is_valid_bst.h"
 
 static void twoSumTest(void)
 {
@@ -1305,6 +1306,54 @@ static void kthSmallestTest(void)
     }
 }
 
+static void isValidBSTTest(void)
+{
+    {
+        struct TreeNode *root = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->val = 2;
+        root->left = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->left->val = 1;
+        root->left->left = NULL;
+        root->left->right = NULL;
+        root->right = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->right->val = 3;
+        root->right->left = NULL;
+        root->right->right = NULL;
+
+        UT_ASSERT(isValidBST(root) == true);
+
+        free(root->left);
+        free(root->right);
+        free(root);
+    }
+    {
+        struct TreeNode *root = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->val = 5;
+        root->left = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->left->val = 1;
+        root->left->left = NULL;
+        root->left->right = NULL;
+        root->right = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->right->val = 4;
+        root->right->left = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->right->left->val = 3;
+        root->right->left->left = NULL;
+        root->right->left->right = NULL;
+        root->right->right = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->right->right->val = 6;
+        root->right->right->left = NULL;
+        root->right->right->right = NULL;
+
+        UT_ASSERT(isValidBST(root) == false);
+
+        free(root->left);
+        free(root->right->left);
+        free(root->right->right);
+        free(root->right);
+        free(root);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -1339,5 +1388,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"smallestRangeIITest", smallestRangeIITest},
     {"lfuCacheTest", lfuCacheTest},
     {"kthSmallestTest", kthSmallestTest},
+    {"isValidBSTTest", isValidBSTTest},
     {NULL, NULL},
 };
