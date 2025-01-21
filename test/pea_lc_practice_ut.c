@@ -32,6 +32,7 @@
 #include "94_inorder_traversal.h"
 #include "287_find_duplicate.h"
 #include "910_smallest_range_ii.h"
+#include "460_lfu_cache.h"
 
 static void twoSumTest(void)
 {
@@ -1227,6 +1228,22 @@ static void smallestRangeIITest(void)
     }
 }
 
+static void lfuCacheTest(void)
+{
+    LFUCache *pLFUCache = lFUCacheCreate(2);
+    lFUCachePut(pLFUCache, 1, 1);
+    lFUCachePut(pLFUCache, 2, 2);
+    UT_ASSERT(lFUCacheGet(pLFUCache, 1) == 1);
+    lFUCachePut(pLFUCache, 3, 3);
+    UT_ASSERT(lFUCacheGet(pLFUCache, 2) == -1);
+    UT_ASSERT(lFUCacheGet(pLFUCache, 3) == 3);
+    lFUCachePut(pLFUCache, 4, 4);
+    UT_ASSERT(lFUCacheGet(pLFUCache, 1) == -1);
+    UT_ASSERT(lFUCacheGet(pLFUCache, 3) == 3);
+    UT_ASSERT(lFUCacheGet(pLFUCache, 4) == 4);
+    lFUCacheFree(pLFUCache);
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -1259,5 +1276,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"inorderTraversalTest", inorderTraversalTest},
     {"findDuplicateTest", findDuplicateTest},
     {"smallestRangeIITest", smallestRangeIITest},
+    {"lfuCacheTest", lfuCacheTest},
     {NULL, NULL},
 };
