@@ -86,6 +86,6 @@ static inline PeaListHead_t *peaListPickTail(PeaListHead_t *pHead)
 
 #define PEA_LIST_ENTRY(ptr, type, member) ((type *)(((void *)ptr) - offsetof(type, member)))
 
-#define PEA_LIST_FOREACH(pPos, pHead) for (PeaListNode_t pPos = pHead->pNext; pPos != pHead; pPos = pPos->pNext)
+#define PEA_LIST_FOREACH(pPos, pHead) for (PeaListNode_t *pPos = (pHead)->pNext; pPos != (pHead); pPos = pPos->pNext)
 
 #endif

@@ -30,6 +30,9 @@
 #include "144_preorder_traversal.h"
 #include "145_postorder_traversal.h"
 #include "94_inorder_traversal.h"
+#include "287_find_duplicate.h"
+#include "910_smallest_range_ii.h"
+#include "460_lfu_cache.h"
 
 static void twoSumTest(void)
 {
@@ -1172,6 +1175,75 @@ static void inorderTraversalTest(void)
     }
 }
 
+static void findDuplicateTest(void)
+{
+    {
+        int nums[] = {1, 3, 4, 2, 2};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        int res = findDuplicate(nums, numsSize);
+        UT_ASSERT(res == 2);
+    }
+    {
+        int nums[] = {3, 1, 3, 4, 2};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        int res = findDuplicate(nums, numsSize);
+        UT_ASSERT(res == 3);
+    }
+    {
+        int nums[] = {1, 1};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        int res = findDuplicate(nums, numsSize);
+        UT_ASSERT(res == 1);
+    }
+    {
+        int nums[] = {1, 1, 2};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        int res = findDuplicate(nums, numsSize);
+        UT_ASSERT(res == 1);
+    }
+}
+
+static void smallestRangeIITest(void)
+{
+    {
+        int A[] = {1};
+        int ASize = sizeof(A) / sizeof(A[0]);
+        int K = 0;
+        int res = smallestRangeII(A, ASize, K);
+        UT_ASSERT(res == 0);
+    }
+    {
+        int A[] = {0, 10};
+        int ASize = sizeof(A) / sizeof(A[0]);
+        int K = 2;
+        int res = smallestRangeII(A, ASize, K);
+        UT_ASSERT(res == 6);
+    }
+    {
+        int A[] = {1, 3, 6};
+        int ASize = sizeof(A) / sizeof(A[0]);
+        int K = 3;
+        int res = smallestRangeII(A, ASize, K);
+        UT_ASSERT(res == 3);
+    }
+}
+
+static void lfuCacheTest(void)
+{
+    LFUCache *pLFUCache = lFUCacheCreate(2);
+    lFUCachePut(pLFUCache, 1, 1);
+    lFUCachePut(pLFUCache, 2, 2);
+    UT_ASSERT(lFUCacheGet(pLFUCache, 1) == 1);
+    lFUCachePut(pLFUCache, 3, 3);
+    UT_ASSERT(lFUCacheGet(pLFUCache, 2) == -1);
+    UT_ASSERT(lFUCacheGet(pLFUCache, 3) == 3);
+    lFUCachePut(pLFUCache, 4, 4);
+    UT_ASSERT(lFUCacheGet(pLFUCache, 1) == -1);
+    UT_ASSERT(lFUCacheGet(pLFUCache, 3) == 3);
+    UT_ASSERT(lFUCacheGet(pLFUCache, 4) == 4);
+    lFUCacheFree(pLFUCache);
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -1202,5 +1274,8 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"preorderTraversalTest", preorderTraversalTest},
     {"postorderTraversalTest", postorderTraversalTest},
     {"inorderTraversalTest", inorderTraversalTest},
+    {"findDuplicateTest", findDuplicateTest},
+    {"smallestRangeIITest", smallestRangeIITest},
+    {"lfuCacheTest", lfuCacheTest},
     {NULL, NULL},
 };
