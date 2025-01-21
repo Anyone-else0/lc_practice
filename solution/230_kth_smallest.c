@@ -1,7 +1,7 @@
 /*
- * @lc app=leetcode.cn id=94 lang=c
+ * @lc app=leetcode.cn id=230 lang=c
  *
- * [94] 二叉树的中序遍历
+ * [230] 二叉搜索树中第 K 小的元素
  */
 
 // @lc code=start
@@ -13,38 +13,36 @@
  *     struct TreeNode *right;
  * };
  */
-/**
- * Note: The returned array must be malloced, assume caller calls free().
- */
-#include "94_inorder_traversal.h"
+#include "230_kth_smallest.h"
 #include "pea_stack.h"
-#include <stdlib.h>
-int* inorderTraversal(struct TreeNode* root, int* returnSize)
+#include <stddef.h>
+
+int kthSmallest(struct TreeNode* root, int k)
 {
-    int *pRes = (int *)malloc(sizeof(int) * 100);
-    int nr = 0;
-
-    if (root == NULL) {
-        goto l_end;
-    }
-
-    PeaStack_t *pStack = peaStackCreate(100, sizeof(struct TreeNode*));
+    PeaStack_t *pStack = peaStackCreate(1000, sizeof(struct TreeNode *));
     struct TreeNode *pNode = root;
+    int cnt = 0;
+    int res = -1;
 
     while (pNode != NULL || pStack->pfEmpty(pStack) == false) {
         while (pNode != NULL) {
             pStack->pfPush(pStack, &pNode);
             pNode = pNode->left;
         }
+
         pNode = *(struct TreeNode **)pStack->pfTop(pStack);
         pStack->pfPop(pStack);
-        pRes[nr++] = pNode->val;
+        cnt++;
+        if (cnt == k) {
+            res = pNode->val;
+            goto l_end;
+        }
         pNode = pNode->right;
     }
 
 l_end:
-    *returnSize = nr;
-    return pRes;
+    pStack->pfDestroy(pStack);
+    return res;
 }
 // @lc code=end
 

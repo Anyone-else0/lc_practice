@@ -33,6 +33,7 @@
 #include "287_find_duplicate.h"
 #include "910_smallest_range_ii.h"
 #include "460_lfu_cache.h"
+#include "230_kth_smallest.h"
 
 static void twoSumTest(void)
 {
@@ -1244,6 +1245,66 @@ static void lfuCacheTest(void)
     lFUCacheFree(pLFUCache);
 }
 
+static void kthSmallestTest(void)
+{
+    {
+        struct TreeNode *root = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->val = 3;
+        root->left = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->left->val = 1;
+        root->left->left = NULL;
+        root->left->right = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->left->right->val = 2;
+        root->left->right->left = NULL;
+        root->left->right->right = NULL;
+        root->right = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->right->val = 4;
+        root->right->left = NULL;
+        root->right->right = NULL;
+
+        int k = 1;
+        int res = kthSmallest(root, k);
+        UT_ASSERT(res == 1);
+
+        free(root->left->right);
+        free(root->left);
+        free(root->right);
+        free(root);
+    }
+    {
+        struct TreeNode *root = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->val = 5;
+        root->left = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->left->val = 3;
+        root->left->left = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->left->left->val = 2;
+        root->left->left->left = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->left->left->left->val = 1;
+        root->left->left->left->left = NULL;
+        root->left->left->left->right = NULL;
+        root->left->left->right = NULL;
+        root->left->right = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->left->right->val = 4;
+        root->left->right->left = NULL;
+        root->left->right->right = NULL;
+        root->right = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->right->val = 6;
+        root->right->left = NULL;
+        root->right->right = NULL;
+
+        int k = 3;
+        int res = kthSmallest(root, k);
+        UT_ASSERT(res == 3);
+
+        free(root->left->left->left);
+        free(root->left->left);
+        free(root->left->right);
+        free(root->left);
+        free(root->right);
+        free(root);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -1277,5 +1338,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"findDuplicateTest", findDuplicateTest},
     {"smallestRangeIITest", smallestRangeIITest},
     {"lfuCacheTest", lfuCacheTest},
+    {"kthSmallestTest", kthSmallestTest},
     {NULL, NULL},
 };
