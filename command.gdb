@@ -13,3 +13,22 @@ define p_array
         set $i = $i + 1
     end
 end
+
+define p_list
+    set $list = $arg0
+    set $tmpNode = $list->pNext
+    while $tmpNode != $list
+        printf "node addr:"
+        p $tmpNode
+        printf "next:"
+        p $tmpNode->pNext
+        printf "prev:"
+        p $tmpNode->pPrev
+        set $offset = &((($arg1 *)0)->$arg2)
+        set $tmpEntry = ($arg1 *)((char *)$tmpNode - (char *)$offset)
+        printf "entry addr:"
+        p $tmpEntry
+        p *($tmpEntry)
+        set $tmpNode = $tmpNode->pNext
+    end
+end

@@ -24,7 +24,11 @@
         "92_reverse_between_ii.h": "c",
         "817_num_components.h": "c",
         "214_shortest_palindrome.h": "c",
-        "144_preorder_traversal.h": "c"
+        "144_preorder_traversal.h": "c",
+        "optional": "c",
+        "system_error": "c",
+        "array": "c",
+        "utility": "c"
     },
     "makefile.configureOnOpen": true,
     "makefile.launchConfigurations": [

@@ -3,8 +3,10 @@
 
 typedef struct {
     int cap;
-    PeaListHead_t head;
-    PeaHashTable_t *pTable;
+    int nr;
+    PeaHashTable_t *pIdxTable;
+    PeaHashTable_t *pFreqTable;
+    PeaListHead_t sortList;
 } LFUCache;
 
 LFUCache* lFUCacheCreate(int capacity);
