@@ -35,6 +35,7 @@
 #include "460_lfu_cache.h"
 #include "230_kth_smallest.h"
 #include "98_is_valid_bst.h"
+#include "105_build_tree.h"
 
 static void twoSumTest(void)
 {
@@ -1354,6 +1355,38 @@ static void isValidBSTTest(void)
     }
 }
 
+static void buildTreeTest(void)
+{
+    {
+        int preorder[] = {3, 9, 20, 15, 7};
+        int preorderSize = sizeof(preorder) / sizeof(preorder[0]);
+        int inorder[] = {9, 3, 15, 20, 7};
+        int inorderSize = sizeof(inorder) / sizeof(inorder[0]);
+        struct TreeNode *pRoot = buildTree(preorder, preorderSize, inorder, inorderSize);
+        UT_ASSERT(pRoot->val == 3);
+        UT_ASSERT(pRoot->left->val == 9);
+        UT_ASSERT(pRoot->right->val == 20);
+        UT_ASSERT(pRoot->right->left->val == 15);
+        UT_ASSERT(pRoot->right->right->val == 7);
+        free(pRoot->left);
+        free(pRoot->right->left);
+        free(pRoot->right->right);
+        free(pRoot->right);
+        free(pRoot);
+    }
+    {
+        int preorder[] = {1, 2};
+        int preorderSize = sizeof(preorder) / sizeof(preorder[0]);
+        int inorder[] = {2, 1};
+        int inorderSize = sizeof(inorder) / sizeof(inorder[0]);
+        struct TreeNode *pRoot = buildTree(preorder, preorderSize, inorder, inorderSize);
+        UT_ASSERT(pRoot->val == 1);
+        UT_ASSERT(pRoot->left->val == 2);
+        free(pRoot->left);
+        free(pRoot);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -1389,5 +1422,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"lfuCacheTest", lfuCacheTest},
     {"kthSmallestTest", kthSmallestTest},
     {"isValidBSTTest", isValidBSTTest},
+    {"buildTreeTest", buildTreeTest},
     {NULL, NULL},
 };
