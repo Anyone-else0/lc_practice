@@ -1,3 +1,11 @@
+define p_help
+    printf "usage of command\n\n"
+    printf "1.打印二维数组\n"
+    printf "    p_list arrayAddr rowSize colSize\n"
+    printf "1.打印双向链表\n"
+    printf "    p_list listHeadAddr entryType entryNodeName\n"
+end
+
 define p_array
     set $array = $arg0
     set $rows = $arg1

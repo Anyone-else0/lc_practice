@@ -28,7 +28,8 @@
         "optional": "c",
         "system_error": "c",
         "array": "c",
-        "utility": "c"
+        "utility": "c",
+        "105_build_tree.h": "c"
     },
     "makefile.configureOnOpen": true,
     "makefile.launchConfigurations": [
