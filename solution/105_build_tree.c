@@ -15,6 +15,7 @@
  */
 
 #include "105_build_tree.h"
+#include "pea_stack.h"
 #include <stddef.h>
 #include <stdlib.h>
 
@@ -25,7 +26,7 @@ static struct TreeNode *createNode(void)
     pRoot->right = NULL;
     return pRoot;
 }
-
+/*
 struct TreeNode *buildTree(int* preorder, int preorderSize, int* inorder, int inorderSize)
 {
     struct TreeNode *pRoot = NULL;
@@ -55,6 +56,65 @@ struct TreeNode *buildTree(int* preorder, int preorderSize, int* inorder, int in
     pRoot->left = buildTree(pLeftPreOrder, leftPreOrderSize, pLeftInorder, leftInorderSize);
     pRoot->right = buildTree(pRightPreOrder, rightPreOrderSize, pRightInorder, rightInOrderSize);
 
+l_end:
+    return pRoot;
+}
+*/
+
+typedef struct StackEle
+{
+    int *pPreOrder;
+    int preOrderSize;
+    int *pInOrder;
+    int inOrderSize;
+    struct TreeNode **ppRoot;
+} StackEle_t;
+
+struct TreeNode *buildTree(int* preorder, int preorderSize, int* inorder, int inorderSize)
+{
+    struct TreeNode *pRoot = NULL;
+    if (preorderSize <= 0) {
+        goto l_end;
+    }
+
+    PeaStack_t *pStack = peaStackCreate(1000, sizeof(StackEle_t));
+    StackEle_t tmpEle;
+    tmpEle.pPreOrder = preorder;
+    tmpEle.preOrderSize = preorderSize;
+    tmpEle.pInOrder = inorder;
+    tmpEle.inOrderSize = inorderSize;
+    tmpEle.ppRoot = &pRoot;
+
+    while (pStack->pfEmpty(pStack) == false || tmpEle.preOrderSize != 0) {
+        while (tmpEle.preOrderSize != 0) {
+            struct TreeNode *pTmpRoot = createNode();
+            pTmpRoot->val = tmpEle.pPreOrder[0];
+            *(tmpEle.ppRoot) = pTmpRoot;
+            int rootIdx = 0;
+            for (int i = 1; i < tmpEle.inOrderSize; i++) {
+                if (tmpEle.pPreOrder[0] == tmpEle.pInOrder[i]) {
+                    rootIdx = i;
+                    break;
+                }
+            }
+            StackEle_t rightEle;
+            rightEle.pPreOrder = &tmpEle.pPreOrder[1 + rootIdx];
+            rightEle.preOrderSize = tmpEle.preOrderSize - 1 - rootIdx;
+            rightEle.pInOrder = &tmpEle.pInOrder[rootIdx + 1];
+            rightEle.inOrderSize = tmpEle.inOrderSize - 1 - rootIdx;
+            rightEle.ppRoot = &pTmpRoot->right;
+            pStack->pfPush(pStack, &rightEle);
+
+            tmpEle.pPreOrder = &tmpEle.pPreOrder[1];
+            tmpEle.preOrderSize = rootIdx;
+            tmpEle.pInOrder = &tmpEle.pInOrder[0];
+            tmpEle.inOrderSize = rootIdx;
+            tmpEle.ppRoot = &pTmpRoot->left;
+        }
+        tmpEle = *(StackEle_t *)pStack->pfTop(pStack);
+        pStack->pfPop(pStack);
+    }
+    pStack->pfDestroy(pStack);
 l_end:
     return pRoot;
 }
