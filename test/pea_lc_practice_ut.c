@@ -36,6 +36,7 @@
 #include "230_kth_smallest.h"
 #include "98_is_valid_bst.h"
 #include "105_build_tree.h"
+#include "199_right_side_view.h"
 
 static void twoSumTest(void)
 {
@@ -1387,6 +1388,62 @@ static void buildTreeTest(void)
     }
 }
 
+static void rightSideViewTest(void)
+{
+    {
+        struct TreeNode *root = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->val = 1;
+        root->left = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->left->val = 2;
+        root->left->left = NULL;
+        root->left->right = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->left->right->val = 5;
+        root->left->right->left = NULL;
+        root->left->right->right = NULL;
+        root->right = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->right->val = 3;
+        root->right->left = NULL;
+        root->right->right = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->right->right->val = 4;
+        root->right->right->left = NULL;
+        root->right->right->right = NULL;
+
+        int returnSize;
+        int *res = rightSideView(root, &returnSize);
+        int exp[] = {1, 3, 4};
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(res[i] == exp[i]);
+        }
+        free(res);
+        free(root->left->right);
+        free(root->left);
+        free(root->right->right);
+        free(root->right);
+        free(root);
+    }
+    {
+        struct TreeNode *root = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->val = 1;
+        root->left = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->left->val = 2;
+        root->left->left = NULL;
+        root->left->right = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->left->right->val = 5;
+        root->left->right->left = NULL;
+        root->left->right->right = NULL;
+        root->right = NULL;
+
+        int returnSize;
+        int *res = rightSideView(root, &returnSize);
+        int exp[] = {1, 2, 5};
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(res[i] == exp[i]);
+        }
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -1423,5 +1480,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"kthSmallestTest", kthSmallestTest},
     {"isValidBSTTest", isValidBSTTest},
     {"buildTreeTest", buildTreeTest},
+    {"rightSideViewTest", rightSideViewTest},
     {NULL, NULL},
 };

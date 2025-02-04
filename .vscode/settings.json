@@ -29,7 +29,8 @@
         "system_error": "c",
         "array": "c",
         "utility": "c",
-        "105_build_tree.h": "c"
+        "105_build_tree.h": "c",
+        "199_right_side_view.h": "c"
     },
     "makefile.configureOnOpen": true,
     "makefile.launchConfigurations": [
