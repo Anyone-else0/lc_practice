@@ -31,7 +31,7 @@ int* inorderTraversal(struct TreeNode* root, int* returnSize)
     PeaStack_t *pStack = peaStackCreate(100, sizeof(struct TreeNode*));
     struct TreeNode *pNode = root;
 
-    while (pNode != NULL || pStack->pfEmpty(pStack) == false) {
+    while (pStack->pfEmpty(pStack) == false || pNode != NULL) {
         while (pNode != NULL) {
             pStack->pfPush(pStack, &pNode);
             pNode = pNode->left;

@@ -114,6 +114,7 @@ struct TreeNode *buildTree(int* preorder, int preorderSize, int* inorder, int in
         tmpEle = *(StackEle_t *)pStack->pfTop(pStack);
         pStack->pfPop(pStack);
     }
+    pStack->pfDestroy(pStack);
 l_end:
     return pRoot;
 }

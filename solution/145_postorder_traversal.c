@@ -54,8 +54,8 @@ int* postorderTraversal(struct TreeNode* root, int* returnSize)
     struct TreeNode *pNode = root;
     struct TreeNode *pTmp = NULL;
 
-    while (pNode != NULL || pStack->pfEmpty(pStack) == false) {
-        while (pNode != NULL && pNode != pTmp) {
+    while (pStack->pfEmpty(pStack) == false || pNode != NULL) {
+        while (pNode != NULL) {
             pStack->pfPush(pStack, &pNode);
             pNode = pNode->left;
         }
@@ -64,12 +64,9 @@ int* postorderTraversal(struct TreeNode* root, int* returnSize)
             pStack->pfPop(pStack);
             pRes[nr++] = pNode->val;
             pTmp = pNode;
-        }
-        if (pStack->pfEmpty(pStack) == false) {
-            pNode = *(struct TreeNode **)pStack->pfTop(pStack);
-            pNode = pNode->right;
-        } else {
             pNode = NULL;
+        } else {
+            pNode = pNode->right;
         }
     }
 
