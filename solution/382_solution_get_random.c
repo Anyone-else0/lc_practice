@@ -12,7 +12,6 @@
  *     struct ListNode *next;
  * };
  */
-#include <stdlib.h>
 
 #define MAX_STEP (100)
 

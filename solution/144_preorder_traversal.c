@@ -38,7 +38,6 @@ int* preorderTraversal(struct TreeNode* root, int* returnSize)
     return pRes;
 }*/
 #include "pea_stack.h"
-#include <stdlib.h>
 
 int* preorderTraversal(struct TreeNode* root, int* returnSize)
 {

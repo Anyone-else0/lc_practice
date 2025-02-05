@@ -12,7 +12,6 @@
  *     struct ListNode *next;
  * };
  */
-#include <stddef.h>
 
 struct ListNode* reverseBetween(struct ListNode* head, int left, int right)
 {

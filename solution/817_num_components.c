@@ -12,7 +12,6 @@
  *     struct ListNode *next;
  * };
  */
-#include <stddef.h>
 
 #define MAX_NUMS (10000)
 #define MAX_NUMS_BITMAP_SIZE (MAX_NUMS / 32 + 1)

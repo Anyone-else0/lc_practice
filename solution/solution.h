@@ -1,7 +1,5 @@
-#ifndef __FUNC_DECLARATION_H__
-#define __FUNC_DECLARATION_H__
-
-#include <stdbool.h>
+#ifndef __SOLUTION_H__
+#define __SOLUTION_H__
 
 int *twoSum(int* nums, int numsSize, int target, int* returnSize);
 char* longestPalindrome(char* s);
@@ -87,5 +85,6 @@ int numComponents(struct ListNode* head, int* nums, int numsSize);
 int minEatingSpeed(int* piles, int pilesSize, int h);
 int smallestRangeII(int* nums, int numsSize, int k);
 void deleteNode(struct ListNode* node);
+int* findingUsersActiveMinutes(int** logs, int logsSize, int* logsColSize, int k, int* returnSize);
 
 #endif

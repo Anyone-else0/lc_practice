@@ -8,9 +8,6 @@
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
-#include <stdlib.h>
-#include <string.h>
-
 typedef struct Parenthesis {
     char **ppRes;
     int resCap;

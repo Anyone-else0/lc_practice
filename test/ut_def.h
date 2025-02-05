@@ -1,9 +1,6 @@
 #ifndef __UT_TYPE_H__
 #define __UT_TYPE_H__
 
-#include <stdio.h>
-#include <stdbool.h>
-
 typedef struct UtStats {
     int total;
     int succ;

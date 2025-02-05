@@ -15,8 +15,6 @@
  */
 
 #include "pea_stack.h"
-#include <stddef.h>
-#include <stdlib.h>
 
 static struct TreeNode *createNode(void)
 {

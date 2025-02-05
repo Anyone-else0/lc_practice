@@ -8,10 +8,6 @@
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
-#include <stdbool.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
 
 #define MAX_RET_SIZE (1500)
 #define MAX_WORD_SIZE (20)

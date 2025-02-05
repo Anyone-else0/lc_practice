@@ -17,8 +17,6 @@
  * Note: The returned array must be malloced, assume caller calls free().
  */
 #include "pea_queue.h"
-#include <stddef.h>
-#include <stdlib.h>
 
 int* rightSideView(struct TreeNode* root, int* returnSize)
 {

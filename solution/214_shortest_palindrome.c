@@ -5,10 +5,6 @@
  */
 
 // @lc code=start
-#include <stdlib.h>
-#include <stddef.h>
-#include <stdbool.h>
-#include <string.h>
 
 bool isPalindrome(char *s, int len)
 {

@@ -1,7 +1,14 @@
 CC=gcc
 
 CFLAGS=-I. -I./lib -I./test -I./solution
-CFLAGS+=-include pea_types.h
+CFLAGS+=-include pea_types.h 
+CFLAGS+=-include stdio.h
+CFLAGS+=-include stddef.h
+CFLAGS+=-include stdlib.h
+CFLAGS+=-include stdbool.h
+CFLAGS+=-include string.h
+CFLAGS+=-include time.h
+CFLAGS+=-include limits.h
 CFLAGS+=-g
 CFLAGS+=-Wall
 CFLAGS+=-Werror

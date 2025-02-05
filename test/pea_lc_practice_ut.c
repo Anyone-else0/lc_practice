@@ -1,7 +1,5 @@
 #include "pea_lc_practice_ut.h"
 #include "solution.h"
-#include <string.h>
-#include <stdlib.h>
 
 static void twoSumTest(void)
 {
@@ -1545,6 +1543,48 @@ static void deleteNodeTest(void)
         singleListFree(pHead);
     }
 }
+/*
+static void findingUsersActiveMinutesTest(void)
+{
+    {
+        int logs[][2] = {
+            {0, 5},
+            {1, 2},
+            {0, 2},
+            {0, 5},
+            {1, 3}
+        };
+        int logsSize = sizeof(logs) / sizeof(logs[0]);
+        int logsColSize = sizeof(logs[0]) / sizeof(logs[0][0]);
+        int k = 5;
+        int returnSize;
+        int *res = findingUsersActiveMinutes(logs, logsSize, logsColSize, k, &returnSize);
+        int exp[] = {0, 2, 0, 0, 0, 0};
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(res[i] == exp[i]);
+        }
+        free(res);
+    }
+    {
+        int logs[][2] = {
+            {1, 1},
+            {2, 2},
+            {2, 3}
+        };
+        int logsSize = sizeof(logs) / sizeof(logs[0]);
+        int logsColSize = sizeof(logs[0]) / sizeof(logs[0][0]);
+        int k = 4;
+        int returnSize;
+        int *res = findingUsersActiveMinutes(logs, logsSize, logsColSize, k, &returnSize);
+        int exp[] = {0, 1, 1, 0};
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(res[i] == exp[i]);
+        }
+        free(res);
+    }
+}*/
 
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
@@ -1586,5 +1626,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"solutionGetRandomTest", solutionGetRandomTest},
     {"rotateTest", rotateTest},
     {"deleteNodeTest", deleteNodeTest},
+    // {"findingUsersActiveMinutesTest", findingUsersActiveMinutesTest},
     {NULL, NULL},
 };

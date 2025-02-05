@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "pea_hash_table_ut.h"
 #include "pea_hash_table.h"
 

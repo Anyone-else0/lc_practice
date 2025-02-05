@@ -14,8 +14,6 @@
  * };
  */
 #include "pea_stack.h"
-#include <stddef.h>
-#include <limits.h>
 
 bool isValidBST(struct TreeNode* root)
 {

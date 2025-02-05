@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <time.h>
 #include "ut.h"
 #include "ut_def.h"
 #include "pea_hash_table_ut.h"

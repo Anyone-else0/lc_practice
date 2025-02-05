@@ -5,7 +5,6 @@
  */
 
 // @lc code=start
-#include <stdlib.h>
 #include "pea_hash_table.h"
 #include "pea_list.h"
 

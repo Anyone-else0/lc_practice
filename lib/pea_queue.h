@@ -1,8 +1,6 @@
 #ifndef __PEA_QUEUE_H__
 #define __PEA_QUEUE_H__
 
-#include <stdbool.h>
-
 typedef struct PeaQueuePriv PeaQueuePriv_t;
 
 typedef struct PeaQueue {
