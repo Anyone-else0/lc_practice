@@ -12,10 +12,8 @@
  *     struct ListNode *next;
  * };
  */
-#include "23_merge_k_lists.h"
-#include <stddef.h>
 
-typedef struct ListNode ListNode_t;
+#include <stddef.h>
 
 static void heapSort(struct ListNode** lists, int left, int right)
 {
@@ -28,7 +26,7 @@ static void heapSort(struct ListNode** lists, int left, int right)
         }
 
         if (lists[dadPos] == NULL || (lists[sonPos] != NULL && lists[dadPos]->val > lists[sonPos]->val)) {
-            ListNode_t *pTmp = lists[dadPos];
+            struct ListNode *pTmp = lists[dadPos];
             lists[dadPos] = lists[sonPos];
             lists[sonPos] = pTmp;
         } else {
@@ -42,8 +40,8 @@ static void heapSort(struct ListNode** lists, int left, int right)
 
 struct ListNode* mergeKLists(struct ListNode** lists, int listsSize)
 {
-    ListNode_t *pRes = NULL;
-    ListNode_t *pTmp = NULL;
+    struct ListNode *pRes = NULL;
+    struct ListNode *pTmp = NULL;
     int left = 0;
     int right = listsSize - 1;
     if (lists == NULL || listsSize <= 0) {
@@ -55,7 +53,7 @@ struct ListNode* mergeKLists(struct ListNode** lists, int listsSize)
     if (lists[0] == NULL) {
         return pRes;
     }
-    ListNode_t *pCur;
+    struct ListNode *pCur;
     while (right >= 0) {
         pCur = lists[0];
         if (lists[0] != NULL) {

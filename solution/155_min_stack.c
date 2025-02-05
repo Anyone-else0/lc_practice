@@ -7,7 +7,8 @@
 // @lc code=start
 #include "stdlib.h"
 #define STACK_SIZE (30000)
-typedef struct {
+typedef struct MinStack_s
+{
     long long int data[STACK_SIZE];
     int top;
     long long int min;

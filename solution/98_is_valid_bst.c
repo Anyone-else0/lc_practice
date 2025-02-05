@@ -13,7 +13,6 @@
  *     struct TreeNode *right;
  * };
  */
-#include "98_is_valid_bst.h"
 #include "pea_stack.h"
 #include <stddef.h>
 #include <limits.h>

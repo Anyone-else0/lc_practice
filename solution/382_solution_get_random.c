@@ -12,8 +12,8 @@
  *     struct ListNode *next;
  * };
  */
-#include "382_solution_get_random.h"
 #include <stdlib.h>
+
 #define MAX_STEP (100)
 
 typedef struct Solution_s

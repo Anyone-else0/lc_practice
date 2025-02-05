@@ -1,43 +1,7 @@
+#include "pea_lc_practice_ut.h"
+#include "solution.h"
 #include <string.h>
 #include <stdlib.h>
-#include "pea_lc_practice_ut.h"
-#include "1_two_sum.h"
-#include "215_find_kth_largest.h"
-#include "208_achieve_trie.h"
-#include "503_next_greater_elements_ii.h"
-#include "146_lru_cache.h"
-#include "875_min_eating_speed.h"
-#include "200_num_islands.h"
-#include "417_pacific_atlantic.h"
-#include "169_majority_element.h"
-#include "22_generate_parenthesis.h"
-#include "698_can_partition_k_subsets.h"
-#include "47_permute_unique.h"
-#include "34_search_range.h"
-#include "720_longest_word.h"
-#include "155_min_stack.h"
-#include "816_ambiguous_coordinates.h"
-#include "211_word_dictionary.h"
-#include "11_max_area.h"
-#include "92_reverse_between_ii.h"
-#include "817_num_components.h"
-#include "214_shortest_palindrome.h"
-#include "5_longest_palindrome.h"
-#include "57_insert.h"
-#include "23_merge_k_lists.h"
-#include "692_top_k_frequent.h"
-#include "142_detect_cycle_ii.h"
-#include "144_preorder_traversal.h"
-#include "145_postorder_traversal.h"
-#include "94_inorder_traversal.h"
-#include "287_find_duplicate.h"
-#include "910_smallest_range_ii.h"
-#include "460_lfu_cache.h"
-#include "230_kth_smallest.h"
-#include "98_is_valid_bst.h"
-#include "105_build_tree.h"
-#include "199_right_side_view.h"
-#include "382_solution_get_random.h"
 
 static void twoSumTest(void)
 {
@@ -1486,6 +1450,70 @@ static void solutionGetRandomTest(void)
     }
 }
 
+static void rotateTest(void)
+{
+    {
+        {
+            int matrix[][3] = {
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9}
+            };
+            int matrixSize = sizeof(matrix) / sizeof(matrix[0]);
+            int matrixColSize = sizeof(matrix[0]) / sizeof(matrix[0][0]);
+            int exp[][3] = {
+                {7, 4, 1},
+                {8, 5, 2},
+                {9, 6, 3}
+            };
+            int i, j;
+            int **ppMatrix = (int **)malloc(matrixSize * sizeof(int *));
+            for (i = 0; i < matrixSize; i++) {
+                ppMatrix[i] = (int *)malloc(matrixColSize * sizeof(int));
+                memcpy(ppMatrix[i], matrix[i], matrixColSize * sizeof(int));
+            }
+            rotate(ppMatrix, matrixSize, &matrixColSize);
+            for (i = 0; i < matrixSize; i++) {
+                for (j = 0; j < matrixColSize; j++) {
+                    UT_ASSERT(ppMatrix[i][j] == exp[i][j]);
+                }
+                free(ppMatrix[i]);
+            }
+            free(ppMatrix);
+        }
+        {
+            int matrix[][4] = {
+                {5, 1, 9, 11},
+                {2, 4, 8, 10},
+                {13, 3, 6, 7},
+                {15, 14, 12, 16}
+            };
+            int matrixSize = sizeof(matrix) / sizeof(matrix[0]);
+            int matrixColSize = sizeof(matrix[0]) / sizeof(matrix[0][0]);
+            int exp[][4] = {
+                {15, 13, 2, 5},
+                {14, 3, 4, 1},
+                {12, 6, 8, 9},
+                {16, 7, 10, 11}
+            };
+            int i, j;
+            int **ppMatrix = (int **)malloc(matrixSize * sizeof(int *));
+            for (i = 0; i < matrixSize; i++) {
+                ppMatrix[i] = (int *)malloc(matrixColSize * sizeof(int));
+                memcpy(ppMatrix[i], matrix[i], matrixColSize * sizeof(int));
+            }
+            rotate(ppMatrix, matrixSize, &matrixColSize);
+            for (i = 0; i < matrixSize; i++) {
+                for (j = 0; j < matrixColSize; j++) {
+                    UT_ASSERT(ppMatrix[i][j] == exp[i][j]);
+                }
+                free(ppMatrix[i]);
+            }
+            free(ppMatrix);
+        }
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -1524,5 +1552,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"buildTreeTest", buildTreeTest},
     {"rightSideViewTest", rightSideViewTest},
     {"solutionGetRandomTest", solutionGetRandomTest},
+    {"rotateTest", rotateTest},
     {NULL, NULL},
 };

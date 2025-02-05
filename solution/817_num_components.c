@@ -12,13 +12,10 @@
  *     struct ListNode *next;
  * };
  */
-#include "stddef.h"
-#include "817_num_components.h"
+#include <stddef.h>
 
 #define MAX_NUMS (10000)
 #define MAX_NUMS_BITMAP_SIZE (MAX_NUMS / 32 + 1)
-
-typedef struct ListNode ListNode_t;
 
 int numComponents(struct ListNode* head, int* nums, int numsSize)
 {
@@ -26,7 +23,7 @@ int numComponents(struct ListNode* head, int* nums, int numsSize)
     for (int i = 0; i < numsSize; i++) {
         numsBitmap[nums[i] / 32] |= 1u << ((unsigned int)nums[i] % 32);
     }
-    ListNode_t *pTmp = head;
+    struct ListNode *pTmp = head;
     int count = 0;
 
     while (pTmp != NULL) {
