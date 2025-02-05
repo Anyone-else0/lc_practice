@@ -1,25 +1,14 @@
-leetcode practice code
+leetcode practice code.
 
-1.provide infra func lib.
-2.keep my solution for leetcode.
+my idea
+    1.provide infra func lib with clang for leetcode practice.
+    2.keep my solution for leetcode.
 
-submit:
-    bash lc_file_ex.sh file commit
-ut:
-    bash lc_file_ex.sh file rollback
+usage of lc_file_ex.sh
+    submit: bash lc_file_ex.sh file commit
+    this command can extract lib in your source file, then source file with lib can commit to leetcode.
+    rollback: bash lc_file_ex.sh file rollback
+    this command can rollback the extracted lib in your source file, then ut can be ran.
 
-gdb print array:
-set $array = info.ppMark
-set $rows = 5
-set $cols = 5
-set $i = 0
-while $i < $rows
-    set $j = 0
-    while $j < $cols
-        printf "%3d", ($array)[$i][$j]
-        set $j = $j + 1
-    end
-    printf "\n"
-    set $i = $i + 1
-end
-
+usage of command.gdb
+    provide some usable gdb command for debug.
