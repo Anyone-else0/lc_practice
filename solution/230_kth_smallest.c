@@ -13,7 +13,6 @@
  *     struct TreeNode *right;
  * };
  */
-#include "230_kth_smallest.h"
 #include "pea_stack.h"
 #include <stddef.h>
 

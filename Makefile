@@ -1,9 +1,11 @@
 CC=gcc
 
 CFLAGS=-I. -I./lib -I./test -I./solution
+CFLAGS+=-include pea_types.h
 CFLAGS+=-g
 CFLAGS+=-Wall
 CFLAGS+=-Werror
+CFLAGS+=-DLOCAL_TEST
 
 SRCDIR=.
 OBJDIR=obj

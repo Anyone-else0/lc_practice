@@ -16,7 +16,6 @@
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
-#include "199_right_side_view.h"
 #include "pea_queue.h"
 #include <stddef.h>
 #include <stdlib.h>

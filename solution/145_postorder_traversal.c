@@ -36,8 +36,6 @@ int* postorderTraversal(struct TreeNode* root, int* returnSize)
     *returnSize = nr;
     return pRes;
 }*/
-
-#include "144_preorder_traversal.h"
 #include "pea_stack.h"
 #include <stdlib.h>
 

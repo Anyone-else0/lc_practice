@@ -12,20 +12,17 @@
  *     struct ListNode *next;
  * };
  */
-#include "stddef.h"
-#include "92_reverse_between_ii.h"
-
-typedef struct ListNode ListNode_t;
+#include <stddef.h>
 
 struct ListNode* reverseBetween(struct ListNode* head, int left, int right)
 {
-    ListNode_t *pPreLeft = NULL;
+    struct ListNode *pPreLeft = NULL;
 
-    ListNode_t *pNode = head;
+    struct ListNode *pNode = head;
 
-    ListNode_t *pNewHead;
-    ListNode_t *pTmpHead;
-    ListNode_t *pNewLast;
+    struct ListNode *pNewHead;
+    struct ListNode *pTmpHead;
+    struct ListNode *pNewLast;
 
     for (int pos = 1; pos <= right; pos++) {
         if (pos == left - 1) {
@@ -48,7 +45,7 @@ struct ListNode* reverseBetween(struct ListNode* head, int left, int right)
         }
     }
 
-    ListNode_t *pRes;
+    struct ListNode *pRes;
 
     if (pPreLeft == NULL) {
         pRes = pNewHead;

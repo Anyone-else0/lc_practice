@@ -9,7 +9,8 @@
 #include "pea_hash_table.h"
 #include "pea_list.h"
 
-typedef struct {
+typedef struct LRUCache_s
+{
     int cap;
     int nr;
     PeaListHead_t head;

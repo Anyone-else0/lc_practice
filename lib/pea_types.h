@@ -7,10 +7,10 @@ typedef struct ListNode
     struct ListNode *next;
 }ListNode_t;
 
-struct TreeNode {
+typedef struct TreeNode {
     int val;
     struct TreeNode *left;
     struct TreeNode *right;
-};
+} TreeNode_t;
 
 #endif

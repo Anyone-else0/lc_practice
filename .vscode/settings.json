@@ -30,7 +30,10 @@
         "array": "c",
         "utility": "c",
         "105_build_tree.h": "c",
-        "199_right_side_view.h": "c"
+        "199_right_side_view.h": "c",
+        "208_achieve_trie.h": "c",
+        "720_longest_word.h": "c",
+        "pea_list.h": "c"
     },
     "makefile.configureOnOpen": true,
     "makefile.launchConfigurations": [

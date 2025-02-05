@@ -16,9 +16,9 @@
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
-#include "94_inorder_traversal.h"
 #include "pea_stack.h"
 #include <stdlib.h>
+
 int* inorderTraversal(struct TreeNode* root, int* returnSize)
 {
     int *pRes = (int *)malloc(sizeof(int) * 100);
