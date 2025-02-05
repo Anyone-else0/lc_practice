@@ -37,6 +37,7 @@
 #include "98_is_valid_bst.h"
 #include "105_build_tree.h"
 #include "199_right_side_view.h"
+#include "382_solution_get_random.h"
 
 static void twoSumTest(void)
 {
@@ -1444,6 +1445,47 @@ static void rightSideViewTest(void)
     }
 }
 
+static void solutionGetRandomTest(void)
+{
+    {
+        int nums[] = {1, 2, 3};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        struct ListNode *head = singleListCreateFromNums(nums, numsSize);
+        Solution *obj = solutionCreate(head);
+        int randomVal = solutionGetRandom(obj);
+        UT_ASSERT(randomVal >= 1 && randomVal <= 3);
+        solutionFree(obj);
+        singleListFree(head);
+    }
+    {
+        int nums[] = {1};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        struct ListNode *head = singleListCreateFromNums(nums, numsSize);
+        Solution *obj = solutionCreate(head);
+        int randomVal = solutionGetRandom(obj);
+        UT_ASSERT(randomVal == 1);
+        solutionFree(obj);
+        singleListFree(head);
+    }
+    {
+        int nums[] = {1, 2, 3};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        struct ListNode *head = singleListCreateFromNums(nums, numsSize);
+        Solution *obj = solutionCreate(head);
+        int count[3] = {0, 0, 0};
+        int iterations = 10000;
+        for (int i = 0; i < iterations; i++) {
+            int randomVal = solutionGetRandom(obj);
+            count[randomVal - 1]++;
+        }
+        for (int i = 0; i < 3; i++) {
+            UT_ASSERT(count[i] > iterations / 4 && count[i] < iterations / 2);
+        }
+        solutionFree(obj);
+        singleListFree(head);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -1481,5 +1523,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"isValidBSTTest", isValidBSTTest},
     {"buildTreeTest", buildTreeTest},
     {"rightSideViewTest", rightSideViewTest},
+    {"solutionGetRandomTest", solutionGetRandomTest},
     {NULL, NULL},
 };
