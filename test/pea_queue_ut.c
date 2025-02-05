@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <string.h>
 #include "pea_queue_ut.h"
 #include "pea_queue.h"
 

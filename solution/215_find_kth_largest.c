@@ -5,11 +5,6 @@
  */
 
 // @lc code=start
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-#include <time.h>
 #include "pea_stack.h"
 
 int findKthLargestStack(int* nums, int numsSize, int k)

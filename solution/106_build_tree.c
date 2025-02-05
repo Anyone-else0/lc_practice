@@ -14,8 +14,6 @@
  * };
  */
 #include "pea_stack.h"
-#include <stddef.h>
-#include <stdlib.h>
 
 /*
 typedef struct StackEle_s

@@ -10,7 +10,7 @@
  * The sizes of the arrays are returned as *returnColumnSizes array.
  * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
  */
-#include <stdlib.h>
+
 int** insert(int** intervals, int intervalsSize, int* intervalsColSize, int* newInterval, int newIntervalSize, 
     int* returnSize, int** returnColumnSizes)
 {

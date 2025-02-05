@@ -4,7 +4,6 @@
  * [169] 多数元素
  */
 // @lc code=start
-#include <stdlib.h>
 #include "pea_hash_table.h"
 
 typedef struct MajorityElementEntry {

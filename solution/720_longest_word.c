@@ -5,9 +5,6 @@
  */
 
 // @lc code=start
-#include <stdbool.h>
-#include <stdlib.h>
-#include <string.h>
 
 #define ELE_NUM_MAX (26)
 

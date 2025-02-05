@@ -5,9 +5,6 @@
  */
 
 // @lc code=start
-#include <stdlib.h>
-#include <string.h>
-
 char* longestPalindrome(char* s)
 {
     char *pRes;

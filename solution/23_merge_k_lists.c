@@ -13,8 +13,6 @@
  * };
  */
 
-#include <stddef.h>
-
 static void heapSort(struct ListNode** lists, int left, int right)
 {
     int dadPos = left;

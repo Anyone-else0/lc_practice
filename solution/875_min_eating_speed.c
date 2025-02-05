@@ -5,8 +5,6 @@
  */
 
 // @lc code=start
-#include <stdlib.h>
-#include <stdbool.h>
 
 int maxPilesNum(int* piles, int pilesSize)
 {

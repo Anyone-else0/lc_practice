@@ -5,8 +5,6 @@
  */
 
 // @lc code=start
-#include <stdlib.h>
-#include <string.h>
 #include "pea_queue.h"
 
 static void visitMapDestroy(char **ppVisit, int size)

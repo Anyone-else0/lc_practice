@@ -1,8 +1,6 @@
 #ifndef __PEA_STACK_H__
 #define __PEA_STACK_H__
 
-#include <stdbool.h>
-
 typedef struct PeaStackPriv PeaStackPriv_t;
 
 typedef struct PeaStack {

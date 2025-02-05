@@ -10,10 +10,7 @@
  * The sizes of the arrays are returned as *returnColumnSizes array.
  * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
  */
-#include <stddef.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
+
 #include "pea_queue.h"
 
 /*

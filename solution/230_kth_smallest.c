@@ -14,7 +14,6 @@
  * };
  */
 #include "pea_stack.h"
-#include <stddef.h>
 
 int kthSmallest(struct TreeNode* root, int k)
 {

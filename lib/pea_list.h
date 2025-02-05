@@ -1,9 +1,6 @@
 #ifndef __PEA_LIST_H__
 #define __PEA_LIST_H__
 
-#include <stddef.h>
-#include <stdbool.h>
-
 typedef struct PeaListHead {
     struct PeaListHead *pNext;
     struct PeaListHead *pPrev;

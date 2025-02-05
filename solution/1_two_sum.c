@@ -8,9 +8,6 @@
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "pea_hash_table.h"
 
 #define MAX_IDX (1000)

@@ -7,7 +7,7 @@
 // @lc code=start
 #include "pea_list.h"
 #include "pea_hash_table.h"
-#include <stdlib.h>
+
 /*
 typedef struct {
     int cap;

@@ -5,7 +5,6 @@
  */
 
 // @lc code=start
-#include <stdbool.h>
 
 static bool isInHalf(int *nums, int numsSize, int target)
 {

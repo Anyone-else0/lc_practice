@@ -13,8 +13,6 @@
  * };
  */
 #include "pea_hash_table.h"
-#include <stddef.h>
-#include <stdlib.h>
 
 #define HASH_BUCKET_SIZE 1024
 

@@ -12,7 +12,6 @@
  *     struct ListNode *next;
  * };
  */
-#include <stdlib.h>
 void deleteNode(struct ListNode* node)
 {
     struct ListNode *pNext = node->next;

@@ -5,10 +5,6 @@
  */
 
 // @lc code=start
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "pea_stack.h"
 #include "pea_queue.h"
 
