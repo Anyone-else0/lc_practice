@@ -1514,6 +1514,38 @@ static void rotateTest(void)
     }
 }
 
+static void deleteNodeTest(void)
+{
+    {
+        struct ListNode *pHead = singleListCreateFromNums((int[]){4, 5, 1, 9}, 4);
+        struct ListNode *pNode = pHead->next;
+        deleteNode(pNode);
+        int exp[] = {4, 1, 9};
+        int i = 0;
+        while (pHead) {
+            UT_ASSERT(pHead->val == exp[i]);
+            pHead = pHead->next;
+            i++;
+        }
+        UT_ASSERT(i == sizeof(exp) / sizeof(exp[0]));
+        singleListFree(pHead);
+    }
+    {
+        struct ListNode *pHead = singleListCreateFromNums((int[]){4, 5, 1, 9}, 4);
+        struct ListNode *pNode = pHead;
+        deleteNode(pNode);
+        int exp[] = {5, 1, 9};
+        int i = 0;
+        while (pHead) {
+            UT_ASSERT(pHead->val == exp[i]);
+            pHead = pHead->next;
+            i++;
+        }
+        UT_ASSERT(i == sizeof(exp) / sizeof(exp[0]));
+        singleListFree(pHead);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -1553,5 +1585,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"rightSideViewTest", rightSideViewTest},
     {"solutionGetRandomTest", solutionGetRandomTest},
     {"rotateTest", rotateTest},
+    {"deleteNodeTest", deleteNodeTest},
     {NULL, NULL},
 };

@@ -86,5 +86,6 @@ char** ambiguousCoordinates(char* s, int* returnSize);
 int numComponents(struct ListNode* head, int* nums, int numsSize);
 int minEatingSpeed(int* piles, int pilesSize, int h);
 int smallestRangeII(int* nums, int numsSize, int k);
+void deleteNode(struct ListNode* node);
 
 #endif
