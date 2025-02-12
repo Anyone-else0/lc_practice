@@ -1543,48 +1543,58 @@ static void deleteNodeTest(void)
         singleListFree(pHead);
     }
 }
-/*
+
 static void findingUsersActiveMinutesTest(void)
 {
     {
-        int logs[][2] = {
+        int logsArr[][2] = {
             {0, 5},
             {1, 2},
             {0, 2},
             {0, 5},
             {1, 3}
         };
-        int logsSize = sizeof(logs) / sizeof(logs[0]);
-        int logsColSize = sizeof(logs[0]) / sizeof(logs[0][0]);
+        int logsSize = sizeof(logsArr) / sizeof(logsArr[0]);
+        int logsColSize = sizeof(logsArr[0]) / sizeof(logsArr[0][0]);
+        int **logs = (int **)malloc(logsSize * sizeof(int *));
+        for (int i = 0; i < logsSize; i++) {
+            logs[i] = logsArr[i];
+        }
         int k = 5;
         int returnSize;
-        int *res = findingUsersActiveMinutes(logs, logsSize, logsColSize, k, &returnSize);
-        int exp[] = {0, 2, 0, 0, 0, 0};
+        int *res = findingUsersActiveMinutes(logs, logsSize, &logsColSize, k, &returnSize);
+        int exp[] = {0, 2, 0, 0, 0};
         UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
         for (int i = 0; i < returnSize; i++) {
             UT_ASSERT(res[i] == exp[i]);
         }
         free(res);
+        free(logs);
     }
     {
-        int logs[][2] = {
+        int logsArr[][2] = {
             {1, 1},
             {2, 2},
             {2, 3}
         };
-        int logsSize = sizeof(logs) / sizeof(logs[0]);
-        int logsColSize = sizeof(logs[0]) / sizeof(logs[0][0]);
+        int logsSize = sizeof(logsArr) / sizeof(logsArr[0]);
+        int logsColSize = sizeof(logsArr[0]) / sizeof(logsArr[0][0]);
+        int **logs = (int **)malloc(logsSize * sizeof(int *));
+        for (int i = 0; i < logsSize; i++) {
+            logs[i] = logsArr[i];
+        }
         int k = 4;
         int returnSize;
-        int *res = findingUsersActiveMinutes(logs, logsSize, logsColSize, k, &returnSize);
-        int exp[] = {0, 1, 1, 0};
+        int *res = findingUsersActiveMinutes(logs, logsSize, &logsColSize, k, &returnSize);
+        int exp[] = {1, 1, 0, 0};
         UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
         for (int i = 0; i < returnSize; i++) {
             UT_ASSERT(res[i] == exp[i]);
         }
         free(res);
+        free(logs);
     }
-}*/
+}
 
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
@@ -1626,6 +1636,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"solutionGetRandomTest", solutionGetRandomTest},
     {"rotateTest", rotateTest},
     {"deleteNodeTest", deleteNodeTest},
-    // {"findingUsersActiveMinutesTest", findingUsersActiveMinutesTest},
+    {"findingUsersActiveMinutesTest", findingUsersActiveMinutesTest},
     {NULL, NULL},
 };

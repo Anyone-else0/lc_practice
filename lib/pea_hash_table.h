@@ -8,6 +8,7 @@ typedef struct PeaHashTable {
     void *(*pfKvGet)(struct PeaHashTable *pTable, void *pKey);
     void *(*pfKvPick)(struct PeaHashTable *pTable, void *pKey);
     int (*pfKvPut)(struct PeaHashTable *pTable, void *pKv);
+    void (*pfTraverse)(struct PeaHashTable *pTable, void (*pfKvTraverse)(void *pKv, void *pCtx), void *pCtx);
     struct PeaHashPriv *pPriv;
 } PeaHashTable_t;
 

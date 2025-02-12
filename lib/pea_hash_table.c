@@ -120,6 +120,18 @@ static void peaHashTableDestroy(PeaHashTable_t *pTable)
     return;
 }
 
+static void peaHashTableTraverse(PeaHashTable_t *pTable, void (*pfKvTraverse)(void *pKv, void *pCtx), void *pCtx)
+{
+    for (int idx = 0; idx < pTable->pPriv->bucketCap; idx++) {
+        PeaHashEntry_t *pTmpEntry = (PeaHashEntry_t *)pTable->pPriv->ppBucket[idx];
+        while (pTmpEntry != NULL) {
+            pfKvTraverse(pTmpEntry->pKv, pCtx);
+            pTmpEntry = pTmpEntry->pNext;
+        }
+    }
+    return;
+}
+
 PeaHashTable_t *peaHashTableCreate(
     int bucketCap,
     int (*pfKeyCmp)(void *pKey1, void *pKey2),
@@ -149,6 +161,7 @@ PeaHashTable_t *peaHashTableCreate(
     pTable->pfKvGet = peaHashTableKvGet;
     pTable->pfKvPick = peaHashTableKvPick;
     pTable->pfKvPut = peaHashTableKvPut;
+    pTable->pfTraverse = peaHashTableTraverse;
     pTable->pPriv->pfKeyCmp = pfKeyCmp;
     pTable->pPriv->pfGetIdx = pfGetIdx;
     pTable->pPriv->pfGetKey = pfGetKey;
