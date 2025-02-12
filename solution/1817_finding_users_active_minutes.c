@@ -17,15 +17,15 @@ typedef struct UsrHash
     PeaHashTable_t *pTimeTable;
 } UsrHash_t;
 
-int usrKeyCmp(void *pKey1, void *pKey2)
+static int usrKeyCmp(void *pKey1, void *pKey2)
 {
     return *((int*)pKey1) - *((int*)pKey2);
 }
-int usrGetIdx(void *pKey)
+static int usrGetIdx(void *pKey)
 {
     return *((int*)pKey);
 }
-void *usrKeyGet(void *pKv)
+static void *usrKeyGet(void *pKv)
 {
     return &(((UsrHash_t *)pKv)->usrID);
 }
@@ -35,17 +35,24 @@ typedef struct TimeHash
     int time;
 } TimeHash_t;
 
-int timeKeyCmp(void *pKey1, void *pKey2)
+static int timeKeyCmp(void *pKey1, void *pKey2)
 {
     return *((int*)pKey1) - *((int*)pKey2);
 }
-int timeGetIdx(void *pKey)
+static int timeGetIdx(void *pKey)
 {
     return *((int*)pKey);
 }
-void *timeKeyGet(void *pKv)
+static void *timeKeyGet(void *pKv)
 {
     return &(((TimeHash_t *)pKv)->time);
+}
+
+static void usrCleanTmieTable(void *pKv, void *pCtx)
+{
+    UsrHash_t *pUsrKv = (UsrHash_t *)pKv;
+    pUsrKv->pTimeTable->pfDestroy(pUsrKv->pTimeTable);
+    pUsrKv->pTimeTable = NULL;
 }
 
 int* findingUsersActiveMinutes(int** logs, int logsSize, int* logsColSize, int k, int* returnSize)
@@ -77,6 +84,9 @@ int* findingUsersActiveMinutes(int** logs, int logsSize, int* logsColSize, int k
             pRes[pUsrKv->timeNr - 1]++;
         }
     }
+
+    pUsrHash->pfTraverse(pUsrHash, usrCleanTmieTable, NULL);
+    pUsrHash->pfDestroy(pUsrHash);
 
     *returnSize = k;
     return pRes;
