@@ -66,12 +66,12 @@ static void peaStackDestroy(PeaStack_t *pStack)
 
 PeaStack_t *peaStackCreate(int cap, int eleSize)
 {
-    PeaStack_t *pStack = (PeaStack_t *)malloc(sizeof(*pStack) + cap * eleSize);
+    PeaStack_t *pStack = (PeaStack_t *)malloc(sizeof(*pStack));
     if (pStack == NULL) {
         printf("Stack malloc failed.\n");
         goto l_fail;
     }
-    pStack->pPriv = (PeaStackPriv_t *)malloc(sizeof(*pStack->pPriv));
+    pStack->pPriv = (PeaStackPriv_t *)malloc(sizeof(*pStack->pPriv) + cap * eleSize);
     if (pStack == NULL) {
         printf("Stack priv malloc failed.\n");
         goto l_fail;
@@ -79,7 +79,7 @@ PeaStack_t *peaStackCreate(int cap, int eleSize)
     pStack->pPriv->cap = cap;
     pStack->pPriv->nr = 0;
     pStack->pPriv->eleSize = eleSize;
-    pStack->pPriv->pBuf = ((void *)pStack) + sizeof(*pStack);
+    pStack->pPriv->pBuf = ((char *)pStack->pPriv) + sizeof(*pStack->pPriv);
 
     pStack->pfDestroy = peaStackDestroy;
     pStack->pfPop = peaStackPop;

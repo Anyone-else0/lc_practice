@@ -90,12 +90,12 @@ static void peaQueueDestroy(PeaQueue_t *pQue)
 
 PeaQueue_t *peaQueueCreate(int cap, int eleSize)
 {
-    PeaQueue_t *pQue = (PeaQueue_t *)malloc(sizeof(*pQue) + cap * eleSize);
+    PeaQueue_t *pQue = (PeaQueue_t *)malloc(sizeof(*pQue));
     if (pQue == NULL) {
         printf("Que malloc failed\n");
         goto l_fail;
     }
-    pQue->pPriv = (PeaQueuePriv_t *)malloc(sizeof(*pQue->pPriv));
+    pQue->pPriv = (PeaQueuePriv_t *)malloc(sizeof(*pQue->pPriv) + cap * eleSize);
     if (pQue->pPriv == NULL) {
         printf("Que priv malloc failed\n");
         goto l_fail;
@@ -104,7 +104,7 @@ PeaQueue_t *peaQueueCreate(int cap, int eleSize)
     pQue->pPriv->eleSize = eleSize;
     pQue->pPriv->front = -1;
     pQue->pPriv->rear = -1;
-    pQue->pPriv->pBuf = ((void *)pQue) + sizeof(*pQue);
+    pQue->pPriv->pBuf = ((char *)pQue->pPriv) + sizeof(*pQue->pPriv);
 
     pQue->pfDestroy = peaQueueDestroy;
     pQue->pfPop = peaQueuePop;
