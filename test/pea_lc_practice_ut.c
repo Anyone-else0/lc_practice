@@ -1596,6 +1596,60 @@ static void findingUsersActiveMinutesTest(void)
     }
 }
 
+static void getDirectionsTest(void)
+{
+    {
+        struct TreeNode *root = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->val = 5;
+        root->left = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->left->val = 1;
+        root->left->left = NULL;
+        root->left->right = NULL;
+        root->right = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->right->val = 2;
+        root->right->left = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->right->left->val = 3;
+        root->right->left->left = NULL;
+        root->right->left->right = NULL;
+        root->right->right = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->right->right->val = 6;
+        root->right->right->left = NULL;
+        root->right->right->right = NULL;
+
+        char *res = getDirections(root, 1, 2);
+        char exp[] = "UR";
+        UT_ASSERT(strcmp(res, exp) == 0);
+
+        free(res);
+        free(root->right->right);
+        free(root->right->left);
+        free(root->right);
+        free(root->left);
+        free(root);
+    }
+    {
+        struct TreeNode *root = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->val = 2;
+        root->left = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->left->val = 1;
+        root->left->left = NULL;
+        root->left->right = NULL;
+        root->right = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->right->val = 3;
+        root->right->left = NULL;
+        root->right->right = NULL;
+
+        char *res = getDirections(root, 1, 3);
+        char exp[] = "UR";
+        UT_ASSERT(strcmp(res, exp) == 0);
+
+        free(res);
+        free(root->right);
+        free(root->left);
+        free(root);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -1637,5 +1691,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"rotateTest", rotateTest},
     {"deleteNodeTest", deleteNodeTest},
     {"findingUsersActiveMinutesTest", findingUsersActiveMinutesTest},
+    {"getDirectionsTest", getDirectionsTest},
     {NULL, NULL},
 };

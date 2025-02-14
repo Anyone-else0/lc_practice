@@ -86,5 +86,6 @@ int minEatingSpeed(int* piles, int pilesSize, int h);
 int smallestRangeII(int* nums, int numsSize, int k);
 void deleteNode(struct ListNode* node);
 int* findingUsersActiveMinutes(int** logs, int logsSize, int* logsColSize, int k, int* returnSize);
+char* getDirections(struct TreeNode* root, int startValue, int destValue);
 
 #endif
