@@ -30,18 +30,18 @@ int* rightSideView(struct TreeNode* root, int* returnSize)
     PeaQueue_t *pNextQue = pQue2;
 
     if (root != NULL) {
-        pCurQue->pfPush(pCurQue, &root);
+        pCurQue->pfPushFront(pCurQue, &root);
     }
 
     while (pCurQue->pfEmpty(pCurQue) == false) {
         struct TreeNode *pTmpNode = *((struct TreeNode **)pCurQue->pfFront(pCurQue));
         if (pTmpNode->left != NULL) {
-            pNextQue->pfPush(pNextQue, &(pTmpNode->left));
+            pNextQue->pfPushFront(pNextQue, &(pTmpNode->left));
         }
         if (pTmpNode->right != NULL) {
-            pNextQue->pfPush(pNextQue, &(pTmpNode->right));
+            pNextQue->pfPushFront(pNextQue, &(pTmpNode->right));
         }
-        pCurQue->pfPop(pCurQue);
+        pCurQue->pfPopRear(pCurQue);
         if (pCurQue->pfEmpty(pCurQue) != false) {
             pRes[nr++] = pTmpNode->val;
             PeaQueue_t *pTmpQue = pCurQue;

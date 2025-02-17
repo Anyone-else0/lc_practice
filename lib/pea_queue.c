@@ -107,8 +107,8 @@ PeaQueue_t *peaQueueCreate(int cap, int eleSize)
     pQue->pPriv->pBuf = ((char *)pQue->pPriv) + sizeof(*pQue->pPriv);
 
     pQue->pfDestroy = peaQueueDestroy;
-    pQue->pfPop = peaQueuePop;
-    pQue->pfPush = peaQueuePush;
+    pQue->pfPopRear = peaQueuePop;
+    pQue->pfPushFront = peaQueuePush;
     pQue->pfFront = peaQueueFront;
     pQue->pfRear = peaQueueRear;
     pQue->pfEmpty = peaQueueEmpty;
