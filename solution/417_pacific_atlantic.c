@@ -208,7 +208,7 @@ static void bfs(Info_t *pInfo)
     PeaQueue_t *pQue = pInfo->pQue;
     while (pQue->pfEmpty(pQue) == false) {
         Idx_t cur = *((Idx_t *)pQue->pfFront(pQue));
-        pQue->pfPop(pQue);
+        pQue->pfPopFront(pQue);
         for (int i = 0; i < sizeof(nextIdx) / sizeof(nextIdx[0]); i++) {
             Idx_t nex;
             nex.rawIdx = cur.rawIdx + nextIdx[i][0];
@@ -225,7 +225,7 @@ static void bfs(Info_t *pInfo)
                         pInfo->resNr++;
                     }
                     pInfo->ppMap[nex.rawIdx][nex.colIdx] = 2;
-                    pQue->pfPush(pQue, &nex);
+                    pQue->pfPushRear(pQue, &nex);
                 } else {
                     continue;
                 }
@@ -233,7 +233,7 @@ static void bfs(Info_t *pInfo)
                 if (pInfo->ppMap[nex.rawIdx][nex.colIdx] == 0 && 
                     pInfo->ppHeights[nex.rawIdx][nex.colIdx] >= pInfo->ppHeights[cur.rawIdx][cur.colIdx]) {
                     pInfo->ppMap[nex.rawIdx][nex.colIdx] = 1;
-                    pQue->pfPush(pQue, &nex);
+                    pQue->pfPushRear(pQue, &nex);
                 } else {
                     continue;
                 }
@@ -249,14 +249,14 @@ void reachPacific(Info_t *pInfo)
     {
         Idx_t idx = {.rawIdx = 0, .colIdx = i};
         pInfo->ppMap[idx.rawIdx][idx.colIdx] = 1;
-        pInfo->pQue->pfPush(pInfo->pQue, &idx);
+        pInfo->pQue->pfPushRear(pInfo->pQue, &idx);
     }
     bfs(pInfo);
     for (int i = 0; i < pInfo->rawSize; i++)
     {
         Idx_t idx = {.rawIdx = i, .colIdx = 0};
         pInfo->ppMap[idx.rawIdx][idx.colIdx] = 1;
-        pInfo->pQue->pfPush(pInfo->pQue, &idx);
+        pInfo->pQue->pfPushRear(pInfo->pQue, &idx);
     }
     bfs(pInfo);
     return;
@@ -274,7 +274,7 @@ void reachAtlantic(Info_t *pInfo)
             pInfo->resNr++;
         }
         pInfo->ppMap[idx.rawIdx][idx.colIdx] = 2;
-        pInfo->pQue->pfPush(pInfo->pQue, &idx);
+        pInfo->pQue->pfPushRear(pInfo->pQue, &idx);
     }
     bfs(pInfo);
     for (int i = 0; i < pInfo->rawSize; i++)
@@ -286,7 +286,7 @@ void reachAtlantic(Info_t *pInfo)
             pInfo->resNr++;
         }
         pInfo->ppMap[idx.rawIdx][idx.colIdx] = 2;
-        pInfo->pQue->pfPush(pInfo->pQue, &idx);
+        pInfo->pQue->pfPushRear(pInfo->pQue, &idx);
     }
     bfs(pInfo);
     return;

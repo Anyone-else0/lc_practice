@@ -85,9 +85,9 @@ int numIslands(char** grid, int gridSize, int* gridColSize)
 
     ppVisit[curCoord.row][curCoord.col] = 1;
     if (grid[curCoord.row][curCoord.col] == '1') {
-        pIsLandQue->pfPush(pIsLandQue, &curCoord);
+        pIsLandQue->pfPushRear(pIsLandQue, &curCoord);
     } else {
-        pNonIsLandQue->pfPush(pNonIsLandQue, &curCoord);
+        pNonIsLandQue->pfPushRear(pNonIsLandQue, &curCoord);
     }
 
     while (pNonIsLandQue->pfEmpty(pNonIsLandQue) == false || pIsLandQue->pfEmpty(pIsLandQue) == false) {
@@ -96,7 +96,7 @@ int numIslands(char** grid, int gridSize, int* gridColSize)
         }
         while (pIsLandQue->pfEmpty(pIsLandQue) == false) {
             curCoord = *((Coord_t *)pIsLandQue->pfFront(pIsLandQue));
-            pIsLandQue->pfPop(pIsLandQue);
+            pIsLandQue->pfPopFront(pIsLandQue);
             for (int i = 0; i < sizeof(nextCoordInc) / sizeof(nextCoordInc[0]); i++) {
                 nextCoord.row = curCoord.row + nextCoordInc[i][0];
                 nextCoord.col = curCoord.col + nextCoordInc[i][1];
@@ -106,9 +106,9 @@ int numIslands(char** grid, int gridSize, int* gridColSize)
                 }
                 ppVisit[nextCoord.row][nextCoord.col] = 1;
                 if (grid[nextCoord.row][nextCoord.col] == '1') {
-                    pIsLandQue->pfPush(pIsLandQue, &nextCoord);
+                    pIsLandQue->pfPushRear(pIsLandQue, &nextCoord);
                 } else {
-                    pNonIsLandQue->pfPush(pNonIsLandQue, &nextCoord);
+                    pNonIsLandQue->pfPushRear(pNonIsLandQue, &nextCoord);
                 }
             }
         }
@@ -117,7 +117,7 @@ int numIslands(char** grid, int gridSize, int* gridColSize)
             continue;
         }
         curCoord = *((Coord_t *)pNonIsLandQue->pfFront(pNonIsLandQue));
-        pNonIsLandQue->pfPop(pNonIsLandQue);
+        pNonIsLandQue->pfPopFront(pNonIsLandQue);
         for (int i = 0; i < sizeof(nextCoordInc) / sizeof(nextCoordInc[0]); i++) {
             nextCoord.row = curCoord.row + nextCoordInc[i][0];
             nextCoord.col = curCoord.col + nextCoordInc[i][1];
@@ -127,10 +127,10 @@ int numIslands(char** grid, int gridSize, int* gridColSize)
             }
             ppVisit[nextCoord.row][nextCoord.col] = 1;
             if (grid[nextCoord.row][nextCoord.col] == '1') {
-                pIsLandQue->pfPush(pIsLandQue, &nextCoord);
+                pIsLandQue->pfPushRear(pIsLandQue, &nextCoord);
                 break;
             } else {
-                pNonIsLandQue->pfPush(pNonIsLandQue, &nextCoord);
+                pNonIsLandQue->pfPushRear(pNonIsLandQue, &nextCoord);
             }
         }
     }

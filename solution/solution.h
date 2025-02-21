@@ -87,5 +87,8 @@ int smallestRangeII(int* nums, int numsSize, int k);
 void deleteNode(struct ListNode* node);
 int* findingUsersActiveMinutes(int** logs, int logsSize, int* logsColSize, int k, int* returnSize);
 char* getDirections(struct TreeNode* root, int startValue, int destValue);
+struct ListNode* partition(struct ListNode* head, int x);
+int** levelOrder(struct TreeNode* root, int* returnSize, int** returnColumnSizes);
+int** zigzagLevelOrder(struct TreeNode* root, int* returnSize, int** returnColumnSizes);
 
 #endif

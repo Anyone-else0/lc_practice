@@ -1650,6 +1650,180 @@ static void getDirectionsTest(void)
     }
 }
 
+static void partitionTest(void)
+{
+    {
+        int nums[] = {1, 4, 3, 2, 5, 2};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        int x = 3;
+        struct ListNode *pHead = singleListCreateFromNums(nums, numsSize);
+        struct ListNode *pRes = partition(pHead, x);
+        int exp[] = {1, 2, 2, 4, 3, 5};
+        int i = 0;
+        while (pRes) {
+            UT_ASSERT(pRes->val == exp[i]);
+            pRes = pRes->next;
+            i++;
+        }
+        UT_ASSERT(i == numsSize);
+        singleListFree(pRes);
+    }
+    {
+        int nums[] = {2, 1};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        int x = 2;
+        struct ListNode *pHead = singleListCreateFromNums(nums, numsSize);
+        struct ListNode *pRes = partition(pHead, x);
+        int exp[] = {1, 2};
+        int i = 0;
+        while (pRes) {
+            UT_ASSERT(pRes->val == exp[i]);
+            pRes = pRes->next;
+            i++;
+        }
+        UT_ASSERT(i == numsSize);
+        singleListFree(pRes);
+    }
+}
+
+static struct TreeNode* createTreeNode(int val) {
+    struct TreeNode* node = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    node->val = val;
+    node->left = NULL;
+    node->right = NULL;
+    return node;
+}
+
+static void levelOrderTest(void)
+{
+    {
+        struct TreeNode* root = createTreeNode(3);
+        root->left = createTreeNode(9);
+        root->right = createTreeNode(20);
+        root->right->left = createTreeNode(15);
+        root->right->right = createTreeNode(7);
+
+        int returnSize;
+        int* returnColumnSizes;
+        int** res = levelOrder(root, &returnSize, &returnColumnSizes);
+
+        int exp[][3] = {{3}, {9, 20}, {15, 7}};
+        int expSizes[] = {1, 2, 2};
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(returnColumnSizes[i] == expSizes[i]);
+            for (int j = 0; j < returnColumnSizes[i]; j++) {
+                UT_ASSERT(res[i][j] == exp[i][j]);
+            }
+            free(res[i]);
+        }
+        free(res);
+        free(returnColumnSizes);
+        free(root->right->right);
+        free(root->right->left);
+        free(root->right);
+        free(root->left);
+        free(root);
+    }
+    {
+        struct TreeNode* root = NULL;
+
+        int returnSize;
+        int* returnColumnSizes;
+        int** res = levelOrder(root, &returnSize, &returnColumnSizes);
+
+        UT_ASSERT(returnSize == 0);
+        UT_ASSERT(res == NULL);
+        UT_ASSERT(returnColumnSizes == NULL);
+    }
+    {
+        struct TreeNode* root = createTreeNode(1);
+
+        int returnSize;
+        int* returnColumnSizes;
+        int** res = levelOrder(root, &returnSize, &returnColumnSizes);
+
+        int exp[][1] = {{1}};
+        int expSizes[] = {1};
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(returnColumnSizes[i] == expSizes[i]);
+            for (int j = 0; j < returnColumnSizes[i]; j++) {
+                UT_ASSERT(res[i][j] == exp[i][j]);
+            }
+            free(res[i]);
+        }
+        free(res);
+        free(returnColumnSizes);
+        free(root);
+    }
+}
+
+static void zigzagLevelOrderTest(void)
+{
+    {
+        struct TreeNode* root = createTreeNode(3);
+        root->left = createTreeNode(9);
+        root->right = createTreeNode(20);
+        root->right->left = createTreeNode(15);
+        root->right->right = createTreeNode(7);
+
+        int returnSize;
+        int* returnColumnSizes;
+        int** res = zigzagLevelOrder(root, &returnSize, &returnColumnSizes);
+
+        int exp[][3] = {{3}, {20, 9}, {15, 7}};
+        int expSizes[] = {1, 2, 2};
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(returnColumnSizes[i] == expSizes[i]);
+            for (int j = 0; j < returnColumnSizes[i]; j++) {
+                UT_ASSERT(res[i][j] == exp[i][j]);
+            }
+            free(res[i]);
+        }
+        free(res);
+        free(returnColumnSizes);
+        free(root->right->right);
+        free(root->right->left);
+        free(root->right);
+        free(root->left);
+        free(root);
+    }
+    {
+        struct TreeNode* root = NULL;
+
+        int returnSize;
+        int* returnColumnSizes;
+        int** res = zigzagLevelOrder(root, &returnSize, &returnColumnSizes);
+
+        UT_ASSERT(returnSize == 0);
+        UT_ASSERT(res == NULL);
+        UT_ASSERT(returnColumnSizes == NULL);
+    }
+    {
+        struct TreeNode* root = createTreeNode(1);
+
+        int returnSize;
+        int* returnColumnSizes;
+        int** res = zigzagLevelOrder(root, &returnSize, &returnColumnSizes);
+
+        int exp[][1] = {{1}};
+        int expSizes[] = {1};
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(returnColumnSizes[i] == expSizes[i]);
+            for (int j = 0; j < returnColumnSizes[i]; j++) {
+                UT_ASSERT(res[i][j] == exp[i][j]);
+            }
+            free(res[i]);
+        }
+        free(res);
+        free(returnColumnSizes);
+        free(root);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -1692,5 +1866,8 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"deleteNodeTest", deleteNodeTest},
     {"findingUsersActiveMinutesTest", findingUsersActiveMinutesTest},
     {"getDirectionsTest", getDirectionsTest},
+    {"partitionTest", partitionTest},
+    {"levelOrderTest", levelOrderTest},
+    {"zigzagLevelOrderTest", zigzagLevelOrderTest},
     {NULL, NULL},
 };

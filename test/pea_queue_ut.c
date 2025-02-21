@@ -14,7 +14,7 @@ static void peaQueueTest(void)
         UT_ASSERT(pEle == NULL);
         for (int i = 0; i < 5; i++)
         {
-            rc = pUtQue->pfPush(pUtQue, &num[i]);
+            rc = pUtQue->pfPushRear(pUtQue, &num[i]);
             UT_ASSERT(rc == 0);
         }
         pEle = (int *)pUtQue->pfRear(pUtQue);
@@ -22,13 +22,13 @@ static void peaQueueTest(void)
         pEle = (int *)pUtQue->pfFront(pUtQue);
         UT_ASSERT(*pEle == 1);
         int tmp = 100;
-        rc = pUtQue->pfPush(pUtQue, &tmp);
+        rc = pUtQue->pfPushRear(pUtQue, &tmp);
         UT_ASSERT(rc != 0);
         pEle = pUtQue->pfRear(pUtQue);
         UT_ASSERT(*pEle == 5);
         for (int i = 4; i >= 0; i--)
         {
-            rc = pUtQue->pfPop(pUtQue);
+            rc = pUtQue->pfPopFront(pUtQue);
             UT_ASSERT(rc == 0);
         }
         pEle = (int *)pUtQue->pfRear(pUtQue);
