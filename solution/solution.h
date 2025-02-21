@@ -90,5 +90,7 @@ char* getDirections(struct TreeNode* root, int startValue, int destValue);
 struct ListNode* partition(struct ListNode* head, int x);
 int** levelOrder(struct TreeNode* root, int* returnSize, int** returnColumnSizes);
 int** zigzagLevelOrder(struct TreeNode* root, int* returnSize, int** returnColumnSizes);
+bool hasCycle(struct ListNode *head);
+int* nextLargerNodes(struct ListNode* head, int* returnSize);
 
 #endif
