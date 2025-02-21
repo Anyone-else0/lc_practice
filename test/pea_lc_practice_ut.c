@@ -1650,6 +1650,42 @@ static void getDirectionsTest(void)
     }
 }
 
+static void partitionTest(void)
+{
+    {
+        int nums[] = {1, 4, 3, 2, 5, 2};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        int x = 3;
+        struct ListNode *pHead = singleListCreateFromNums(nums, numsSize);
+        struct ListNode *pRes = partition(pHead, x);
+        int exp[] = {1, 2, 2, 4, 3, 5};
+        int i = 0;
+        while (pRes) {
+            UT_ASSERT(pRes->val == exp[i]);
+            pRes = pRes->next;
+            i++;
+        }
+        UT_ASSERT(i == numsSize);
+        singleListFree(pRes);
+    }
+    {
+        int nums[] = {2, 1};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        int x = 2;
+        struct ListNode *pHead = singleListCreateFromNums(nums, numsSize);
+        struct ListNode *pRes = partition(pHead, x);
+        int exp[] = {1, 2};
+        int i = 0;
+        while (pRes) {
+            UT_ASSERT(pRes->val == exp[i]);
+            pRes = pRes->next;
+            i++;
+        }
+        UT_ASSERT(i == numsSize);
+        singleListFree(pRes);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -1692,5 +1728,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"deleteNodeTest", deleteNodeTest},
     {"findingUsersActiveMinutesTest", findingUsersActiveMinutesTest},
     {"getDirectionsTest", getDirectionsTest},
+    {"partitionTest", partitionTest},
     {NULL, NULL},
 };
