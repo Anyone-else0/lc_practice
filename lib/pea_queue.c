@@ -2,13 +2,14 @@
 
 typedef struct PeaQueuePriv {
     int cap;
+    int nr;
     int eleSize;
     int rear;
     int front;
     void *pBuf;
 } PeaQueuePriv_t;
 
-static int peaQueuePop(PeaQueue_t *pQue)
+static int peaQueuePopFront(PeaQueue_t *pQue)
 {
     int rc = 0;
     if (pQue->pPriv->front == -1) {
@@ -20,12 +21,13 @@ static int peaQueuePop(PeaQueue_t *pQue)
     } else {
         pQue->pPriv->front = (pQue->pPriv->front == pQue->pPriv->cap - 1) ? 0 : pQue->pPriv->front + 1;
     }
+    pQue->pPriv->nr--;
 
 l_end:
     return rc;
 }
 
-static int peaQueuePush(PeaQueue_t *pQue, void *pEle)
+static int peaQueuePushRear(PeaQueue_t *pQue, void *pEle)
 {
     int rc = 0;
     if (pQue->pPriv->rear == -1) {
@@ -41,6 +43,7 @@ static int peaQueuePush(PeaQueue_t *pQue, void *pEle)
         }
     }
     (void)memcpy(pQue->pPriv->pBuf + pQue->pPriv->rear * pQue->pPriv->eleSize, pEle, pQue->pPriv->eleSize);
+    pQue->pPriv->nr++;
 
 l_end:
     return rc;
@@ -77,6 +80,16 @@ static bool peaQueueEmpty(PeaQueue_t *pQue)
     return pQue->pPriv->front == -1;
 }
 
+static int peaQueueNr(PeaQueue_t *pQue)
+{
+    return pQue->pPriv->nr;
+}
+
+static int peaQueueCap(PeaQueue_t *pQue)
+{
+    return pQue->pPriv->cap;
+}
+
 static void peaQueueDestroy(PeaQueue_t *pQue)
 {
     if (pQue != NULL) {
@@ -101,17 +114,20 @@ PeaQueue_t *peaQueueCreate(int cap, int eleSize)
         goto l_fail;
     }
     pQue->pPriv->cap = cap;
+    pQue->pPriv->nr = 0;
     pQue->pPriv->eleSize = eleSize;
     pQue->pPriv->front = -1;
     pQue->pPriv->rear = -1;
     pQue->pPriv->pBuf = ((char *)pQue->pPriv) + sizeof(*pQue->pPriv);
 
     pQue->pfDestroy = peaQueueDestroy;
-    pQue->pfPopRear = peaQueuePop;
-    pQue->pfPushFront = peaQueuePush;
+    pQue->pfPopFront = peaQueuePopFront;
+    pQue->pfPushRear = peaQueuePushRear;
     pQue->pfFront = peaQueueFront;
     pQue->pfRear = peaQueueRear;
     pQue->pfEmpty = peaQueueEmpty;
+    pQue->pfNr = peaQueueNr;
+    pQue->pfCap = peaQueueCap;
     goto l_end;
 
 l_fail:

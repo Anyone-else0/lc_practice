@@ -5,11 +5,13 @@ typedef struct PeaQueuePriv PeaQueuePriv_t;
 
 typedef struct PeaQueue {
     void (*pfDestroy)(struct PeaQueue *pQue);
-    int (*pfPopRear)(struct PeaQueue *pQue);
-    int (*pfPushFront)(struct PeaQueue *pQue, void *pEle);
+    int (*pfPopFront)(struct PeaQueue *pQue);
+    int (*pfPushRear)(struct PeaQueue *pQue, void *pEle);
     void *(*pfFront)(struct PeaQueue *pQue);
     void *(*pfRear)(struct PeaQueue *pQue);
     bool (*pfEmpty)(struct PeaQueue *pQue);
+    int (*pfNr)(struct PeaQueue *pQue);
+    int (*pfCap)(struct PeaQueue *pQue);
     PeaQueuePriv_t *pPriv;
 } PeaQueue_t;
 
