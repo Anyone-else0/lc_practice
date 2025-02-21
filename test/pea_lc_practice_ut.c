@@ -1759,6 +1759,71 @@ static void levelOrderTest(void)
     }
 }
 
+static void zigzagLevelOrderTest(void)
+{
+    {
+        struct TreeNode* root = createTreeNode(3);
+        root->left = createTreeNode(9);
+        root->right = createTreeNode(20);
+        root->right->left = createTreeNode(15);
+        root->right->right = createTreeNode(7);
+
+        int returnSize;
+        int* returnColumnSizes;
+        int** res = zigzagLevelOrder(root, &returnSize, &returnColumnSizes);
+
+        int exp[][3] = {{3}, {20, 9}, {15, 7}};
+        int expSizes[] = {1, 2, 2};
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(returnColumnSizes[i] == expSizes[i]);
+            for (int j = 0; j < returnColumnSizes[i]; j++) {
+                UT_ASSERT(res[i][j] == exp[i][j]);
+            }
+            free(res[i]);
+        }
+        free(res);
+        free(returnColumnSizes);
+        free(root->right->right);
+        free(root->right->left);
+        free(root->right);
+        free(root->left);
+        free(root);
+    }
+    {
+        struct TreeNode* root = NULL;
+
+        int returnSize;
+        int* returnColumnSizes;
+        int** res = zigzagLevelOrder(root, &returnSize, &returnColumnSizes);
+
+        UT_ASSERT(returnSize == 0);
+        UT_ASSERT(res == NULL);
+        UT_ASSERT(returnColumnSizes == NULL);
+    }
+    {
+        struct TreeNode* root = createTreeNode(1);
+
+        int returnSize;
+        int* returnColumnSizes;
+        int** res = zigzagLevelOrder(root, &returnSize, &returnColumnSizes);
+
+        int exp[][1] = {{1}};
+        int expSizes[] = {1};
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(returnColumnSizes[i] == expSizes[i]);
+            for (int j = 0; j < returnColumnSizes[i]; j++) {
+                UT_ASSERT(res[i][j] == exp[i][j]);
+            }
+            free(res[i]);
+        }
+        free(res);
+        free(returnColumnSizes);
+        free(root);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -1803,5 +1868,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"getDirectionsTest", getDirectionsTest},
     {"partitionTest", partitionTest},
     {"levelOrderTest", levelOrderTest},
+    {"zigzagLevelOrderTest", zigzagLevelOrderTest},
     {NULL, NULL},
 };

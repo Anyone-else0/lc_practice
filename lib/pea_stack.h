@@ -9,6 +9,8 @@ typedef struct PeaStack {
     int (*pfPush)(struct PeaStack *pStack, void *pEle);
     void *(*pfTop)(struct PeaStack *pStack);
     bool (*pfEmpty)(struct PeaStack *pStack);
+    int (*pfNr)(struct PeaStack *pStack);
+    int (*pfCap)(struct PeaStack *pStack);
     PeaStackPriv_t *pPriv;
 } PeaStack_t;
 

@@ -53,6 +53,16 @@ static bool peaStackEmpty(PeaStack_t *pStack)
     return pStack->pPriv->nr == 0;
 }
 
+static int peaStackNr(PeaStack_t *pStack)
+{
+    return pStack->pPriv->nr;
+}
+
+static int peaStackCap(PeaStack_t *pStack)
+{
+    return pStack->pPriv->cap;
+}
+
 static void peaStackDestroy(PeaStack_t *pStack)
 {
     if (pStack != NULL) {
@@ -86,6 +96,8 @@ PeaStack_t *peaStackCreate(int cap, int eleSize)
     pStack->pfPush = peaStackPush;
     pStack->pfTop = peaStackTop;
     pStack->pfEmpty = peaStackEmpty;
+    pStack->pfNr = peaStackNr;
+    pStack->pfCap = peaStackCap;
     goto l_end;
 
 l_fail:
