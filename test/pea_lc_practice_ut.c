@@ -1824,6 +1824,93 @@ static void zigzagLevelOrderTest(void)
     }
 }
 
+struct ListNode* singleListGetTail(struct ListNode* head) {
+    struct ListNode* p = head;
+    while (p->next) {
+        p = p->next;
+    }
+    return p;
+}
+
+static void hasCycleTest(void)
+{
+    {
+        struct ListNode *pHead = singleListCreateFromNums((int[]){3, 2, 0, -4}, 4);
+        struct ListNode *pTail = singleListGetTail(pHead);
+        pTail->next = pHead->next;
+        UT_ASSERT(hasCycle(pHead) == true);
+        pTail->next = NULL;
+        singleListFree(pHead);
+    }
+    {
+        struct ListNode *pHead = singleListCreateFromNums((int[]){1, 2}, 2);
+        struct ListNode *pTail = singleListGetTail(pHead);
+        pTail->next = pHead;
+        UT_ASSERT(hasCycle(pHead) == true);
+        pTail->next = NULL;
+        singleListFree(pHead);
+    }
+    {
+        struct ListNode *pHead = singleListCreateFromNums((int[]){1}, 1);
+        struct ListNode *pTail = singleListGetTail(pHead);
+        pTail->next = pHead;
+        UT_ASSERT(hasCycle(pHead) == true);
+        pTail->next = NULL;
+        singleListFree(pHead);
+    }
+    {
+        struct ListNode *pHead = singleListCreateFromNums((int[]){1}, 1);
+        UT_ASSERT(hasCycle(pHead) == false);
+        singleListFree(pHead);
+    }
+}
+
+static void nextLargerNodesTest(void)
+{
+    {
+        int nums[] = {2, 1, 5};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        int exp[] = {5, 5, 0};
+        struct ListNode *pHead = singleListCreateFromNums(nums, numsSize);
+        int returnSize;
+        int *res = nextLargerNodes(pHead, &returnSize);
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(res[i] == exp[i]);
+        }
+        free(res);
+        singleListFree(pHead);
+    }
+    {
+        int nums[] = {2, 7, 4, 3, 5};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        int exp[] = {7, 0, 5, 5, 0};
+        struct ListNode *pHead = singleListCreateFromNums(nums, numsSize);
+        int returnSize;
+        int *res = nextLargerNodes(pHead, &returnSize);
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(res[i] == exp[i]);
+        }
+        free(res);
+        singleListFree(pHead);
+    }
+    {
+        int nums[] = {1, 7, 5, 1, 9, 2, 5, 1};
+        int numsSize = sizeof(nums) / sizeof(nums[0]);
+        int exp[] = {7, 9, 9, 9, 0, 5, 0, 0};
+        struct ListNode *pHead = singleListCreateFromNums(nums, numsSize);
+        int returnSize;
+        int *res = nextLargerNodes(pHead, &returnSize);
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            UT_ASSERT(res[i] == exp[i]);
+        }
+        free(res);
+        singleListFree(pHead);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -1869,5 +1956,7 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"partitionTest", partitionTest},
     {"levelOrderTest", levelOrderTest},
     {"zigzagLevelOrderTest", zigzagLevelOrderTest},
+    {"hasCycleTest", hasCycleTest},
+    {"nextLargerNodesTest", nextLargerNodesTest},
     {NULL, NULL},
 };
