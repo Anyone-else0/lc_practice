@@ -92,5 +92,7 @@ int** levelOrder(struct TreeNode* root, int* returnSize, int** returnColumnSizes
 int** zigzagLevelOrder(struct TreeNode* root, int* returnSize, int** returnColumnSizes);
 bool hasCycle(struct ListNode *head);
 int* nextLargerNodes(struct ListNode* head, int* returnSize);
+struct ListNode* removeNthFromEnd(struct ListNode* head, int n);
+void recoverTree(struct TreeNode* root);
 
 #endif

@@ -1911,6 +1911,79 @@ static void nextLargerNodesTest(void)
     }
 }
 
+static void removeNthFromEndTest(void)
+{
+    {
+        struct ListNode *pHead = singleListCreateFromNums((int[]){1, 2, 3, 4, 5}, 5);
+        struct ListNode *pRes = removeNthFromEnd(pHead, 2);
+        int exp[] = {1, 2, 3, 5};
+        int i = 0;
+        while (pRes) {
+            UT_ASSERT(pRes->val == exp[i]);
+            pRes = pRes->next;
+            i++;
+        }
+        UT_ASSERT(i == sizeof(exp) / sizeof(exp[0]));
+        singleListFree(pRes);
+    }
+    {
+        struct ListNode *pHead = singleListCreateFromNums((int[]){1}, 1);
+        struct ListNode *pRes = removeNthFromEnd(pHead, 1);
+        UT_ASSERT(pRes == NULL);
+        singleListFree(pRes);
+    }
+    {
+        struct ListNode *pHead = singleListCreateFromNums((int[]){1, 2}, 2);
+        struct ListNode *pRes = removeNthFromEnd(pHead, 1);
+        int exp[] = {1};
+        int i = 0;
+        while (pRes) {
+            UT_ASSERT(pRes->val == exp[i]);
+            pRes = pRes->next;
+            i++;
+        }
+        UT_ASSERT(i == sizeof(exp) / sizeof(exp[0]));
+        singleListFree(pRes);
+    }
+}
+
+static void recoverTreeTest(void)
+{
+    {
+        struct TreeNode *root = createTreeNode(1);
+        root->left = createTreeNode(3);
+        root->left->right = createTreeNode(2);
+
+        recoverTree(root);
+
+        UT_ASSERT(root->val == 3);
+        UT_ASSERT(root->left->val == 1);
+        UT_ASSERT(root->left->right->val == 2);
+
+        free(root->left->right);
+        free(root->left);
+        free(root);
+    }
+    {
+        struct TreeNode *root = createTreeNode(3);
+        root->left = createTreeNode(1);
+        root->right = createTreeNode(4);
+        root->right->left = createTreeNode(2);
+
+        recoverTree(root);
+
+        UT_ASSERT(root->val == 2);
+        UT_ASSERT(root->left->val == 1);
+        UT_ASSERT(root->right->val == 4);
+        UT_ASSERT(root->right->left->val == 3);
+
+        free(root->right->left);
+        free(root->right);
+        free(root->left);
+        free(root);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -1958,5 +2031,7 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"zigzagLevelOrderTest", zigzagLevelOrderTest},
     {"hasCycleTest", hasCycleTest},
     {"nextLargerNodesTest", nextLargerNodesTest},
+    {"removeNthFromEndTest", removeNthFromEndTest},
+    {"recoverTreeTest", recoverTreeTest},
     {NULL, NULL},
 };

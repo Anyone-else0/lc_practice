@@ -7,13 +7,13 @@
 // @lc code=start
 #include "pea_sort.h"
 
-int peaSortCmpInt(void *pArray, int pos1, int pos2)
+static int peaSortCmpInt(void *pArray, int pos1, int pos2)
 {
     int *pInt = (int *)pArray;
     return pInt[pos1] - pInt[pos2];
 }
 
-void peaSortSwapInt(void *pArray, int pos1, int pos2)
+static void peaSortSwapInt(void *pArray, int pos1, int pos2)
 {
     int *pInt = (int *)pArray;
     int tmp = pInt[pos1];
