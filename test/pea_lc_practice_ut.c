@@ -1984,6 +1984,36 @@ static void recoverTreeTest(void)
     }
 }
 
+static void reorderListTest(void)
+{
+    {
+        struct ListNode *pHead = singleListCreateFromNums((int[]){1, 2, 3, 4}, 4);
+        reorderList(pHead);
+        int exp[] = {1, 4, 2, 3};
+        int i = 0;
+        while (pHead) {
+            UT_ASSERT(pHead->val == exp[i]);
+            pHead = pHead->next;
+            i++;
+        }
+        UT_ASSERT(i == sizeof(exp) / sizeof(exp[0]));
+        singleListFree(pHead);
+    }
+    {
+        struct ListNode *pHead = singleListCreateFromNums((int[]){1, 2, 3, 4, 5}, 5);
+        reorderList(pHead);
+        int exp[] = {1, 5, 2, 4, 3};
+        int i = 0;
+        while (pHead) {
+            UT_ASSERT(pHead->val == exp[i]);
+            pHead = pHead->next;
+            i++;
+        }
+        UT_ASSERT(i == sizeof(exp) / sizeof(exp[0]));
+        singleListFree(pHead);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -2033,5 +2063,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"nextLargerNodesTest", nextLargerNodesTest},
     {"removeNthFromEndTest", removeNthFromEndTest},
     {"recoverTreeTest", recoverTreeTest},
+    {"reorderListTest", reorderListTest},
     {NULL, NULL},
 };

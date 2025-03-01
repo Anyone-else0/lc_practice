@@ -94,5 +94,6 @@ bool hasCycle(struct ListNode *head);
 int* nextLargerNodes(struct ListNode* head, int* returnSize);
 struct ListNode* removeNthFromEnd(struct ListNode* head, int n);
 void recoverTree(struct TreeNode* root);
+void reorderList(struct ListNode* head);
 
 #endif
