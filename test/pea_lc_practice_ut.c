@@ -2014,6 +2014,36 @@ static void reorderListTest(void)
     }
 }
 
+static void deleteDuplicatesTest(void)
+{
+    {
+        struct ListNode *pHead = singleListCreateFromNums((int[]){1, 2, 3, 3, 4, 4, 5}, 7);
+        struct ListNode *pRes = deleteDuplicates(pHead);
+        int exp[] = {1, 2, 5};
+        int i = 0;
+        while (pRes) {
+            UT_ASSERT(pRes->val == exp[i]);
+            pRes = pRes->next;
+            i++;
+        }
+        UT_ASSERT(i == sizeof(exp) / sizeof(exp[0]));
+        singleListFree(pRes);
+    }
+    {
+        struct ListNode *pHead = singleListCreateFromNums((int[]){1, 1, 1, 2, 3}, 5);
+        struct ListNode *pRes = deleteDuplicates(pHead);
+        int exp[] = {2, 3};
+        int i = 0;
+        while (pRes) {
+            UT_ASSERT(pRes->val == exp[i]);
+            pRes = pRes->next;
+            i++;
+        }
+        UT_ASSERT(i == sizeof(exp) / sizeof(exp[0]));
+        singleListFree(pRes);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -2064,5 +2094,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"removeNthFromEndTest", removeNthFromEndTest},
     {"recoverTreeTest", recoverTreeTest},
     {"reorderListTest", reorderListTest},
+    {"deleteDuplicatesTest", deleteDuplicatesTest},
     {NULL, NULL},
 };

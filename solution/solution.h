@@ -95,5 +95,6 @@ int* nextLargerNodes(struct ListNode* head, int* returnSize);
 struct ListNode* removeNthFromEnd(struct ListNode* head, int n);
 void recoverTree(struct TreeNode* root);
 void reorderList(struct ListNode* head);
+struct ListNode* deleteDuplicates(struct ListNode* head);
 
 #endif
