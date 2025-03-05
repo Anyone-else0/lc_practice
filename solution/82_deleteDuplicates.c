@@ -51,7 +51,5 @@ struct ListNode* deleteDuplicates(struct ListNode* head)
 l_end:
     return pRes;
 }
-
-
 // @lc code=end
 
