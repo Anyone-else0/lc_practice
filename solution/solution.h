@@ -96,5 +96,6 @@ struct ListNode* removeNthFromEnd(struct ListNode* head, int n);
 void recoverTree(struct TreeNode* root);
 void reorderList(struct ListNode* head);
 struct ListNode* deleteDuplicates(struct ListNode* head);
+struct TreeNode* sortedListToBST(struct ListNode* head);
 
 #endif

@@ -2044,6 +2044,33 @@ static void deleteDuplicatesTest(void)
     }
 }
 
+static void sortedListToBStTest(void)
+{
+    {
+        struct ListNode *pHead = singleListCreateFromNums((int[]){-10, -3, 0, 5, 9}, 5);
+        struct TreeNode *pRoot = sortedListToBST(pHead);
+        UT_ASSERT(pRoot->val == 0);
+        UT_ASSERT(pRoot->left->val == -3);
+        UT_ASSERT(pRoot->right->val == 9);
+        UT_ASSERT(pRoot->left->left->val == -10);
+        UT_ASSERT(pRoot->right->left->val == 5);
+        free(pRoot->left->left);
+        free(pRoot->left->right);
+        free(pRoot->left);
+        free(pRoot->right);
+        free(pRoot);
+    }
+    {
+        struct ListNode *pHead = singleListCreateFromNums((int[]){1, 3}, 2);
+        struct TreeNode *pRoot = sortedListToBST(pHead);
+        UT_ASSERT(pRoot->val == 3);
+        UT_ASSERT(pRoot->left->val == 1);
+        UT_ASSERT(pRoot->right == NULL);
+        free(pRoot->left);
+        free(pRoot);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -2095,5 +2122,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"recoverTreeTest", recoverTreeTest},
     {"reorderListTest", reorderListTest},
     {"deleteDuplicatesTest", deleteDuplicatesTest},
+    {"sortedListToBStTest", sortedListToBStTest},
     {NULL, NULL},
 };
