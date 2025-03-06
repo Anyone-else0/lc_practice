@@ -97,5 +97,6 @@ void recoverTree(struct TreeNode* root);
 void reorderList(struct ListNode* head);
 struct ListNode* deleteDuplicates(struct ListNode* head);
 struct TreeNode* sortedListToBST(struct ListNode* head);
+struct ListNode* oddEvenList(struct ListNode* head);
 
 #endif

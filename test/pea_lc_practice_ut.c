@@ -2071,6 +2071,36 @@ static void sortedListToBStTest(void)
     }
 }
 
+static void oddEvenListTest()
+{
+    {
+        struct ListNode *pHead = singleListCreateFromNums((int[]){1, 2, 3, 4, 5}, 5);
+        struct ListNode *pRes = oddEvenList(pHead);
+        int exp[] = {1, 3, 5, 2, 4};
+        int i = 0;
+        while (pRes) {
+            UT_ASSERT(pRes->val == exp[i]);
+            pRes = pRes->next;
+            i++;
+        }
+        UT_ASSERT(i == sizeof(exp) / sizeof(exp[0]));
+        singleListFree(pRes);
+    }
+    {
+        struct ListNode *pHead = singleListCreateFromNums((int[]){2, 1, 3, 5, 6, 4, 7}, 7);
+        struct ListNode *pRes = oddEvenList(pHead);
+        int exp[] = {2, 3, 6, 7, 1, 5, 4};
+        int i = 0;
+        while (pRes) {
+            UT_ASSERT(pRes->val == exp[i]);
+            pRes = pRes->next;
+            i++;
+        }
+        UT_ASSERT(i == sizeof(exp) / sizeof(exp[0]));
+        singleListFree(pRes);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -2123,5 +2153,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"reorderListTest", reorderListTest},
     {"deleteDuplicatesTest", deleteDuplicatesTest},
     {"sortedListToBStTest", sortedListToBStTest},
+    {"oddEvenListTest", oddEvenListTest},
     {NULL, NULL},
 };
