@@ -2071,7 +2071,7 @@ static void sortedListToBStTest(void)
     }
 }
 
-static void oddEvenListTest()
+static void oddEvenListTest(void)
 {
     {
         struct ListNode *pHead = singleListCreateFromNums((int[]){1, 2, 3, 4, 5}, 5);
@@ -2098,6 +2098,73 @@ static void oddEvenListTest()
         }
         UT_ASSERT(i == sizeof(exp) / sizeof(exp[0]));
         singleListFree(pRes);
+    }
+}
+
+static void addTwoNumbersTest(void)
+{
+    {
+        int l1Arr[] = {7, 2, 4, 3};
+        int l2Arr[] = {5, 6, 4};
+        int expArr[] = {7, 8, 0, 7};
+        struct ListNode* l1 = singleListCreateFromNums(l1Arr, sizeof(l1Arr) / sizeof(l1Arr[0]));
+        struct ListNode* l2 = singleListCreateFromNums(l2Arr, sizeof(l2Arr) / sizeof(l2Arr[0]));
+        struct ListNode* result = addTwoNumbers(l1, l2);
+        struct ListNode* exp = singleListCreateFromNums(expArr, sizeof(expArr) / sizeof(expArr[0]));
+
+        while (result && exp) {
+            UT_ASSERT(result->val == exp->val);
+            result = result->next;
+            exp = exp->next;
+        }
+        UT_ASSERT(result == NULL && exp == NULL);
+
+        singleListFree(l1);
+        singleListFree(l2);
+        singleListFree(result);
+        singleListFree(exp);
+    }
+    {
+        int l1Arr[] = {5};
+        int l2Arr[] = {5};
+        int expArr[] = {1, 0};
+        struct ListNode* l1 = singleListCreateFromNums(l1Arr, sizeof(l1Arr) / sizeof(l1Arr[0]));
+        struct ListNode* l2 = singleListCreateFromNums(l2Arr, sizeof(l2Arr) / sizeof(l2Arr[0]));
+        struct ListNode* result = addTwoNumbers(l1, l2);
+        struct ListNode* exp = singleListCreateFromNums(expArr, sizeof(expArr) / sizeof(expArr[0]));
+
+        while (result && exp) {
+            UT_ASSERT(result->val == exp->val);
+            result = result->next;
+            exp = exp->next;
+        }
+        UT_ASSERT(result == NULL && exp == NULL);
+
+        singleListFree(l1);
+        singleListFree(l2);
+        singleListFree(result);
+        singleListFree(exp);
+    }
+    {
+        int l1Arr[] = {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1};
+        int l2Arr[] = {5, 6, 4};
+        int expArr[] = {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 6, 5};
+        struct ListNode* l1 = singleListCreateFromNums(l1Arr, sizeof(l1Arr) / sizeof(l1Arr[0]));
+        struct ListNode* l2 = singleListCreateFromNums(l2Arr, sizeof(l2Arr) / sizeof(l2Arr[0]));
+        struct ListNode* result = addTwoNumbers(l1, l2);
+        struct ListNode* exp = singleListCreateFromNums(expArr, sizeof(expArr) / sizeof(expArr[0]));
+
+        while (result && exp) {
+            UT_ASSERT(result->val == exp->val);
+            result = result->next;
+            exp = exp->next;
+        }
+        UT_ASSERT(result == NULL && exp == NULL);
+
+        singleListFree(l1);
+        singleListFree(l2);
+        singleListFree(result);
+        singleListFree(exp);
     }
 }
 
@@ -2154,5 +2221,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"deleteDuplicatesTest", deleteDuplicatesTest},
     {"sortedListToBStTest", sortedListToBStTest},
     {"oddEvenListTest", oddEvenListTest},
+    {"addTwoNumbersTest", addTwoNumbersTest},
     {NULL, NULL},
 };

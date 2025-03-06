@@ -98,5 +98,6 @@ void reorderList(struct ListNode* head);
 struct ListNode* deleteDuplicates(struct ListNode* head);
 struct TreeNode* sortedListToBST(struct ListNode* head);
 struct ListNode* oddEvenList(struct ListNode* head);
+struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2);
 
 #endif
