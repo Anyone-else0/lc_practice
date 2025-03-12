@@ -2168,6 +2168,36 @@ static void addTwoNumbersTest(void)
     }
 }
 
+static void insertionSortListTest(void)
+{
+    {
+        struct ListNode *pHead = singleListCreateFromNums((int[]){4, 2, 1, 3}, 4);
+        struct ListNode *pRes = insertionSortList(pHead);
+        int exp[] = {1, 2, 3, 4};
+        int i = 0;
+        while (pRes) {
+            UT_ASSERT(pRes->val == exp[i]);
+            pRes = pRes->next;
+            i++;
+        }
+        UT_ASSERT(i == sizeof(exp) / sizeof(exp[0]));
+        singleListFree(pRes);
+    }
+    {
+        struct ListNode *pHead = singleListCreateFromNums((int[]){-1, 5, 3, 4, 0}, 5);
+        struct ListNode *pRes = insertionSortList(pHead);
+        int exp[] = {-1, 0, 3, 4, 5};
+        int i = 0;
+        while (pRes) {
+            UT_ASSERT(pRes->val == exp[i]);
+            pRes = pRes->next;
+            i++;
+        }
+        UT_ASSERT(i == sizeof(exp) / sizeof(exp[0]));
+        singleListFree(pRes);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -2222,5 +2252,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"sortedListToBStTest", sortedListToBStTest},
     {"oddEvenListTest", oddEvenListTest},
     {"addTwoNumbersTest", addTwoNumbersTest},
+    {"insertionSortListTest", insertionSortListTest},
     {NULL, NULL},
 };
