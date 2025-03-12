@@ -100,5 +100,6 @@ struct TreeNode* sortedListToBST(struct ListNode* head);
 struct ListNode* oddEvenList(struct ListNode* head);
 struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2);
 struct ListNode* insertionSortList(struct ListNode* head);
+struct ListNode** splitListToParts(struct ListNode* head, int k, int* returnSize);
 
 #endif
