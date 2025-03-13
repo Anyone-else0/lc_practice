@@ -2168,6 +2168,82 @@ static void addTwoNumbersTest(void)
     }
 }
 
+static void insertionSortListTest(void)
+{
+    {
+        struct ListNode *pHead = singleListCreateFromNums((int[]){4, 2, 1, 3}, 4);
+        struct ListNode *pRes = insertionSortList(pHead);
+        int exp[] = {1, 2, 3, 4};
+        int i = 0;
+        while (pRes) {
+            UT_ASSERT(pRes->val == exp[i]);
+            pRes = pRes->next;
+            i++;
+        }
+        UT_ASSERT(i == sizeof(exp) / sizeof(exp[0]));
+        singleListFree(pRes);
+    }
+    {
+        struct ListNode *pHead = singleListCreateFromNums((int[]){-1, 5, 3, 4, 0}, 5);
+        struct ListNode *pRes = insertionSortList(pHead);
+        int exp[] = {-1, 0, 3, 4, 5};
+        int i = 0;
+        while (pRes) {
+            UT_ASSERT(pRes->val == exp[i]);
+            pRes = pRes->next;
+            i++;
+        }
+        UT_ASSERT(i == sizeof(exp) / sizeof(exp[0]));
+        singleListFree(pRes);
+    }
+}
+
+static void splitListToPartsTest(void)
+{
+    {
+        struct ListNode *pHead = singleListCreateFromNums((int[]){1, 2, 3}, 3);
+        int k = 5;
+        int returnSize;
+        struct ListNode **res = splitListToParts(pHead, k, &returnSize);
+        int exp[][1] = {{1}, {2}, {3}, {0}, {0}};
+        int expSizes[] = {1, 1, 1, 0, 0};
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            int j = 0;
+            struct ListNode *p = res[i];
+            while (p) {
+                UT_ASSERT(p->val == exp[i][j]);
+                p = p->next;
+                j++;
+            }
+            UT_ASSERT(j == expSizes[i]);
+            singleListFree(res[i]);
+        }
+        free(res);
+    }
+    {
+        struct ListNode *pHead = singleListCreateFromNums((int[]){1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 10);
+        int k = 3;
+        int returnSize;
+        struct ListNode **res = splitListToParts(pHead, k, &returnSize);
+        int exp[][4] = {{1, 2, 3, 4}, {5, 6, 7}, {8, 9, 10}};
+        int expSizes[] = {4, 3, 3};
+        UT_ASSERT(returnSize == sizeof(exp) / sizeof(exp[0]));
+        for (int i = 0; i < returnSize; i++) {
+            int j = 0;
+            struct ListNode *p = res[i];
+            while (p) {
+                UT_ASSERT(p->val == exp[i][j]);
+                p = p->next;
+                j++;
+            }
+            UT_ASSERT(j == expSizes[i]);
+            singleListFree(res[i]);
+        }
+        free(res);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -2222,5 +2298,7 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"sortedListToBStTest", sortedListToBStTest},
     {"oddEvenListTest", oddEvenListTest},
     {"addTwoNumbersTest", addTwoNumbersTest},
+    {"insertionSortListTest", insertionSortListTest},
+    {"splitListToPartsTest", splitListToPartsTest},
     {NULL, NULL},
 };
