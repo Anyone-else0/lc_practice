@@ -2244,6 +2244,92 @@ static void splitListToPartsTest(void)
     }
 }
 
+static void getHintTest(void)
+{
+    {
+        {
+            char secret[] = "1807";
+            char guess[] = "7810";
+            char exp[] = "1A3B";
+            char *res = getHint(secret, guess);
+            UT_ASSERT(strcmp(res, exp) == 0);
+            free(res);
+        }
+        {
+            char secret[] = "1123";
+            char guess[] = "0111";
+            char exp[] = "1A1B";
+            char *res = getHint(secret, guess);
+            UT_ASSERT(strcmp(res, exp) == 0);
+            free(res);
+        }
+        {
+            char secret[] = "1";
+            char guess[] = "0";
+            char exp[] = "0A0B";
+            char *res = getHint(secret, guess);
+            UT_ASSERT(strcmp(res, exp) == 0);
+            free(res);
+        }
+        {
+            char secret[] = "1";
+            char guess[] = "1";
+            char exp[] = "1A0B";
+            char *res = getHint(secret, guess);
+            UT_ASSERT(strcmp(res, exp) == 0);
+            free(res);
+        }
+    }
+}
+static void isValidSudokuTest()
+{
+    {
+        char boardArr[9][9] = {
+            {'5', '3', '.', '.', '7', '.', '.', '.', '.'},
+            {'6', '.', '.', '1', '9', '5', '.', '.', '.'},
+            {'.', '9', '8', '.', '.', '.', '.', '6', '.'},
+            {'8', '.', '.', '.', '6', '.', '.', '.', '3'},
+            {'4', '.', '.', '8', '.', '3', '.', '.', '1'},
+            {'7', '.', '.', '.', '2', '.', '.', '.', '6'},
+            {'.', '6', '.', '.', '.', '.', '2', '8', '.'},
+            {'.', '.', '.', '4', '1', '9', '.', '.', '5'},
+            {'.', '.', '.', '.', '8', '.', '.', '7', '9'}
+        };
+        char *board[9];
+        int boardColSize[9];
+        for (int i = 0; i < 9; i++) {
+            board[i] = boardArr[i];
+            boardColSize[i] = 9;
+        }
+        int boardSize = 9;
+        bool res = isValidSudoku(board, boardSize, boardColSize);
+        UT_ASSERT(res == true);
+    }
+    {
+        char boardArr[9][9] = {
+            {'8', '3', '.', '.', '7', '.', '.', '.', '.'},
+            {'6', '.', '.', '1', '9', '5', '.', '.', '.'},
+            {'.', '9', '8', '.', '.', '.', '.', '6', '.'},
+            {'8', '.', '.', '.', '6', '.', '.', '.', '3'},
+            {'4', '.', '.', '8', '.', '3', '.', '.', '1'},
+            {'7', '.', '.', '.', '2', '.', '.', '.', '6'},
+            {'.', '6', '.', '.', '.', '.', '2', '8', '.'},
+            {'.', '.', '.', '4', '1', '9', '.', '.', '5'},
+            {'.', '.', '.', '.', '8', '.', '.', '7', '9'}
+        };
+        char *board[9];
+        int boardColSize[9];
+        for (int i = 0; i < 9; i++) {
+            board[i] = boardArr[i];
+            boardColSize[i] = 9;
+
+        }
+        int boardSize = 9;
+        bool res = isValidSudoku(board, boardSize, boardColSize);
+        UT_ASSERT(res == false);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -2300,5 +2386,7 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"addTwoNumbersTest", addTwoNumbersTest},
     {"insertionSortListTest", insertionSortListTest},
     {"splitListToPartsTest", splitListToPartsTest},
+    {"getHintTest", getHintTest},
+    {"isValidSudokuTest", isValidSudokuTest},
     {NULL, NULL},
 };
