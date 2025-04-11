@@ -2330,6 +2330,52 @@ static void isValidSudokuTest()
     }
 }
 
+void findBottomLeftValueTest(void)
+{
+    {
+        struct TreeNode *root = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->val = 2;
+        root->left = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->left->val = 1;
+        root->left->left = NULL;
+        root->left->right = NULL;
+        root->right = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->right->val = 3;
+        root->right->left = NULL;
+        root->right->right = NULL;
+
+        int res = findBottomLeftValue(root);
+        UT_ASSERT(res == 1);
+
+        free(root->right);
+        free(root->left);
+        free(root);
+    }
+    {
+        struct TreeNode *root = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->val = 1;
+        root->left = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->left->val = 2;
+        root->left->left = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->left->left->val = 4;
+        root->left->left->left = NULL;
+        root->left->left->right = NULL;
+        root->left->right = NULL;
+        root->right = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+        root->right->val = 3;
+        root->right->left = NULL;
+        root->right->right = NULL;
+
+        int res = findBottomLeftValue(root);
+        UT_ASSERT(res == 4);
+
+        free(root->right);
+        free(root->left->left);
+        free(root->left);
+        free(root);
+    }
+}
+
 UtCase_t gPeaLcPracticeSuit[] = {
     {"twoSumTest", twoSumTest},
     {"findKthLargestTest", findKthLargestTest},
@@ -2388,5 +2434,6 @@ UtCase_t gPeaLcPracticeSuit[] = {
     {"splitListToPartsTest", splitListToPartsTest},
     {"getHintTest", getHintTest},
     {"isValidSudokuTest", isValidSudokuTest},
+    {"findBottomLeftValueTest", findBottomLeftValueTest},
     {NULL, NULL},
 };

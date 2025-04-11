@@ -103,5 +103,6 @@ struct ListNode* insertionSortList(struct ListNode* head);
 struct ListNode** splitListToParts(struct ListNode* head, int k, int* returnSize);
 char* getHint(char* secret, char* guess);
 bool isValidSudoku(char** board, int boardSize, int* boardColSize);
+int findBottomLeftValue(struct TreeNode* root);
 
 #endif
